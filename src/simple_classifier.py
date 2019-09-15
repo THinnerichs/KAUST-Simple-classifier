@@ -3,26 +3,49 @@ from Bio import SeqIO
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 import itertools
+import time
 
+start = time.time()
 # Prepare and read data
 print("Reading data ...")
 label_encoder = LabelEncoder()
 onehot_encoder = OneHotEncoder(sparse=False)
 
-dataset = no
+x_dataset = []
 for a,b in itertools.product(["negative", "positive"], ["acceptor", "donor"]):
     # Read data
     file_name = "../data/{}_{}.fa".format(a,b)
     print("Processing", file_name)
+    my_time = time.time()
+    counter = 0
 
     for record in SeqIO.parse(file_name, "fasta"):
         loop_record = np.array(record.seq, np.character)
         onehot_encoded = onehot_encoder.fit_transform(loop_record.reshape((len(loop_record), 1)))
 
+        x_dataset.append(onehot_encoded)
+
+        if counter % 1000 == 0:
+            print("Processed records", counter, time.time() - my_time)
+            my_time = time.time()
+        if counter >= 10000:
+            break
+        counter += 1
+
     # Prepare labels
+x_dataset = np.array(x_dataset, dtype=np.int64)
+print(x_dataset.shape)
+print("Finished reading data")
 
+print("Intermediate time:", time.time() - start)
+np.save(file="../data/dataset.npy", arr=x_dataset)
 
+print("Time after writing:", time.time() - start)
+data = np.load(file="../data/dataset.npy")
+print("Shape:", data.shape)
 
+end = time.time()
+print("This took {} seconds.".format(end-start))
 
 """
 x_dataset = []
