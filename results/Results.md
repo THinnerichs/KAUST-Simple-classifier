@@ -111,8 +111,33 @@ This took 279.0536549091339 seconds
 #### Test #4
 
 ```python
+model.add(Flatten())
+model.add(Dense(602, input_shape=(602,4), activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(80, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(80, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(80, activation='relu'))
+model.add(Dropout(0.5))
 
+model.add(Dense(30, activation='tanh'))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+
+# compile model
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 ```
 
-Epochs:
-Batch size:
+Epochs: 10
+Batch size: 500
+
+##### Acceptor
+acc: 92.55%
+
+Mean: 92.25500000000001
+
+Std: 0.6935236117105187
+
+This took 441.35150027275085 seconds

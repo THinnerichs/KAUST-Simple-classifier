@@ -31,8 +31,13 @@ def simple_classifier(load_file_name="acceptor"):
         model.add(Flatten())
         model.add(Dense(602, input_shape=(602,4), activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(80, activation='sigmoid'))
+        model.add(Dense(80, activation='relu'))
         model.add(Dropout(0.5))
+        model.add(Dense(80, activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(80, activation='relu'))
+        model.add(Dropout(0.5))
+
         model.add(Dense(30, activation='tanh'))
         model.add(Dropout(0.5))
         model.add(Dense(10, activation='relu'))
@@ -55,10 +60,11 @@ def simple_classifier(load_file_name="acceptor"):
         cv_scores.append(scores[1] * 100)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
+    print("File name:", load_file_name)
 
 if __name__ == '__main__':
     test_start = time.time()
-    simple_classifier(load_file_name="acceptor_data")
+    simple_classifier(load_file_name="donor_data")
     print("This took {} seconds".format(time.time()-test_start))
 
 
