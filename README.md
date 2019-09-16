@@ -1,6 +1,7 @@
 ### KAUST: Simple classifier
 
 This project aims to classify true and false intron and exon 5' segregators with a basic classifier. As written, it is mainly used as a toy project to work on data preprocessing and neural network model fitting.
+This work was performed at KAUST, Saudi Arabia.
 
 #### Description of the preprocessing and model
 
