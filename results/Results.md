@@ -134,3 +134,12 @@ Mean: 93.57000000000001
 Std: 0.4514975082987719
 
 This took 442.19666624069214 seconds
+
+#### Test #5
+
+```python
+
+```
+
+Epochs:
+Batch size:

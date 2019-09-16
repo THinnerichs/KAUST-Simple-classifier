@@ -5,7 +5,7 @@ from keras.layers import Dense, Flatten, Dropout
 from sklearn.model_selection import StratifiedKFold
 
 
-def simple_classifier(load_file_name="acceptor"):
+def simple_classifier(load_file_name="acceptor", results_log_file="../results/results_log"):
     start = time.time()
     seed = 12
     np.random.seed(seed)
@@ -31,16 +31,11 @@ def simple_classifier(load_file_name="acceptor"):
         model.add(Flatten())
         model.add(Dense(602, input_shape=(602,4), activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(80, activation='relu'))
-        model.add(Dropout(0.5))
-        model.add(Dense(80, activation='relu'))
-        model.add(Dropout(0.5))
-        model.add(Dense(80, activation='relu'))
-        model.add(Dropout(0.5))
 
-        model.add(Dense(30, activation='tanh'))
+        model.add(Dense(30, activation='sigmoid'))
         model.add(Dropout(0.5))
         model.add(Dense(10, activation='relu'))
+        model.add(Dropout(0.5))
         model.add(Dense(1, activation='sigmoid'))
 
         # compile model
@@ -59,12 +54,26 @@ def simple_classifier(load_file_name="acceptor"):
         print("--------------------------------------------------\n")
         cv_scores.append(scores[1] * 100)
 
+        if len(cv_scores) == 1:
+            with open(results_log_file, 'a') as fh:
+                print("Mode:", load_file_name, file=fh)
+                model.summary(print_fn=lambda x: fh.write(x + '\n'))
+
+
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
 
+    with open(file=results_log_file, mode='a') as fh:
+        print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=fh)
+        print("This took {} seconds.\n".format(time.time() - start), file=fh)
+        print("\n-------------------------------------------------------------------------------\n", file=fh)
+
+
 if __name__ == '__main__':
     test_start = time.time()
-    simple_classifier(load_file_name="donor_data")
+    # simple_classifier(load_file_name="acceptor_data")
+    # simple_classifier(load_file_name="donor_data")
+    simple_classifier(load_file_name="both_data")
     print("This took {} seconds".format(time.time()-test_start))
 
 
