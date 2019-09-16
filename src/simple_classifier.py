@@ -1,86 +1,44 @@
 import numpy as np
-from Bio import SeqIO
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import OneHotEncoder
-import itertools
 import time
+from keras.models import Model, Sequential
+from keras.layers import Dense, Input, Flatten
+
 
 start = time.time()
-# Prepare and read data
-print("Reading data ...")
-label_encoder = LabelEncoder()
-onehot_encoder = OneHotEncoder(sparse=False)
 
-x_dataset = []
-for a,b in itertools.product(["negative", "positive"], ["acceptor", "donor"]):
-    # Read data
-    file_name = "../data/{}_{}.fa".format(a,b)
-    print("Processing", file_name)
-    my_time = time.time()
-    counter = 0
+print("Reading data")
+x_data = np.load(file="../data/x_dataset.npy")
+y_data = np.load(file="../data/y_dataset.npy")
+print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time()-start, x_data.shape,y_data.shape))
 
-    for record in SeqIO.parse(file_name, "fasta"):
-        loop_record = np.array(record.seq, np.character)
-        onehot_encoded = onehot_encoder.fit_transform(loop_record.reshape((len(loop_record), 1)))
+def simple_classifier():
 
-        x_dataset.append(onehot_encoded)
+    # parameters:
+    epochs = 50
+    batch_size = 50
 
-        if counter % 1000 == 0:
-            print("Processed records", counter, time.time() - my_time)
-            my_time = time.time()
-        if counter >= 10000:
-            break
-        counter += 1
+    # defining model
+    model = Sequential()
+    model.add(Flatten())
+    model.add(Dense(602, input_shape=(602,4), activation='relu'))
+    model.add(Dense(80, activation='relu'))
+    model.add(Dense(80, activation='sigmoid'))
+    model.add(Dense(80, activation='relu'))
+    model.add(Dense(30, activation='softmax'))
+    model.add(Dense(10, activation='relu'))
+    model.add(Dense(1, activation='sigmoid'))
 
-    # Prepare labels
-x_dataset = np.array(x_dataset, dtype=np.int64)
-print(x_dataset.shape)
-print("Finished reading data")
+    # compile model
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-print("Intermediate time:", time.time() - start)
-np.save(file="../data/dataset.npy", arr=x_dataset)
+    print("BUMM")
+    # train model
+    model.fit(x=x_data, y=y_data, validation_split=0.33, epochs=epochs, batch_size=batch_size)
 
-print("Time after writing:", time.time() - start)
-data = np.load(file="../data/dataset.npy")
-print("Shape:", data.shape)
-
-end = time.time()
-print("This took {} seconds.".format(end-start))
-
-"""
-x_dataset = []
-for a,b in itertools.product(["negative", "positive"], ["acceptor", "donor"]):
-     # Read data
-    file_name = "../data/{}_DNA_seqs_{}_at.fa".format(a,b)
-    print("Processing", file_name)
-    counter = 0
-    with open(file=file_name, mode="r") as f:
-        for line in f:
-            counter += 1
-            if counter % 20000 == 0:
-                print("Counter:", counter)
-
-            record = []
-            for character in line.strip():
-                record.append(character)
-            record = np.array(record)
-            onehot_encoded = onehot_encoder.fit_transform(record.reshape((len(record),1)))
-
-            x_dataset.append(onehot_encoded)
-
-    # Prepare labels
-    
-x_dataset = np.array(x_dataset)
-
-print("Finished reading data. Shape:", x_dataset.shape)
-"""
-
-# Prepare labels
+if __name__ == '__main__':
+    test_start = time.time()
+    simple_classifier()
+    print("This took {} seconds".format(time.time()-test_start))
 
 
-# for record in SeqIO.parse("../data/negative_DNA_seqs_donor_at.fa", "fasta"):
-#    print(record)
 
-# align_array = np.array([list(rec) for rec in alignment], np.character)
-
-# print(align_array)
