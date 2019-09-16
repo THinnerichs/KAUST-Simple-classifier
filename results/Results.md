@@ -20,8 +20,6 @@ Epochs: 15
 Batch size: 500
 
 ##### Acceptor
-acc: 90.10%
-
 Mean: 91.22
 
 Std: 0.5971599450733426
@@ -29,8 +27,6 @@ Std: 0.5971599450733426
 This took 274.82445645332336 seconds
 
 ##### Donor
-acc: 90.00%
-
 Mean: 91.04499999999999
 
 Std: 0.6908147363801678
@@ -51,8 +47,6 @@ model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy']
 Epochs: 15
 Batch size: 500
 ##### Acceptor
-acc: 89.95%
-
 Mean: 91.27
 
 Std: 0.7909487973314062
@@ -60,8 +54,6 @@ Std: 0.7909487973314062
 This took 452.9686803817749 seconds
 
 ##### Donor
-acc: 89.95%
-
 Mean: 91.27
 
 Std: 0.7909487973314062
@@ -88,8 +80,6 @@ Epochs: 10
 Batch size: 500
 
 ##### Acceptor
-acc: 90.70%
-
 Mean: 91.59500000000001
 
 Std: 0.7315907325820914
@@ -97,8 +87,6 @@ Std: 0.7315907325820914
 This took 321.77250838279724 seconds
 
 ##### Donor
-acc: 90.15%
-
 Mean: 91.355
 
 Std: 0.798576859168862
@@ -134,10 +122,15 @@ Epochs: 10
 Batch size: 500
 
 ##### Acceptor
-acc: 92.55%
-
 Mean: 92.25500000000001
 
 Std: 0.6935236117105187
 
 This took 441.35150027275085 seconds
+
+##### Donor
+Mean: 93.57000000000001
+
+Std: 0.4514975082987719
+
+This took 442.19666624069214 seconds
