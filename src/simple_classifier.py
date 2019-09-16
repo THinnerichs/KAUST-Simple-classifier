@@ -5,7 +5,7 @@ from keras.layers import Dense, Input, Flatten
 from sklearn.model_selection import StratifiedKFold
 
 
-def simple_classifier(load_file_name="dataset"):
+def simple_classifier(load_file_name="acceptor"):
     start = time.time()
     seed = 12
     np.random.seed(seed)
@@ -25,13 +25,14 @@ def simple_classifier(load_file_name="dataset"):
     batch_size = 500
 
     for train, test in kfold.split(x_data, y_data):
+        print("Round: {}".format(len(cv_scores) + 1))
         # defining model
         model = Sequential()
         model.add(Flatten())
         model.add(Dense(602, input_shape=(602,4), activation='relu'))
-        model.add(Dense(80, activation='sigmoid'))
+        # model.add(Dense(80, activation='sigmoid'))
         model.add(Dense(30, activation='tanh'))
-        model.add(Dense(10, activation='relu'))
+        # model.add(Dense(10, activation='relu'))
         model.add(Dense(1, activation='sigmoid'))
 
         # compile model
@@ -52,7 +53,7 @@ def simple_classifier(load_file_name="dataset"):
 
 if __name__ == '__main__':
     test_start = time.time()
-    simple_classifier(load_file_name="acceptor_data")
+    simple_classifier(load_file_name="donor_data")
     print("This took {} seconds".format(time.time()-test_start))
 
 
