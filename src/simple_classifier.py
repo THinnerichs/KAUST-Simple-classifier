@@ -1,7 +1,7 @@
 import numpy as np
 import time
-from keras.models import Model, Sequential
-from keras.layers import Dense, Input, Flatten
+from keras.models import Sequential
+from keras.layers import Dense, Flatten, Dropout
 from sklearn.model_selection import StratifiedKFold
 
 
@@ -21,7 +21,7 @@ def simple_classifier(load_file_name="acceptor"):
     cv_scores = []
 
     # parameters:
-    epochs = 15
+    epochs = 10
     batch_size = 500
 
     for train, test in kfold.split(x_data, y_data):
@@ -30,9 +30,12 @@ def simple_classifier(load_file_name="acceptor"):
         model = Sequential()
         model.add(Flatten())
         model.add(Dense(602, input_shape=(602,4), activation='relu'))
-        # model.add(Dense(80, activation='sigmoid'))
+        model.add(Dropout(0.5))
+        model.add(Dense(80, activation='sigmoid'))
+        model.add(Dropout(0.5))
         model.add(Dense(30, activation='tanh'))
-        # model.add(Dense(10, activation='relu'))
+        model.add(Dropout(0.5))
+        model.add(Dense(10, activation='relu'))
         model.add(Dense(1, activation='sigmoid'))
 
         # compile model
@@ -40,6 +43,8 @@ def simple_classifier(load_file_name="acceptor"):
 
         # train model
         model.fit(x=x_data[train], y=y_data[train], epochs=epochs, batch_size=batch_size)
+
+        model.summary()
 
         #evaluate the model
         scores = model.evaluate(x_data[test], y_data[test], verbose=0)
@@ -53,7 +58,7 @@ def simple_classifier(load_file_name="acceptor"):
 
 if __name__ == '__main__':
     test_start = time.time()
-    simple_classifier(load_file_name="donor_data")
+    simple_classifier(load_file_name="acceptor_data")
     print("This took {} seconds".format(time.time()-test_start))
 
 

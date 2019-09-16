@@ -68,4 +68,4 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
     print("This took {} seconds.".format(end-start))
 
 if __name__ == '__main__':
-    prepare_data(include_acceptor=True, include_donor=False, save_file_name="donor_data", samples_per_file=10000)
+    prepare_data(include_acceptor=False, include_donor=True, save_file_name="donor_data", samples_per_file=20000)

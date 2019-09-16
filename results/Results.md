@@ -2,6 +2,7 @@
 
 ### Dataset:
 
+- The following models are performed on a data size of 10000 per file, equaling 20000 records all in all.
 #### Test #1:
 Model:
 ```python
@@ -67,4 +68,51 @@ Std: 0.7909487973314062
 
 This took 452.9686803817749 seconds
 
+#### Test #3
+```python
+model = Sequential()
+model.add(Flatten())
+model.add(Dense(602, input_shape=(602,4), activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(80, activation='sigmoid'))
+model.add(Dropout(0.5))
+model.add(Dense(30, activation='tanh'))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
 
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+```
+
+Epochs: 10
+Batch size: 500
+
+##### Acceptor
+acc: 90.70%
+
+Mean: 91.59500000000001
+
+Std: 0.7315907325820914
+
+This took 321.77250838279724 seconds
+
+##### Donor
+acc: 90.15%
+
+Mean: 91.355
+
+Std: 0.798576859168862
+
+This took 279.0536549091339 seconds
+
+
+- The following models are performed on a data size of 20000 per file, equaling 40000 records all in all.
+
+#### Test #4
+
+```python
+
+```
+
+Epochs:
+Batch size:
