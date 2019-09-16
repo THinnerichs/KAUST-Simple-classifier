@@ -13,7 +13,9 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
     print("Reading data")
     x_data = np.load(file="../data/x_" + load_file_name + ".npy")
     y_data = np.load(file="../data/y_" + load_file_name + ".npy")
-    print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time()-start, x_data.shape,y_data.shape))
+    print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time()-start,
+                                                                                 x_data.shape,
+                                                                                 y_data.shape))
 
     # Prepare train and test data
     kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
@@ -29,12 +31,13 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
         # defining model
         model = Sequential()
         model.add(Flatten())
-        model.add(Dense(602, input_shape=(602,4), activation='relu'))
         model.add(Dropout(0.5))
-
-        model.add(Dense(30, activation='sigmoid'))
+        model.add(Dense(100, input_shape=(602,4), activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(10, activation='relu'))
+        model.add(Dense(80, activation='sigmoid'))
+        model.add(Dropout(0.5))
+        model.add(Dense(80, activation='relu'))
+        model.add(Dense(30, activation='relu'))
         model.add(Dropout(0.5))
         model.add(Dense(1, activation='sigmoid'))
 
@@ -46,7 +49,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
 
         model.summary()
 
-        #evaluate the model
+        # evaluate the model
         scores = model.evaluate(x_data[test], y_data[test], verbose=0)
 
         print("\n--------------------------------------------------")
@@ -59,7 +62,6 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
                 print("Mode:", load_file_name, file=fh)
                 model.summary(print_fn=lambda x: fh.write(x + '\n'))
 
-
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
 
@@ -71,9 +73,8 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
 
 if __name__ == '__main__':
     test_start = time.time()
-    # simple_classifier(load_file_name="acceptor_data")
-    # simple_classifier(load_file_name="donor_data")
-    simple_classifier(load_file_name="both_data")
+    simple_classifier(load_file_name="acceptor_data_100000")
+    simple_classifier(load_file_name="donor_data_100000")
     print("This took {} seconds".format(time.time()-test_start))
 
 

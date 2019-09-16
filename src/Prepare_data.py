@@ -5,6 +5,7 @@ from sklearn.preprocessing import OneHotEncoder
 import itertools
 import time
 
+
 def prepare_data(include_acceptor=False, include_donor=False, save_file_name="dataset", samples_per_file=10000):
 
     # Initialize classes for later processing
@@ -25,9 +26,9 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
         mode_list.append("donor")
 
     # Read data and perform transformation
-    for a,b in itertools.product(["negative", "positive"], mode_list):
+    for a, b in itertools.product(["negative", "positive"], mode_list):
         # Read data
-        file_name = "../data/{}_{}.fa".format(a,b)
+        file_name = "../data/{}_{}.fa".format(a, b)
         print("Processing", file_name)
         my_time = time.time()
         counter = 0
@@ -67,5 +68,9 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
     end = time.time()
     print("This took {} seconds.".format(end-start))
 
+
 if __name__ == '__main__':
-    prepare_data(include_acceptor=False, include_donor=True, save_file_name="donor_data", samples_per_file=20000)
+    prepare_data(include_acceptor=True,
+                 include_donor=False,
+                 save_file_name="donor_data_100000",
+                 samples_per_file=100000)
