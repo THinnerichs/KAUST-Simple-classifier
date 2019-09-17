@@ -8,6 +8,15 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 def multi_label_classifier(load_file_name="acceptor", results_log_file="../results/results_log"):
+    """
+    This function performs a multi label classification under usage of Googles Keras library.
+    The model is validated with kfold cross validation implemented by the Scikit Learn library.
+    Results are then logged to ../results/results_log
+    
+    :param load_file_name:          (string) The prefix of the saved .npy data file
+    :param results_log_file:        (string) path to the logfile, where the results will be appended
+    :return:                        None
+    """
     start = time.time()
     seed = 12
     np.random.seed(seed)
@@ -29,6 +38,7 @@ def multi_label_classifier(load_file_name="acceptor", results_log_file="../resul
     epochs = 10
     batch_size = 500
 
+    # Perform Kfold cross validation
     for train, test in kfold.split(x_data, y_data):
         print("Round: {}".format(len(cv_scores) + 1))
 
@@ -39,17 +49,13 @@ def multi_label_classifier(load_file_name="acceptor", results_log_file="../resul
         # defining model
         model = Sequential()
         model.add(Flatten())
-        model.add(Dense(300, input_shape=(602, 4), activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(80, activation='sigmoid'))
-        model.add(Dropout(0.5))
-        model.add(Dense(80, activation='relu'))
+        model.add(Dense(150, input_shape=(602, 4), activation='relu'))
         model.add(Dropout(0.5))
 
-        model.add(Dense(80, activation='relu'))
+        model.add(Dense(40, activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(30, activation='relu'))
-        model.add(Dropout(0.5))
+
         model.add(Dense(2, activation='softmax'))
 
         # compile model
@@ -76,7 +82,7 @@ def multi_label_classifier(load_file_name="acceptor", results_log_file="../resul
 
         if len(cv_scores) == 9:
             with open(results_log_file, 'a') as fh:
-                print("MULTI LABEL APPROACH")
+                print("MULTI LABEL APPROACH", file=fh)
                 print("Data shape: {}".format(x_data.shape), file=fh)
                 print("Mode:", load_file_name, file=fh)
                 model.summary(print_fn=lambda x: fh.write(x + '\n'))

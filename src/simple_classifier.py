@@ -7,6 +7,15 @@ from sklearn.model_selection import StratifiedKFold
 
 
 def simple_classifier(load_file_name="acceptor", results_log_file="../results/results_log"):
+    """
+    This function applies the a simple binary classifier with the usage of Googles Keras onto the preprocessed data.
+    The model is validated with kfold cross validation implemented by the Scikit Learn library.
+    Results are then logged to ../results/results_log
+
+    :param load_file_name:          (string) The prefix of the saved .npy data file
+    :param results_log_file:        (string) path to the logfile, where the results will be appended
+    :return:                        None
+    """
     start = time.time()
     seed = 12
     np.random.seed(seed)
@@ -27,6 +36,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
     epochs = 10
     batch_size = 500
 
+    # Perform Kfold cross validation
     for train, test in kfold.split(x_data, y_data):
         print("Round: {}".format(len(cv_scores) + 1))
         # defining model
@@ -42,6 +52,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
         model.add(Dropout(0.5))
         model.add(Dense(80, activation='relu'))
   
+        model.add(Dropout(0.5))
         model.add(Dense(30, activation='relu'))
         model.add(Dropout(0.5))
         model.add(Dense(1, activation='sigmoid'))
@@ -70,7 +81,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
 
         if len(cv_scores) == 9:
             with open(results_log_file, 'a') as fh:
-                print("BINARY CLASSIFICATION APPROACH")
+                print("BINARY CLASSIFICATION APPROACH", file=fh)
                 print("Data shape: {}".format(x_data.shape), file=fh)
                 print("Mode:", load_file_name, file=fh)
                 model.summary(print_fn=lambda x: fh.write(x + '\n'))

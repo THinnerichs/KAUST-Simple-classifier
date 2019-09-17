@@ -7,7 +7,16 @@ import time
 
 
 def prepare_data(include_acceptor=False, include_donor=False, save_file_name="dataset", samples_per_file=10000):
+    """
+    This function preprocesses the created fasta file.
+    It reads the records as numpy arrays, performs a One Hot Encoding and the saves both x_data and y_data seperately in .npy files.
 
+    :param include_acceptor:
+    :param include_donor:
+    :param save_file_name:
+    :param samples_per_file:
+    :return:
+    """
     # Initialize classes for later processing
     print("Reading data ...")
     label_encoder = LabelEncoder()
