@@ -4,9 +4,10 @@ from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
 from keras.callbacks import TensorBoard
 from sklearn.model_selection import StratifiedKFold
+from sklearn.preprocessing import OneHotEncoder
 
 
-def simple_classifier(load_file_name="acceptor", results_log_file="../results/results_log"):
+def multi_label_classifier(load_file_name="acceptor", results_log_file="../results/results_log"):
     start = time.time()
     seed = 12
     np.random.seed(seed)
@@ -20,6 +21,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
 
     # Prepare train and test data
     kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
+    onehot_encoder = OneHotEncoder(sparse=False)
 
     cv_scores = []
 
@@ -29,6 +31,11 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
 
     for train, test in kfold.split(x_data, y_data):
         print("Round: {}".format(len(cv_scores) + 1))
+
+        # prepare One Hot Encoding after kfold
+        y_train = onehot_encoder.fit_transform(y_data[train].reshape((len(y_data[train]), 1)))
+        y_test = onehot_encoder.fit_transform(y_data[test].reshape((len(y_data[test]), 1)))
+
         # defining model
         model = Sequential()
         model.add(Flatten())
@@ -38,13 +45,12 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
         model.add(Dropout(0.5))
         model.add(Dense(80, activation='relu'))
         model.add(Dropout(0.5))
+
         model.add(Dense(80, activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(80, activation='relu'))
-  
         model.add(Dense(30, activation='relu'))
         model.add(Dropout(0.5))
-        model.add(Dense(1, activation='sigmoid'))
+        model.add(Dense(2, activation='softmax'))
 
         # compile model
         model.compile(loss='binary_crossentropy',
@@ -53,7 +59,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
 
         # train model
         model.fit(x=x_data[train],
-                  y=y_data[train],
+                  y=y_train,
                   epochs=epochs,
                   batch_size=batch_size,
                   callbacks=[TensorBoard(log_dir='/tmp/classifier')])
@@ -61,7 +67,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
         model.summary()
 
         # evaluate the model
-        scores = model.evaluate(x_data[test], y_data[test], verbose=0)
+        scores = model.evaluate(x_data[test], y_test, verbose=0)
 
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
@@ -70,7 +76,7 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
 
         if len(cv_scores) == 9:
             with open(results_log_file, 'a') as fh:
-                print("BINARY CLASSIFICATION APPROACH")
+                print("MULTI LABEL APPROACH")
                 print("Data shape: {}".format(x_data.shape), file=fh)
                 print("Mode:", load_file_name, file=fh)
                 model.summary(print_fn=lambda x: fh.write(x + '\n'))
@@ -81,11 +87,13 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
     with open(file=results_log_file, mode='a') as fh:
         print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=fh)
         print("This took {} seconds.\n".format(time.time() - start), file=fh)
+        print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=fh)
         print("\n-------------------------------------------------------------------------------\n", file=fh)
 
 
 if __name__ == '__main__':
     test_start = time.time()
-    simple_classifier(load_file_name="acceptor_data")
-    simple_classifier(load_file_name="donor_data")
+    # multi_label_classifier(load_file_name="both_data")
+    multi_label_classifier(load_file_name="acceptor_data")
+    multi_label_classifier(load_file_name="donor_data")
     print("This took {} seconds".format(time.time()-test_start))
