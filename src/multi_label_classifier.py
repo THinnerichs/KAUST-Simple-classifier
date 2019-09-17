@@ -50,13 +50,13 @@ def multi_label_classifier(load_file_name="acceptor", results_log_file="../resul
         model = Sequential()
         model.add(Flatten())
         model.add(Dropout(0.5))
-        model.add(Dense(150, input_shape=(602, 4), activation='relu'))
+        model.add(Dense(100, input_shape=(602, 4), activation='relu'))
         model.add(Dropout(0.5))
 
         model.add(Dense(40, activation='relu'))
         model.add(Dropout(0.5))
 
-        model.add(Dense(2, activation='softmax'))
+        model.add(Dense(4, activation='softmax'))
 
         # compile model
         model.compile(loss='binary_crossentropy',
@@ -99,7 +99,7 @@ def multi_label_classifier(load_file_name="acceptor", results_log_file="../resul
 
 if __name__ == '__main__':
     test_start = time.time()
-    # multi_label_classifier(load_file_name="both_data")
-    multi_label_classifier(load_file_name="acceptor_data")
-    multi_label_classifier(load_file_name="donor_data")
+    multi_label_classifier(load_file_name="both_data_100000")
+    # multi_label_classifier(load_file_name="acceptor_data")
+    # multi_label_classifier(load_file_name="donor_data")
     print("This took {} seconds".format(time.time()-test_start))

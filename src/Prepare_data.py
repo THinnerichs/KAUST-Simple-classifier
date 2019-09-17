@@ -58,12 +58,13 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
         # Prepare y labels
         y_dataset.extend(counter * [a+b])
 
+    x_dataset = np.array(x_dataset, dtype=np.int64)
+
     # Transform data type of datasets
     y_dataset = np.array(y_dataset)
     y_dataset = label_encoder.fit_transform(y_dataset)
     print("y_dataset shape:", y_dataset.shape)
 
-    x_dataset = np.array(x_dataset, dtype=np.int64)
     print("x_dataset shape:", x_dataset.shape)
 
     print("Finished reading data")
@@ -80,6 +81,6 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
 
 if __name__ == '__main__':
     prepare_data(include_acceptor=True,
-                 include_donor=False,
-                 save_file_name="donor_data_100000",
+                 include_donor=True,
+                 save_file_name="both_data_100000",
                  samples_per_file=100000)
