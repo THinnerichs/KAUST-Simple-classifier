@@ -19,4 +19,6 @@ Reply to Somayah:
 
 ### Readworthy papers:
 
-- 
+- DiProDB 
+- electron ion interaction potential
+- Do PCA with 15 best features

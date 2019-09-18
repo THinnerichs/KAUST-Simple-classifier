@@ -75,7 +75,7 @@ def prepare_data(include_acceptor=False,
     print("Finished reading data")
 
     x_filename = "../data/x_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
-    y_filename = "../data/y_" + save_file_name + "_" + str(samples_per_file) + ".npy"
+    y_filename = "../data/y_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
     np.save(file=y_filename, arr=y_dataset)
@@ -90,4 +90,4 @@ if __name__ == '__main__':
     prepare_data(include_acceptor=True,
                  include_donor=False,
                  save_file_name="acceptor_data",
-                 samples_per_file=10000)
+                 samples_per_file=4000)

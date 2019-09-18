@@ -3,9 +3,10 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
 from keras.callbacks import TensorBoard
-from sklearn.preprocessing import OneHotEncoder
 
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import confusion_matrix
+from sklearn import svm
 
 
 class Model:
@@ -132,3 +133,24 @@ class Model:
                   file=self.filehandler)
             print("Confusion matrix:", confusion_matrix(y_true=y_test.argmax(axis=1), y_pred=y_pred.argmax(axis=1)))
             print("-----------------------------------------------------\n")
+
+    def svm(self,
+            cv_scores,
+            train,
+            test):
+        clf = svm.SVC(gamma='scale', verbose=True)
+        clf.fit(self.x_data.argmax(axis=2)[train], self.y_data[train])
+
+        y_pred = clf.predict(self.x_data.argmax(axis=2)[test])
+
+        conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=y_pred)
+
+        tp = conf_matrix[0,0]
+        tn = conf_matrix[1,1]
+        fp = conf_matrix[0,1]
+        fn = conf_matrix[1,0]
+        
+        accuracy = (tp + tn)/(tp + tn + fp + fn) * 100
+        print("SVM accuracy:", accuracy)
+        cv_scores.append(accuracy)
+        
