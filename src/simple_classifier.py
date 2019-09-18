@@ -2,6 +2,7 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import Dense, Flatten, Dropout
 from keras.callbacks import TensorBoard
+from sklearn.metrics import confusion_matrix
 
 
 def simple_classifier(x_data,
@@ -20,9 +21,9 @@ def simple_classifier(x_data,
     # defining model
     model = Sequential()
     model.add(Flatten())
-    model.add(Dense(200, input_shape=(pre_length + 2 + post_length, 4), activation='relu'))
+    model.add(Dense(100, input_shape=(pre_length + 2 + post_length, 4), activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(80, activation='relu'))
+    model.add(Dense(30, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(1, activation='sigmoid'))
 
@@ -52,3 +53,9 @@ def simple_classifier(x_data,
         print("BINARY CLASSIFICATION APPROACH", file=filehandler)
         print("Data shape: {}".format(x_data.shape), file=filehandler)
         model.summary(print_fn=lambda x: filehandler.write(x + '\n'))
+
+        # print confusion matrix
+        y_pred = model.predict(x_data[test])
+        print("Confusion matrix:", confusion_matrix(y_true=y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)), file=filehandler)
+        print("Confusion matrix:", confusion_matrix(y_true=y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+        print("------------------------------------------------\n")

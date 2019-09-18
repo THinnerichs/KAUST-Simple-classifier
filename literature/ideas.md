@@ -8,7 +8,6 @@ Reply to Somayah:
 
 ### TODO
 - implement SVM on data
-- make code more modular to apply models on given data
 - compare to bayes fo baseline if easy
 - convert processed data to csv for Ashraf
 - access Ashraf's workstation via ssh (see mail)

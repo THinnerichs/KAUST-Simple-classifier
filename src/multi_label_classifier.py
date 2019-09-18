@@ -5,6 +5,8 @@ from keras.layers import Dense, Flatten, Dropout
 from keras.callbacks import TensorBoard
 from sklearn.preprocessing import OneHotEncoder
 
+from sklearn.metrics import confusion_matrix
+
 
 def multi_label_classifier(x_data,
                       y_data,
@@ -16,7 +18,7 @@ def multi_label_classifier(x_data,
                       post_length=300):
 
     # parameters:
-    epochs = 10
+    epochs = 5
     batch_size = 500
 
     onehot_encoder = OneHotEncoder(sparse=False)
@@ -59,8 +61,13 @@ def multi_label_classifier(x_data,
     print("--------------------------------------------------\n")
     cv_scores.append(scores[1] * 100)
 
-    if len(cv_scores) == 10:
+    if len(cv_scores) == 1:
         print("MULTI LABEL APPROACH", file=filehandler)
         print("Data shape: {}".format(x_data.shape), file=filehandler)
-        print("Mode:", load_file_name, file=filehandler)
         model.summary(print_fn=lambda x: filehandler.write(x + '\n'))
+
+        # print confusion matrix
+        y_pred = model.predict(x_data[test])
+        print("Confusion matrix:", confusion_matrix(y_true=y_test.argmax(axis=1), y_pred=y_pred.argmax(axis=1)), file=filehandler)
+        print("Confusion matrix:", confusion_matrix(y_true=y_test.argmax(axis=1), y_pred=y_pred.argmax(axis=1)))
+        print("-----------------------------------------------------\n")
