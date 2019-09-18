@@ -49,8 +49,6 @@ def prepare_data(include_acceptor=False,
 
         for record in SeqIO.parse(file_name, "fasta"):
             loop_record = np.array(record.seq, np.character)[300 - pre_length : 301 + post_length + 1]
-            print("Record raw", record.seq)
-            print("Loop record", loop_record)
             onehot_encoded = onehot_encoder.fit_transform(loop_record.reshape((len(loop_record), 1)))
 
             x_dataset.append(onehot_encoded)
