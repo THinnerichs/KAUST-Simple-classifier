@@ -6,7 +6,11 @@ from keras.callbacks import TensorBoard
 from sklearn.model_selection import StratifiedKFold
 
 
-def simple_classifier(load_file_name="acceptor", results_log_file="../results/results_log"):
+def simple_classifier(load_file_name="acceptor",
+                      results_log_file="../results/results_log",
+                      samples_per_file=10000,
+                      pre_length=300,
+                      post_length=300):
     """
     This function applies the a simple binary classifier with the usage of Googles Keras onto the preprocessed data.
     The model is validated with kfold cross validation implemented by the Scikit Learn library.
@@ -21,8 +25,8 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
     np.random.seed(seed)
 
     print("Reading data")
-    x_data = np.load(file="../data/x_" + load_file_name + ".npy")
-    y_data = np.load(file="../data/y_" + load_file_name + ".npy")
+    x_data = np.load(file="../data/x_" + load_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy")
+    y_data = np.load(file="../data/y_" + load_file_name + "_" + str(samples_per_file) + ".npy")
     print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time()-start,
                                                                                  x_data.shape,
                                                                                  y_data.shape))
@@ -42,18 +46,9 @@ def simple_classifier(load_file_name="acceptor", results_log_file="../results/re
         # defining model
         model = Sequential()
         model.add(Flatten())
-        model.add(Dense(300, input_shape=(602, 4), activation='relu'))
-        model.add(Dropout(0.5))
-        model.add(Dense(80, activation='sigmoid'))
+        model.add(Dense(200, input_shape=(pre_length + 2 + post_length, 4), activation='relu'))
         model.add(Dropout(0.5))
         model.add(Dense(80, activation='relu'))
-        model.add(Dropout(0.5))
-        model.add(Dense(80, activation='relu'))
-        model.add(Dropout(0.5))
-        model.add(Dense(80, activation='relu'))
-  
-        model.add(Dropout(0.5))
-        model.add(Dense(30, activation='relu'))
         model.add(Dropout(0.5))
         model.add(Dense(1, activation='sigmoid'))
 

@@ -6,7 +6,12 @@ import itertools
 import time
 
 
-def prepare_data(include_acceptor=False, include_donor=False, save_file_name="dataset", samples_per_file=10000):
+def prepare_data(include_acceptor=False,
+                 include_donor=False,
+                 save_file_name="dataset",
+                 samples_per_file=10000,
+                 pre_length=300,
+                 post_length=300):
     """
     This function preprocesses the created fasta file.
     It reads the records as numpy arrays, performs a One Hot Encoding and the saves both x_data and y_data seperately in .npy files.
@@ -43,7 +48,9 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
         counter = 0
 
         for record in SeqIO.parse(file_name, "fasta"):
-            loop_record = np.array(record.seq, np.character)
+            loop_record = np.array(record.seq, np.character)[300 - pre_length : 301 + post_length + 1]
+            print("Record raw", record.seq)
+            print("Loop record", loop_record)
             onehot_encoded = onehot_encoder.fit_transform(loop_record.reshape((len(loop_record), 1)))
 
             x_dataset.append(onehot_encoded)
@@ -58,22 +65,24 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
         # Prepare y labels
         y_dataset.extend(counter * [a+b])
 
-    x_dataset = np.array(x_dataset, dtype=np.int64)
 
     # Transform data type of datasets
     y_dataset = np.array(y_dataset)
     y_dataset = label_encoder.fit_transform(y_dataset)
     print("y_dataset shape:", y_dataset.shape)
 
+    x_dataset = np.array(x_dataset, dtype=np.int64)
     print("x_dataset shape:", x_dataset.shape)
 
     print("Finished reading data")
 
+    x_filename = "../data/x_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    y_filename = "../data/y_" + save_file_name + "_" + str(samples_per_file) + ".npy"
     # save dataset in numpy readable files
-    np.save(file="../data/x_" + save_file_name + ".npy", arr=x_dataset)
-    np.save(file="../data/y_" + save_file_name + ".npy", arr=y_dataset)
+    np.save(file=x_filename, arr=x_dataset)
+    np.save(file=y_filename, arr=y_dataset)
 
-    print("Data saved in ./data/x_" + save_file_name + ".npy and ../data/y_" + save_file_name + ".npy")
+    print("Data saved in {} and {}.".format(x_filename,y_filename))
 
     end = time.time()
     print("This took {} seconds.".format(end-start))
@@ -81,6 +90,6 @@ def prepare_data(include_acceptor=False, include_donor=False, save_file_name="da
 
 if __name__ == '__main__':
     prepare_data(include_acceptor=True,
-                 include_donor=True,
-                 save_file_name="both_data_100000",
-                 samples_per_file=100000)
+                 include_donor=False,
+                 save_file_name="acceptor_data",
+                 samples_per_file=10000)

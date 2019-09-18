@@ -7,7 +7,11 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import OneHotEncoder
 
 
-def multi_label_classifier(load_file_name="acceptor", results_log_file="../results/results_log"):
+def multi_label_classifier(load_file_name="acceptor",
+                           results_log_file="../results/results_log",
+                           samples_per_file=10000,
+                           pre_length=300,
+                           post_length=300):
     """
     This function performs a multi label classification under usage of Googles Keras library.
     The model is validated with kfold cross validation implemented by the Scikit Learn library.
@@ -22,8 +26,8 @@ def multi_label_classifier(load_file_name="acceptor", results_log_file="../resul
     np.random.seed(seed)
 
     print("Reading data")
-    x_data = np.load(file="../data/x_" + load_file_name + ".npy")
-    y_data = np.load(file="../data/y_" + load_file_name + ".npy")
+    x_data = np.load(file="../data/x_" + load_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy")
+    y_data = np.load(file="../data/y_" + load_file_name + "_" + str(samples_per_file) + ".npy")
     print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time()-start,
                                                                                  x_data.shape,
                                                                                  y_data.shape))
@@ -50,7 +54,7 @@ def multi_label_classifier(load_file_name="acceptor", results_log_file="../resul
         model = Sequential()
         model.add(Flatten())
         model.add(Dropout(0.5))
-        model.add(Dense(100, input_shape=(602, 4), activation='relu'))
+        model.add(Dense(100, input_shape=(pre_length + 2 + post_length, 4), activation='sigmoid'))
         model.add(Dropout(0.5))
 
         model.add(Dense(40, activation='relu'))
