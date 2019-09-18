@@ -3,3 +3,5 @@ data/negative_donor.fa
 data/positive_acceptor.fa
 data/positive_donor.fa
 data/*.npy
+
+src/__pycache__/
