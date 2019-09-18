@@ -43,15 +43,13 @@ def apply_classification(load_file_name="acceptor",
         #                  train=train,
         #                  test=test)
 
-        model.svm(cv_scores=cv_scores, train=train, test=test)
-
-
+        # model.svm(cv_scores=cv_scores, train=train, test=test)
+        model.naive_bayes(cv_scores=cv_scores, train=train, test=test)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
 
     print("Classified {}".format(load_file_name), file=filehandler)
-    print("Samples per file: {}".format(samples_per_file), file=filehandler)
     print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=filehandler)
     print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
@@ -61,8 +59,8 @@ def apply_classification(load_file_name="acceptor",
 
 if __name__ == '__main__':
     test_start = time.time()
-    apply_classification(load_file_name="acceptor_data",
-                         samples_per_file=4000,
+    apply_classification(load_file_name="donor_data",
+                         samples_per_file=20000,
                          pre_length=300,
                          post_length=300)
     print("This took {} seconds".format(time.time()-test_start))
