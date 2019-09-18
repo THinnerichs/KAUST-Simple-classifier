@@ -2,9 +2,7 @@ import numpy as np
 import time
 from sklearn.model_selection import StratifiedKFold
 
-from simple_classifier import simple_classifier
-from multi_label_classifier import multi_label_classifier
-
+from Models import *
 
 def apply_classification(load_file_name="acceptor",
                          results_log_file="../results/results_log",
@@ -29,31 +27,35 @@ def apply_classification(load_file_name="acceptor",
 
     cv_scores = []
 
+    filehandler = open(file=results_log_file, mode='a')
+    model = Model(x_data=x_data,
+                  y_data=y_data,
+                  filehandler=filehandler,
+                  pre_length=pre_length,
+                  post_length=post_length)
+
     # Perform Kfold cross validation
     for train, test in kfold.split(x_data, y_data):
         print("Round: {}".format(len(cv_scores) + 1))
 
         # Execute model
         with open(file=results_log_file, mode='a') as fh:
-            multi_label_classifier(x_data=x_data,
-                              y_data=y_data,
-                              filehandler=fh,
-                              cv_scores=cv_scores,
+            model.multi_label_classifier(cv_scores=cv_scores,
                               train=train,
-                              test=test,
-                              pre_length=pre_length,
-                              post_length=post_length)
+                              test=test)
 
 
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
 
-    with open(file=results_log_file, mode='a') as fh:
-        print("Classified {}".format(load_file_name), file=fh)
-        print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=fh)
-        print("This took {} seconds.\n".format(time.time() - start), file=fh)
-        print("\n-------------------------------------------------------------------------------\n", file=fh)
+    print("Classified {}".format(load_file_name), file=filehandler)
+    print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=filehandler)
+    print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
+    print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+
+    filehandler.close()
+
 
 if __name__ == '__main__':
     test_start = time.time()
