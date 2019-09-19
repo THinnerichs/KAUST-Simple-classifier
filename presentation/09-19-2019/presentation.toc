@@ -1,0 +1,7 @@
+\babel@toc {nil}{}
+\beamer@sectionintoc {1}{Problem Description}{3}{0}{1}
+\beamer@sectionintoc {2}{Dataset description}{8}{0}{2}
+\beamer@sectionintoc {3}{Classification Results}{9}{0}{3}
+\beamer@subsectionintoc {3}{1}{Baseline}{9}{0}{3}
+\beamer@subsectionintoc {3}{2}{Neural Networks}{10}{0}{3}
+\beamer@sectionintoc {4}{Next Steps}{11}{0}{4}

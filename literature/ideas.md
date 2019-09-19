@@ -7,8 +7,6 @@ Reply to Somayah:
 > b. Discerning novel splice junctions derived from RNA-seq alignment: a deep learning approach. BMC genomics
 
 ### TODO
-- implement SVM on data
-- compare to bayes fo baseline if easy
 - convert processed data to csv for Ashraf
 - access Ashraf's workstation via ssh (see mail)
 - try to access IBEX for bigger computational things
@@ -21,4 +19,5 @@ Reply to Somayah:
 
 - DiProDB 
 - electron ion interaction potential
+  - https://www.researchgate.net/publication/6239442_A_coding_measure_scheme_empoying_electron-ion_interaction_pseudo_potential_EIIP
 - Do PCA with 15 best features

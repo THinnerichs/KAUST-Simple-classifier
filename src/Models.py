@@ -92,11 +92,8 @@ class Model:
         # defining model
         model = Sequential()
         model.add(Flatten())
-        model.add(Dropout(0.5))
-        model.add(Dense(100, input_shape=(self.pre_length + 2 + self.post_length, 4), activation='sigmoid'))
-        model.add(Dropout(0.5))
+        model.add(Dense(30, input_shape=(self.pre_length + 2 + self.post_length, 4), activation='relu'))
 
-        model.add(Dense(40, activation='relu'))
         model.add(Dropout(0.5))
 
         model.add(Dense(2, activation='softmax'))

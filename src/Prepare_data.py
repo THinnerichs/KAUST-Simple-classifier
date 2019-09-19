@@ -60,6 +60,8 @@ def prepare_data(include_acceptor=False,
             if counter >= samples_per_file:
                 break
 
+            print(record.seq[300:302])
+
         # Prepare y labels
         y_dataset.extend(counter * [a+b])
 
@@ -87,7 +89,7 @@ def prepare_data(include_acceptor=False,
 
 
 if __name__ == '__main__':
-    prepare_data(include_acceptor=True,
-                 include_donor=False,
-                 save_file_name="acceptor_data",
+    prepare_data(include_acceptor=False,
+                 include_donor=True,
+                 save_file_name="donor_data",
                  samples_per_file=4000)
