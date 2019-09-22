@@ -12,12 +12,18 @@ Reply to Somayah:
 - try to access IBEX for bigger computational things
 - build up some presentation for the done work
 
+- Vary position of flatten layer
+
 ### Readworthy links
 - [spliceRover](http://bioit2.irc.ugent.be/rover/splicerover/)
 
 ### Readworthy papers:
 
 - DiProDB 
+- Do PCA with 15 best features
 - electron ion interaction potential
   - https://www.researchgate.net/publication/6239442_A_coding_measure_scheme_empoying_electron-ion_interaction_pseudo_potential_EIIP
-- Do PCA with 15 best features
+
+- Checkout AAindex: Amino acid index database
+- checkout APDbase
+- See reddit for more
