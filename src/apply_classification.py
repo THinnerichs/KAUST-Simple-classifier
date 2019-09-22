@@ -4,7 +4,8 @@ from sklearn.model_selection import StratifiedKFold
 
 from Models import *
 
-def apply_classification(load_file_name="acceptor",
+def apply_classification(load_file_name="acceptor_data",
+                         dataset="dint",
                          results_log_file="../results/results_log",
                          samples_per_file=10000,
                          pre_length=300,
@@ -15,7 +16,7 @@ def apply_classification(load_file_name="acceptor",
     np.random.seed(seed)
 
     print("Reading data")
-    x_data = np.load(file="../data/x_" + load_file_name + "_" + str(samples_per_file) + "_samples_" + str(
+    x_data = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ load_file_name + "_" + str(samples_per_file) + "_samples_" + str(
         pre_length) + "_pre_" + str(post_length) + "_post" + ".npy")
     y_data = np.load(file="../data/y_" + load_file_name + "_" + str(samples_per_file) + "_samples.npy")
     print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time() - start,
@@ -39,12 +40,25 @@ def apply_classification(load_file_name="acceptor",
         print("Round: {}".format(len(cv_scores) + 1))
 
         # Execute model
-        model.multi_label_classifier(cv_scores=cv_scores,
-                         train=train,
-                         test=test)
+
+        # model.simple_classifier(cv_scores=cv_scores,
+        #                         train=train,
+        #                         test=test)
+
+        # model.multi_label_classifier(cv_scores=cv_scores,
+        #                  train=train,
+        #                  test=test)
 
         # model.svm(cv_scores=cv_scores, train=train, test=test)
         # model.naive_bayes(cv_scores=cv_scores, train=train, test=test)
+
+        # model.gradient_boosting(cv_scores=cv_scores,
+        #                         train=train,
+        #                         test=test)
+
+        model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
+                                           train=train,
+                                           test=test)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
@@ -60,11 +74,13 @@ def apply_classification(load_file_name="acceptor",
 if __name__ == '__main__':
     test_start = time.time()
     apply_classification(load_file_name="acceptor_data",
-                         samples_per_file=100000,
+                         samples_per_file=20000,
                          pre_length=300,
                          post_length=300)
     apply_classification(load_file_name="donor_data",
-                         samples_per_file=100000,
+                         samples_per_file=20000,
                          pre_length=300,
                          post_length=300)
+
+    # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))

@@ -39,6 +39,13 @@ def prepare_data(include_acceptor=False,
     if include_donor:
         mode_list.append("donor")
 
+    example_seq = ['G', 'A', 'T', 'C']
+    encoded_seq = onehot_encoder.fit_transform(np.array(example_seq).reshape((4, 1)))
+
+    print('example_seq', example_seq)
+
+    nucleotide_dict = {example_seq[i]: encoded_seq[i] for i in range(len(example_seq))}
+
     # Read data and perform transformation
     for a, b in itertools.product(["negative", "positive"], mode_list):
         # Read data
@@ -48,8 +55,8 @@ def prepare_data(include_acceptor=False,
         counter = 0
 
         for record in SeqIO.parse(file_name, "fasta"):
-            loop_record = np.array(record.seq, np.character)[300 - pre_length : 301 + post_length + 1]
-            onehot_encoded = onehot_encoder.fit_transform(loop_record.reshape((len(loop_record), 1)))
+            loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
+            onehot_encoded = [encoded_seq[loop_record[i]] for i in range(len(loop_record))]
 
             x_dataset.append(onehot_encoded)
             counter += 1
@@ -89,7 +96,12 @@ def prepare_data(include_acceptor=False,
 
 
 if __name__ == '__main__':
+    prepare_data(include_acceptor=True,
+                 include_donor=False,
+                 save_file_name="acceptor_data",
+                 samples_per_file=20000)
+
     prepare_data(include_acceptor=False,
                  include_donor=True,
                  save_file_name="donor_data",
-                 samples_per_file=4000)
+                 samples_per_file=20000)
