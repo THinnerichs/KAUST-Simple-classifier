@@ -1,0 +1,66 @@
+ACCEPTOR:
+Loss values: (val_loss, val_acc, acc): [(4, 6, 14), (5, 14, 14), (6, 13, 14), (4, 4, 14), (5, 5, 14), (3, 13, 14), (6, 11, 14), (5, 7, 14), (3, 13, 14), (4, 11, 14)]
+
+RESULTS:
+Round: 0,	Mean: 0.8909000009298325,	Std: 0.010036932586197046
+Round: 1,	Mean: 0.9165999978780747,	Std: 0.005549998776067204
+Round: 2,	Mean: 0.9181499987840652,	Std: 0.0054465617322363435
+Round: 3,	Mean: 0.9213249981403351,	Std: 0.004671790900735583
+Round: 4,	Mean: 0.9218249998986721,	Std: 0.004497290573875565
+Round: 5,	Mean: 0.9230500012636185,	Std: 0.003261135600523528
+Round: 6,	Mean: 0.9240249991416931,	Std: 0.004405179835693867
+Round: 7,	Mean: 0.9231500022113324,	Std: 0.004192553723169266
+Round: 8,	Mean: 0.9231250010430813,	Std: 0.004182176317972605
+Round: 9,	Mean: 0.9234999999403953,	Std: 0.004227884137089747
+Round: 10,	Mean: 0.9235749959945678,	Std: 0.00412318013961503
+Round: 11,	Mean: 0.9237749993801116,	Std: 0.004839227771495654
+Round: 12,	Mean: 0.9225499995052815,	Std: 0.004456454865737448
+Round: 13,	Mean: 0.9236999981105327,	Std: 0.004209812928473566
+Round: 14,	Mean: 0.9238250002264976,	Std: 0.0036160226477974984
+
+DONOR:
+
+Loss values: (val_loss, val_acc, acc): [(3, 7, 14), (3, 14, 14), (5, 10, 13), (3, 3, 14), (9, 12, 14), (3, 3, 14), (5, 8, 14), (4, 14, 14), (6, 6, 14), (5, 8, 14)]
+
+RESULTS:
+Round: 0,	Mean: 0.9001749992370606,	Std: 0.007390916000995386
+Round: 1,	Mean: 0.9259999997913837,	Std: 0.003398528691531429
+Round: 2,	Mean: 0.9310749970376492,	Std: 0.003230813623728071
+Round: 3,	Mean: 0.934825000166893,	Std: 0.0031465268960677462
+Round: 4,	Mean: 0.9348249979317188,	Std: 0.002799664688097144
+Round: 5,	Mean: 0.9348249971866608,	Std: 0.002112611076864559
+Round: 6,	Mean: 0.9359749980270863,	Std: 0.0032024406635779096
+Round: 7,	Mean: 0.9355499982833863,	Std: 0.002845608920476985
+Round: 8,	Mean: 0.9363999970257282,	Std: 0.0033282902055189415
+Round: 9,	Mean: 0.9359000012278557,	Std: 0.0034190645038417074
+Round: 10,	Mean: 0.935999994724989,	Std: 0.0032710844454814357
+Round: 11,	Mean: 0.9348999999463559,	Std: 0.0030987896221430266
+Round: 12,	Mean: 0.9352999977767468,	Std: 0.003114082353883763
+Round: 13,	Mean: 0.9348750002682209,	Std: 0.0030948543877324796
+Round: 14,	Mean: 0.9358249977231026,	Std: 0.0031584193417207307
+
+Super good DiProDB model: acc 93,8 %
+
+input_tensor = Input(shape=(self.pre_length + 2 + self.post_length -1, 15, 1))
+convolutional_1 = Conv2D(100, kernel_size=(3, 15), input_shape=(601,15,1))(input_tensor)
+flatten = Flatten()(convolutional_1)
+dense_1 = Dense(100, activation='tanh')(flatten)
+dropout_1 = Dropout(0.5)(dense_1)
+dense_2 = Dense(40, activation='relu')(dropout_1)
+dropout_2 = Dropout(0.5)(dense_2)
+dense_3 = Dense(40, activation='relu')(dropout_2)
+dropout_3 = Dropout(0.5)(dense_3)
+output_tensor = Dense(1, activation='sigmoid')(dropout_3)
+
+Other Model:
+
+input_tensor = Input(shape=(self.pre_length + 2 + self.post_length -1, 15, 1))
+convolutional_1 = Conv2D(80, kernel_size=(3, 15), input_shape=(601,15,1))(input_tensor)
+flatten = Flatten()(convolutional_1)
+dense_1 = Dense(50, activation='tanh')(flatten)
+dropout_1 = Dropout(0.5)(dense_1)
+dense_2 = Dense(20, activation='relu')(dropout_1)
+dropout_2 = Dropout(0.5)(dense_2)
+dense_3 = Dense(8, activation='relu')(dropout_2)
+dropout_3 = Dropout(0.5)(dense_3)
+output_tensor = Dense(1, activation='sigmoid')(dropout_3)
