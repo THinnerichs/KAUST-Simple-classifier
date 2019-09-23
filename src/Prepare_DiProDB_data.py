@@ -96,7 +96,7 @@ def prepare_data_with_DiProDB(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_dint_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(
+    x_filename = "../data/x_dint_no_pca_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(
         pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
     y_filename = "../data/y_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
@@ -112,9 +112,9 @@ if __name__ == '__main__':
     prepare_data_with_DiProDB(include_acceptor=True,
                               include_donor=False,
                               save_file_name="acceptor_data",
-                              samples_per_file=20000)
+                              samples_per_file=10000)
 
     prepare_data_with_DiProDB(include_acceptor=False,
                               include_donor=True,
                               save_file_name="donor_data",
-                              samples_per_file=20000)
+                              samples_per_file=10000)

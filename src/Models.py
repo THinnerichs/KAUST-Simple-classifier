@@ -72,6 +72,7 @@ class Model:
         if len(cv_scores) == 10:
             print("BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+            print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
@@ -139,6 +140,7 @@ class Model:
         if len(cv_scores) == 10:
             print("MULTI LABEL APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+            print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
@@ -258,11 +260,14 @@ class Model:
                       metrics=['accuracy'])
 
         # train model
-        model.fit(x=self.x_data[train],
+        history = model.fit(x=self.x_data[train],
                   y=self.y_data[train],
                   epochs=epochs,
                   batch_size=batch_size,
+                  validation_data=(self.x_data[test], self.y_data[test]),
                   callbacks=[TensorBoard(log_dir='/tmp/classifier')])
+
+        print("History:", history.history)
 
         model.summary()
 
@@ -275,8 +280,9 @@ class Model:
         cv_scores.append(scores[1] * 100)
 
         if len(cv_scores) == 10:
-            print("BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+            print("DiProDB: BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+            print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
