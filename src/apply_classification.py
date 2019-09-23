@@ -59,7 +59,7 @@ def apply_classification(load_file_name="acceptor_data",
         model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                            train=train,
                                            test=test,
-                                           epochs=6)
+                                           epochs=10)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
@@ -68,6 +68,24 @@ def apply_classification(load_file_name="acceptor_data",
     print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=filehandler)
     print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+
+    print("Loss values: (val_loss, val_acc, acc):", model.loss_val_index)
+
+    # print accuracy progress
+    print("\nRESULTS:")
+
+    print("Validation accuracy:")
+    model.val_accuracy_values = np.array(model.val_accuracy_values)
+    for i in range(model.epochs):
+        column = model.val_accuracy_values[:, i]
+        print("Round: {},\tMean: {},\tStd: {}".format(i, np.mean(column), np.std(column)))
+
+    print("Train accuracy:")
+    model.accuracy_values = np.array(model.accuracy_values)
+    for i in range(model.epochs):
+        column = model.accuracy_values[:, i]
+        print("Round: {},\tMean: {},\tStd: {}".format(i, np.mean(column), np.std(column)))
+
 
     filehandler.close()
 

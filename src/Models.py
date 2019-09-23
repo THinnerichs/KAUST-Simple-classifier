@@ -2,6 +2,7 @@ import numpy as np
 
 from keras import models
 from keras.layers import Dense, Flatten, Dropout, Input
+from keras.layers.convolutional import Conv2D
 from keras.callbacks import TensorBoard
 
 from sklearn.preprocessing import OneHotEncoder
@@ -25,6 +26,11 @@ class Model:
         self.filehandler = filehandler
         self.pre_length = pre_length
         self.post_length = post_length
+
+        # Find best epoch
+        self.loss_val_index = []
+        self.accuracy_values = []
+        self.val_accuracy_values = []
 
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
@@ -240,17 +246,14 @@ class Model:
                                      batch_size=500):
 
         # defining model
-        input_tensor = Input(shape=(self.pre_length + 2 + self.post_length -1, 15))
-        flatten = Flatten()(input_tensor)
-        dense_1 = Dense(150, activation='relu')(flatten)
+        input_tensor = Input(shape=(self.pre_length + 2 + self.post_length -1, 15, 1))
+        convolutional_1 = Conv2D(50, kernel_size=(3, 15), input_shape=(601,15,1))(input_tensor)
+        flatten = Flatten()(convolutional_1)
+        dense_1 = Dense(30, activation='relu')(flatten)
         dropout_1 = Dropout(0.5)(dense_1)
-        dense_2 = Dense(80, activation='relu')(dropout_1)
+        dense_2 = Dense(8, activation='relu')(dropout_1)
         dropout_2 = Dropout(0.5)(dense_2)
-        dense_3 = Dense(30, activation='relu')(dropout_2)
-        dropout_3 = Dropout(0.5)(dense_3)
-        dense_4 = Dense(10, activation='relu')(dropout_3)
-        dropout_4 = Dropout(0.5)(dense_4)
-        output_tensor = Dense(1, activation='sigmoid')(dropout_4)
+        output_tensor = Dense(1, activation='sigmoid')(dropout_2)
 
         model = models.Model(input_tensor, output_tensor)
 
@@ -259,15 +262,19 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
+        self.x_data = self.x_data.reshape((self.x_data.shape[0],self.x_data.shape[1],self.x_data.shape[2],1))
+
         # train model
         history = model.fit(x=self.x_data[train],
                   y=self.y_data[train],
                   epochs=epochs,
                   batch_size=batch_size,
-                  validation_data=(self.x_data[test], self.y_data[test]),
+                  validation_split=0.1,
                   callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
-        print("History:", history.history)
+        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(), np.array(history.history["val_acc"]).argmax(), np.array(history.history["acc"]).argmax()))
+        self.val_accuracy_values.append(history.history['val_acc'])
+        self.accuracy_values.append(history.history['acc'])
 
         model.summary()
 
@@ -293,4 +300,3 @@ class Model:
             print("Confusion matrix:",
                   confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
             print("------------------------------------------------\n")
-
