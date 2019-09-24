@@ -277,7 +277,7 @@ class Model:
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.x_data[test]),
+                            validation_data=(self.x_data[test],self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
