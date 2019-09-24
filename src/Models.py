@@ -3,6 +3,8 @@ import numpy as np
 from keras import models
 from keras import layers
 from keras.callbacks import TensorBoard
+from keras import backend
+import tensorflow as tf
 
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import confusion_matrix
@@ -32,6 +34,14 @@ class Model:
         self.accuracy_values = []
         self.val_accuracy_values = []
 
+        self.epochs = None
+        self.batch_size = None
+
+        config = tf.ConfigProto( device_count = {'GPU': 0 , 'CPU': 4} )
+        sess = tf.Session(config=config)
+        backend.set_session(sess)
+
+
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
 
@@ -41,6 +51,9 @@ class Model:
                           test,
                           epochs=10,
                           batch_size=500):
+
+        self.epochs = epochs
+        self.batch_size = batch_size
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
@@ -100,6 +113,9 @@ class Model:
                                test,
                                epochs=10,
                                batch_size=500):
+
+        self.epochs = epochs
+        self.batch_size = batch_size
         
         onehot_encoder = OneHotEncoder(sparse=False)
 
@@ -247,6 +263,8 @@ class Model:
                                      test,
                                      epochs=10,
                                      batch_size=500):
+        self.epochs = epochs
+        self.batch_size = batch_size
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
