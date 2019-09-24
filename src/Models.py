@@ -1,8 +1,7 @@
 import numpy as np
 
 from keras import models
-from keras.layers import Dense, Flatten, Dropout, Input
-from keras.layers.convolutional import Conv2D
+from keras import layers
 from keras.callbacks import TensorBoard
 
 from sklearn.preprocessing import OneHotEncoder
@@ -43,13 +42,17 @@ class Model:
                           batch_size=500):
 
         # defining model
-        input_tensor = Input(shape=(self.pre_length + 2 + self.post_length, 4))
-        flatten = Flatten()(input_tensor)
-        dense_1 = Dense(100, activation='relu')(flatten)
-        dropout_1 = Dropout(0.5)(dense_1)
-        dense_2 = Dense(30, activation='relu')(dropout_1)
-        dropout_2 = Dropout(0.5)(dense_2)
-        output_tensor = Dense(1, activation='sigmoid')(dropout_2)
+        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
+        convolutional_1 = layers.Conv2D(32, kernel_size=(3, 15), input_shape=(601, 15, 1))(input_tensor)
+        max_pool_1 = layers.MaxPooling2D((2, 2))(convolutional_1)
+        flatten = layers.Flatten()(max_pool_1)
+        dense_1 = layers.Dense(100, activation='elu')(flatten)
+        dropout_1 = layers.Dropout(0.5)(dense_1)
+        dense_2 = layers.Dense(40, activation='relu')(dropout_1)
+        dropout_2 = layers.Dropout(0.5)(dense_2)
+        dense_3 = layers.Dense(40, activation='relu')(dropout_2)
+        dropout_3 = layers.Dropout(0.5)(dense_3)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_3)
 
         model = models.Model(input_tensor, output_tensor)
 
@@ -104,21 +107,21 @@ class Model:
         y_test = onehot_encoder.fit_transform(self.y_data[test].reshape((len(self.y_data[test]), 1)))
 
         # defining model
-        input_tensor = Input(shape=(self.pre_length + 2 + self.post_length, 4))
-        flatten = Flatten()(input_tensor)
-        dense_1 = Dense(30, activation='relu')(flatten)
-        dropout_1 = Dropout(0.5)(dense_1)
-        output_tensor = Dense(2, activation='softmax')(dropout_1)
+        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4))
+        flatten = layers.Flatten()(input_tensor)
+        dense_1 = layers.Dense(30, activation='relu')(flatten)
+        dropout_1 = layers.Dropout(0.5)(dense_1)
+        output_tensor = layers.Dense(2, activation='softmax')(dropout_1)
 
         model = models.Model(input_tensor, output_tensor)
         '''
         model = Sequential()
         model.add(Flatten())
-        model.add(Dense(30, input_shape=(self.pre_length + 2 + self.post_length, 4), activation='relu'))
+        model.add(layers.Dense(30, input_shape=(self.pre_length + 2 + self.post_length, 4), activation='relu'))
 
-        model.add(Dropout(0.5))
+        model.add(layers.Dropout(0.5))
 
-        model.add(Dense(2, activation='softmax'))
+        model.add(layers.Dense(2, activation='softmax'))
         '''
 
         # compile model
@@ -245,14 +248,17 @@ class Model:
                                      batch_size=500):
 
         # defining model
-        input_tensor = Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
-        convolutional_1 = Conv2D(50, kernel_size=(3, 15), input_shape=(601, 15, 1))(input_tensor)
-        flatten = Flatten()(convolutional_1)
-        dense_1 = Dense(30, activation='relu')(flatten)
-        dropout_1 = Dropout(0.5)(dense_1)
-        dense_2 = Dense(8, activation='relu')(dropout_1)
-        dropout_2 = Dropout(0.5)(dense_2)
-        output_tensor = Dense(1, activation='sigmoid')(dropout_2)
+        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
+        convolutional_1 = layers.Conv2D(100, kernel_size=(3, 15), input_shape=(601, 15, 1))(input_tensor)
+        max_pool_1 = layers.MaxPooling2D((2,2))
+        flatten = layers.Flatten()(max_pool_1)
+        dense_1 = layers.Dense(100, activation='tanh')(flatten)
+        dropout_1 = layers.Dropout(0.5)(dense_1)
+        dense_2 = layers.Dense(40, activation='relu')(dropout_1)
+        dropout_2 = layers.Dropout(0.5)(dense_2)
+        dense_3 = layers.Dense(40, activation='relu')(dropout_2)
+        dropout_3 = layers.Dropout(0.5)(dense_3)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_3)
 
         model = models.Model(input_tensor, output_tensor)
 
