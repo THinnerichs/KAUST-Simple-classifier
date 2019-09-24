@@ -8,6 +8,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import confusion_matrix
 from sklearn import svm
 from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import train_test_split
 
 from xgboost import XGBClassifier
 
@@ -269,12 +270,14 @@ class Model:
 
         self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[1], self.x_data.shape[2], 1))
 
+
+
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_split=0.1,
+                            validation_data=(self.x_data[test],self.x_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
