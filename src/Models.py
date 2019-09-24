@@ -208,7 +208,6 @@ class Model:
             print("Confusion matrix:", conf_matrix, file=self.filehandler)
             print("-----------------------------------------------------\n")
 
-
     def gradient_boosting(self,
                           cv_scores,
                           train,
@@ -246,8 +245,8 @@ class Model:
                                      batch_size=500):
 
         # defining model
-        input_tensor = Input(shape=(self.pre_length + 2 + self.post_length -1, 15, 1))
-        convolutional_1 = Conv2D(50, kernel_size=(3, 15), input_shape=(601,15,1))(input_tensor)
+        input_tensor = Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
+        convolutional_1 = Conv2D(50, kernel_size=(3, 15), input_shape=(601, 15, 1))(input_tensor)
         flatten = Flatten()(convolutional_1)
         dense_1 = Dense(30, activation='relu')(flatten)
         dropout_1 = Dropout(0.5)(dense_1)
@@ -262,17 +261,19 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-        self.x_data = self.x_data.reshape((self.x_data.shape[0],self.x_data.shape[1],self.x_data.shape[2],1))
+        self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[1], self.x_data.shape[2], 1))
 
         # train model
         history = model.fit(x=self.x_data[train],
-                  y=self.y_data[train],
-                  epochs=epochs,
-                  batch_size=batch_size,
-                  validation_split=0.1,
-                  callbacks=[TensorBoard(log_dir='/tmp/classifier')])
+                            y=self.y_data[train],
+                            epochs=epochs,
+                            batch_size=batch_size,
+                            validation_split=0.1,
+                            callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
-        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(), np.array(history.history["val_acc"]).argmax(), np.array(history.history["acc"]).argmax()))
+        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
+                                    np.array(history.history["val_acc"]).argmax(),
+                                    np.array(history.history["acc"]).argmax()))
         self.val_accuracy_values.append(history.history['val_acc'])
         self.accuracy_values.append(history.history['acc'])
 
