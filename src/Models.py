@@ -250,7 +250,7 @@ class Model:
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
         convolutional_1 = layers.Conv2D(100, kernel_size=(3, 15), input_shape=(601, 15, 1))(input_tensor)
-        max_pool_1 = layers.MaxPooling2D((2,2))
+        max_pool_1 = layers.MaxPooling2D((2,1))(convolutional_1)
         flatten = layers.Flatten()(max_pool_1)
         dense_1 = layers.Dense(100, activation='tanh')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
