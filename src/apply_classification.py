@@ -4,7 +4,8 @@ from sklearn.model_selection import StratifiedKFold
 
 from Models import *
 
-def apply_classification(load_file_name="acceptor_data",
+def apply_classification(applied_model="simple_classifier",
+                         load_file_name="acceptor_data",
                          dataset="",
                          results_log_file="../results/results_log",
                          samples_per_file=10000,
@@ -40,26 +41,27 @@ def apply_classification(load_file_name="acceptor_data",
         print("Round: {}".format(len(cv_scores) + 1))
 
         # Execute model
-
-        model.simple_classifier(cv_scores=cv_scores,
-                                train=train,
+        if applied_model == "simple_classifier":
+            model.simple_classifier(cv_scores=cv_scores,
+                                 train=train,
                                 test=test)
-
-        # model.multi_label_classifier(cv_scores=cv_scores,
-        #                  train=train,
-        #                  test=test)
-
-        # model.svm(cv_scores=cv_scores, train=train, test=test)
-        # model.naive_bayes(cv_scores=cv_scores, train=train, test=test)
-
-        # model.gradient_boosting(cv_scores=cv_scores,
-        #                         train=train,
-        #                         test=test)
-
-        # model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
-        #                                    train=train,
-        #                                    test=test,
-        #                                    epochs=10)
+        elif applied_model == "multi_label_classifier":
+            model.multi_label_classifier(cv_scores=cv_scores,
+                                         train=train,
+                                         test=test)
+        elif applied_model == "svm":
+            model.svm(cv_scores=cv_scores, train=train, test=test)
+        elif applied_model == "naive_bayes":
+            model.naive_bayes(cv_scores=cv_scores, train=train, test=test)
+        elif applied_model == "gradient_boosting":
+            model.gradient_boosting(cv_scores=cv_scores,
+                                    train=train,
+                                    test=test)
+        elif applied_model == "DiProDB_classifier":
+            model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
+                                               train=train,
+                                               test=test,
+                                               epochs=10)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
@@ -92,11 +94,13 @@ def apply_classification(load_file_name="acceptor_data",
 
 if __name__ == '__main__':
     test_start = time.time()
+    '''
     apply_classification(load_file_name="acceptor_data",
                          samples_per_file=20000,
                          dataset="",
                          pre_length=300,
                          post_length=300)
+    '''
     apply_classification(load_file_name="donor_data",
                          samples_per_file=20000,
                          dataset="",

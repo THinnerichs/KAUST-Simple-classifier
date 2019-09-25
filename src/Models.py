@@ -80,13 +80,19 @@ class Model:
                       metrics=['accuracy'])
 
         # train model
-        model.fit(x=self.x_data[train],
+        history = model.fit(x=self.x_data[train],
                   y=self.y_data[train],
                   epochs=epochs,
                   batch_size=batch_size,
                   callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         model.summary()
+
+        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
+                                    np.array(history.history["val_acc"]).argmax(),
+                                    np.array(history.history["acc"]).argmax()))
+        self.val_accuracy_values.append(history.history['val_acc'])
+        self.accuracy_values.append(history.history['acc'])
 
         # evaluate the model
         scores = model.evaluate(self.x_data[test], self.y_data[test], verbose=0)
