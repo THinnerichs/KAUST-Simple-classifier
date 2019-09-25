@@ -61,7 +61,7 @@ def apply_classification(applied_model="simple_classifier",
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                                train=train,
                                                test=test,
-                                               epochs=10)
+                                               epochs=5)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
