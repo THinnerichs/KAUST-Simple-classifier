@@ -41,9 +41,9 @@ def apply_classification(load_file_name="acceptor_data",
 
         # Execute model
 
-        # model.simple_classifier(cv_scores=cv_scores,
-        #                         train=train,
-        #                         test=test)
+        model.simple_classifier(cv_scores=cv_scores,
+                                train=train,
+                                test=test)
 
         # model.multi_label_classifier(cv_scores=cv_scores,
         #                  train=train,
@@ -56,10 +56,10 @@ def apply_classification(load_file_name="acceptor_data",
         #                         train=train,
         #                         test=test)
 
-        model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
-                                           train=train,
-                                           test=test,
-                                           epochs=10)
+        # model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
+        #                                    train=train,
+        #                                    test=test,
+        #                                    epochs=10)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
@@ -94,12 +94,12 @@ if __name__ == '__main__':
     test_start = time.time()
     apply_classification(load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="dint",
+                         dataset="",
                          pre_length=300,
                          post_length=300)
     apply_classification(load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="dint",
+                         dataset="",
                          pre_length=300,
                          post_length=300)
 
