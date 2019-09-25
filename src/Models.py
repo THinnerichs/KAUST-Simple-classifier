@@ -81,10 +81,11 @@ class Model:
 
         # train model
         history = model.fit(x=self.x_data[train],
-                  y=self.y_data[train],
-                  epochs=epochs,
-                  batch_size=batch_size,
-                  callbacks=[TensorBoard(log_dir='/tmp/classifier')])
+                            y=self.y_data[train],
+                            epochs=epochs,
+                            batch_size=batch_size,
+                            validation_data=(self.x_data[test],self.y_data[test]),
+                            callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         model.summary()
 
