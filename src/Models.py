@@ -59,12 +59,12 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
-        convolutional_1 = layers.Conv2D(32, kernel_size=(3, 4), input_shape=(602, 4, 1))(input_tensor)
+        convolutional_1 = layers.Conv2D(32, kernel_size=(2, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_1 = layers.MaxPooling2D((2, 1))(convolutional_1)
         convolutional_2 = layers.Conv2D(64, kernel_size=(3, 1))(max_pool_1)
-        max_pool_2 = layers.MaxPooling2D((3, 1))(convolutional_2)
-        convolutional_3 = layers.Conv2D(128, kernel_size=(3,1))(max_pool_2)
-        max_pool_3 = layers.MaxPooling2D((3, 1))(convolutional_3)
+        max_pool_2 = layers.MaxPooling2D((2, 1))(convolutional_2)
+        convolutional_3 = layers.Conv2D(128, kernel_size=(5,1))(max_pool_2)
+        max_pool_3 = layers.MaxPooling2D((2, 1))(convolutional_3)
         flatten = layers.Flatten()(max_pool_3)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
@@ -74,12 +74,12 @@ class Model:
 
         model = models.Model(input_tensor, output_tensor)
 
-        # compile model
+        # compile mode
         model.compile(loss='binary_crossentropy',
                       optimizer='adam',
                       metrics=['accuracy'])
 
-        # train model
+        # train mo2el
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
