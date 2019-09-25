@@ -104,9 +104,9 @@ class IDkmer():
         :param hs: Positive FASTA file.
         :param non_hs: Negative FASTA file.
         """
-        from nacutil import make_kmer_list
-        from nacutil import diversity
-        from nacutil import id_x_s
+        from .nacutil import make_kmer_list
+        from .nacutil import diversity
+        from .nacutil import id_x_s
 
         rev_kmer_list, upto, revcomp, normalize = [], False, False, False
 
@@ -174,7 +174,7 @@ if __name__ == '__main__':
     # kmer =RevcKmer(k=1, normalize=True, alphabet='ACGT')
     # kmer =IDkmer(k=1)
 
-    from nac import Kmer
+    from .nac import Kmer
 
     kmer = Kmer(k=2)
     vec = kmer.make_kmer_vec(['GACTGAACTGCACTTTGGTTTCATATTATTTGCTC'])
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     print("The vector is ", vec)
     print('\n')
 
-    from nac import RevcKmer
+    from .nac import RevcKmer
 
     revckmer = RevcKmer(k=2, normalize=False, upto=False)
     vec = revckmer.make_revckmer_vec(['GACTGAACTGCACTTTGGTTTCATATTATTTGCTC'])
@@ -205,7 +205,7 @@ if __name__ == '__main__':
     print('\n')
 
     print('Begin IDkmer.')
-    from nac import IDkmer
+    from .nac import IDkmer
 
     print('Test: default mod.')
     idkmer = IDkmer()

@@ -3,7 +3,6 @@ import numpy as np
 from Bio import SeqIO
 
 from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
