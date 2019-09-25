@@ -273,13 +273,11 @@ class Model:
         convolutional_2 = layers.Conv2D(64, kernel_size=(3, 1), activation="relu")(max_pool_1)
         max_pool_2 = layers.MaxPooling2D((3,1))(convolutional_2)
         flatten = layers.Flatten()(max_pool_2)
-        dense_1 = layers.Dense(40, activation='tanh')(flatten)
+        dense_1 = layers.Dense(64, activation='tanh')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
-        dense_2 = layers.Dense(40, activation='relu')(dropout_1)
+        dense_2 = layers.Dense(64, activation='relu')(dropout_1)
         dropout_2 = layers.Dropout(0.5)(dense_2)
-        dense_3 = layers.Dense(40, activation='relu')(dropout_2)
-        dropout_3 = layers.Dropout(0.5)(dense_3)
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_3)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
 
         model = models.Model(input_tensor, output_tensor)
 
