@@ -22,7 +22,8 @@ Reply to Somayah:
 - DiProDB 
 - Do PCA with 15 best features
 - electron ion interaction potential
-  - https://www.researchgate.net/publication/6239442_A_coding_measure_scheme_empoying_electron-ion_interaction_pseudo_potential_EIIP
+  - [Other](https://www.researchgate.net/publication/6239442_A_coding_measure_scheme_empoying_electron-ion_interaction_pseudo_potential_EIIP)
+  - [Nucleotide values](https://www.sciencedirect.com/science/article/pii/030326479090013Q)
 
 - Checkout AAindex: Amino acid index database
 - checkout APDbase
