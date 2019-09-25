@@ -42,8 +42,6 @@ def prepare_data(include_acceptor=False,
     example_seq = ['G', 'A', 'T', 'C']
     encoded_seq = onehot_encoder.fit_transform(np.array(example_seq).reshape((4, 1)))
 
-    print('example_seq', example_seq)
-
     nucleotide_dict = {example_seq[i]: encoded_seq[i] for i in range(len(example_seq))}
 
     # Read data and perform transformation
@@ -56,7 +54,7 @@ def prepare_data(include_acceptor=False,
 
         for record in SeqIO.parse(file_name, "fasta"):
             loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
-            onehot_encoded = [encoded_seq[loop_record[i]] for i in range(len(loop_record))]
+            onehot_encoded = [nucleotide_dict[loop_record[i]] for i in range(len(loop_record))]
 
             x_dataset.append(onehot_encoded)
             counter += 1
@@ -66,8 +64,6 @@ def prepare_data(include_acceptor=False,
                 my_time = time.time()
             if counter >= samples_per_file:
                 break
-
-            print(record.seq[300:302])
 
         # Prepare y labels
         y_dataset.extend(counter * [a+b])

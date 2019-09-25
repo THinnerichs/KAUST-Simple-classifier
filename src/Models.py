@@ -55,12 +55,16 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
+        self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[1], self.x_data.shape[2], 1))
+
         # defining model
-        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
-        convolutional_1 = layers.Conv2D(32, kernel_size=(3, 15), input_shape=(601, 15, 1))(input_tensor)
-        max_pool_1 = layers.MaxPooling2D((2, 2))(convolutional_1)
-        flatten = layers.Flatten()(max_pool_1)
-        dense_1 = layers.Dense(100, activation='elu')(flatten)
+        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
+        convolutional_1 = layers.Conv2D(32, kernel_size=(3, 4), input_shape=(602, 4, 1))(input_tensor)
+        max_pool_1 = layers.MaxPooling2D((2, 1))(convolutional_1)
+        convolutional_2 = layers.Conv2D(64, kernel_size=(3, 1))(max_pool_1)
+        max_pool_2 = layers.MaxPooling2D((3, 1))(convolutional_2)
+        flatten = layers.Flatten()(max_pool_2)
+        dense_1 = layers.Dense(40, activation='elu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
         dense_2 = layers.Dense(40, activation='relu')(dropout_1)
         dropout_2 = layers.Dropout(0.5)(dense_2)
@@ -286,9 +290,9 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
+
+
         self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[1], self.x_data.shape[2], 1))
-
-
 
         # train model
         history = model.fit(x=self.x_data[train],
@@ -327,4 +331,18 @@ class Model:
                   file=self.filehandler)
             print("Confusion matrix:",
                   confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+
+            # Calculate other validation scores
+            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+            tp = conf_matrix[0, 0]
+            tn = conf_matrix[1, 1]
+            fp = conf_matrix[0, 1]
+            fn = conf_matrix[1, 0]
+
+            precision = tp / (tp + fp) * 100
+            recall = tp/(tp + fn) * 100
+
+
+
             print("------------------------------------------------\n")
