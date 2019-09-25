@@ -109,6 +109,21 @@ class Model:
                   file=self.filehandler)
             print("Confusion matrix:",
                   confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+
+            # Calculate other validation scores
+            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+            tp = conf_matrix[0, 0]
+            tn = conf_matrix[1, 1]
+            fp = conf_matrix[0, 1]
+            fn = conf_matrix[1, 0]
+
+            precision = tp / (tp + fp) * 100
+            recall = tp/(tp + fn) * 100
+
+            print("Recall:", recall, file=self.filehandler)
+            print("Precision:",precision, file=self.filehandler)
+
             print("------------------------------------------------\n")
 
     def multi_label_classifier(self,
@@ -343,6 +358,7 @@ class Model:
             precision = tp / (tp + fp) * 100
             recall = tp/(tp + fn) * 100
 
-
+            print("Recall:", recall, file=self.filehandler)
+            print("Precision:",precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
