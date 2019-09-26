@@ -294,18 +294,34 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
-        convolutional_1 = layers.Conv2D(32, kernel_size=(3, 15), input_shape=(601, 15, 1), activation="relu")(input_tensor)
-        max_pool_1 = layers.MaxPooling2D((2,1))(convolutional_1)
-        convolutional_2 = layers.Conv2D(64, kernel_size=(3, 1), activation="relu")(max_pool_1)
-        max_pool_2 = layers.MaxPooling2D((2,1))(convolutional_2)
-        convolutional_3 = layers.Conv2D(128, kernel_size=(3, 1))(max_pool_2)
-        max_pool_3 = layers.MaxPooling2D((3,1))(convolutional_3)
-        flatten = layers.Flatten()(max_pool_3)
-        dense_1 = layers.Dense(64, activation='tanh')(flatten)
+        convolutional_1_1 = layers.Conv2D(32, kernel_size=(2, 15), input_shape=(601, 15, 1), activation="relu")(input_tensor)
+        max_pool_1_1 = layers.MaxPooling2D((2,1))(convolutional_1_1)
+
+        convolutional_1_2 = layers.Conv2D(32, kernel_size=(3, 15), activation='relu')(input_tensor)
+        max_pool_1_2 = layers.MaxPooling2D((2,1))(convolutional_1_2)
+
+        convolutional_1_3 = layers.Conv2D(32, kernel_size=(4, 15), activation='relu')(input_tensor)
+        max_pool_1_3 = layers.MaxPooling2D((2,1))(convolutional_1_3)
+
+        convolutional_1_4 = layers.Conv2D(32, kernel_size=(5, 15), activation='relu')(input_tensor)
+        max_pool_1_4 = layers.MaxPooling2D((2,1))(convolutional_1_4)
+
+        convolutional_1_5 = layers.Conv2D(32, kernel_size=(6, 15), activation='relu')(input_tensor)
+        max_pool_1_5 = layers.MaxPooling2D((2,1))(convolutional_1_5)
+
+        convolutional_1_6 = layers.Conv2D(32, kernel_size=(7, 15), activation='relu')(input_tensor)
+        max_pool_1_6 = layers.MaxPooling2D((2,1))(convolutional_1_6)
+
+        convolutional_1_7 = layers.Conv2D(32, kernel_size=(8, 15), activation='relu')(input_tensor)
+        max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
+
+        merge_1 = layers.Concatenate()([max_pool_1_1, max_pool_1_2, max_pool_1_3, max_pool_1_4, max_pool_1_5, max_pool_1_6, max_pool_1_7])
+
+        flatten = layers.Flatten()(merge_1)
+        dense_1 = layers.Dense(512, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
-        dense_2 = layers.Dense(64, activation='relu')(dropout_1)
-        dropout_2 = layers.Dropout(0.5)(dense_2)
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
+        
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_1)
 
         model = models.Model(input_tensor, output_tensor)
 
