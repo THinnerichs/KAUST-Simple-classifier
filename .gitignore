@@ -5,3 +5,10 @@ data/positive_donor.fa
 data/*.npy
 
 src/__pycache__/
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
