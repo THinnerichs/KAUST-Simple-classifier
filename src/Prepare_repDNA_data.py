@@ -63,6 +63,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
         np.save(file=y_filename, arr=y_dataset)
 
+        print("Shape:", y_dataset.shape)
         print("Data saved in {}.".format(y_filename))
 
         if include_kmer:
@@ -88,6 +89,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished Kmer data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
         if include_DAC:
@@ -113,6 +115,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished DAC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
         if include_DCC:
@@ -138,6 +141,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished DCC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
         if include_TAC:
@@ -163,6 +167,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished TAC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
         if include_TCC:
@@ -188,6 +193,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished TCC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
         if include_PseDNC:
@@ -213,6 +219,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished PseDNC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
         if include_PseKNC:
@@ -238,6 +245,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished pseKNC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
         if include_PC_PseDNC:
@@ -263,6 +271,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished PC-PseDNC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
 
@@ -289,6 +298,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished PC-PseTNC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
 
@@ -315,6 +325,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished SC-PseDNC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
 
@@ -341,6 +352,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             np.save(file=x_filename, arr=x_dataset)
 
             print("Finished SC-PseTNC data.")
+            print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
 
