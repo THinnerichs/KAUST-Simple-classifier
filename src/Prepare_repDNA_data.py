@@ -68,6 +68,8 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
         if include_kmer:
             x_dataset = []
+            # kmer count occurences:
+            kmer = Kmer(k=2, upto=True, normalize=True)
 
             for a in ["negative", "positive"]:
                 # Read data
@@ -76,9 +78,6 @@ def prepare_data_with_repDNA(include_acceptor=False,
                 my_time = time.time()
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                # kmer count occurences:
-                kmer = Kmer(k=2, upto=True, normalize=True)
 
                 x_dataset.extend(kmer.make_kmer_vec(seqs))
 
@@ -96,6 +95,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Calculate and store Dinuleotide-based auto covariance
             # Initialize datasets
             x_dataset = []
+            dac = DAC(2)
 
             for a in ["negative", "positive"]:
                 # Read data
@@ -103,8 +103,6 @@ def prepare_data_with_repDNA(include_acceptor=False,
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                dac = DAC(3)
 
                 x_dataset.extend(dac.make_dac_vec(seqs, all_property=True))
 
@@ -123,14 +121,14 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Initialize datasets
             x_dataset = []
 
+            dcc = DCC(1)
+
             for a in ["negative", "positive"]:
                 # Read data
                 file_name = "../data/{}_{}.fa".format(a, b)
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                dcc = DCC(1)
 
                 x_dataset.extend(dcc.make_dcc_vec(seqs, all_property=True))
 
@@ -145,9 +143,11 @@ def prepare_data_with_repDNA(include_acceptor=False,
             print("Data saved in {}.".format(x_filename))
 
         if include_TAC:
-             # Calculate and store Dinuleotide-based cross covariance
+            # Calculate and store Trinuleotide-based cross covariance
             # Initialize datasets
             x_dataset = []
+
+            tac = TAC(3)
 
             for a in ["negative", "positive"]:
                 # Read data
@@ -155,8 +155,6 @@ def prepare_data_with_repDNA(include_acceptor=False,
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                tac = TAC(3)
 
                 x_dataset.extend(tac.make_tac_vec(seqs, all_property=True))
 
@@ -175,6 +173,8 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Initialize datasets
             x_dataset = []
 
+            tcc = TCC(2)
+
             for a in ["negative", "positive"]:
                 # Read data
                 file_name = "../data/{}_{}.fa".format(a, b)
@@ -182,7 +182,6 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
 
-                tcc = TCC(2)
 
                 x_dataset.extend(tcc.make_tcc_vec(seqs, all_property=True))
 
@@ -201,14 +200,14 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Initialize datasets
             x_dataset = []
 
+            pseDNC = PseDNC(2)
+
             for a in ["negative", "positive"]:
                 # Read data
                 file_name = "../data/{}_{}.fa".format(a, b)
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                pseDNC = PseDNC(2)
 
                 x_dataset.extend(pseDNC.make_psednc_vec(seqs))
 
@@ -226,6 +225,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Calculate and store Dinuleotide-based cross covariance
             # Initialize datasets
             x_dataset = []
+            pseKNC = PseKNC(k=2, lamada=1, w=0.05)
 
             for a in ["negative", "positive"]:
                 # Read data
@@ -233,8 +233,6 @@ def prepare_data_with_repDNA(include_acceptor=False,
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                pseKNC = PseKNC(k=2, lamada=1, w=0.05)
 
                 x_dataset.extend(pseKNC.make_pseknc_vec(seqs))
 
@@ -253,14 +251,14 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Initialize datasets
             x_dataset = []
 
+            pc_psednc = PCPseDNC(lamada=2, w=0.05)
+
             for a in ["negative", "positive"]:
                 # Read data
                 file_name = "../data/{}_{}.fa".format(a, b)
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                pc_psednc = PCPseDNC(lamada=2, w=0.05)
 
                 x_dataset.extend(pc_psednc.make_pcpsednc_vec(seqs, all_property=True))
 
@@ -280,14 +278,14 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Initialize datasets
             x_dataset = []
 
+            pc_psetnc = PCPseTNC(lamada=2, w=0.05)
+
             for a in ["negative", "positive"]:
                 # Read data
                 file_name = "../data/{}_{}.fa".format(a, b)
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                pc_psetnc = PCPseTNC(lamada=2, w=0.05)
 
                 x_dataset.extend(pc_psetnc.make_pcpsetnc_vec(seqs, all_property=True))
 
@@ -307,14 +305,14 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Initialize datasets
             x_dataset = []
 
+            sc_psednc = SCPseDNC(lamada=2, w=0.05)
+
             for a in ["negative", "positive"]:
                 # Read data
                 file_name = "../data/{}_{}.fa".format(a, b)
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                sc_psednc = SCPseDNC(lamada=2, w=0.05)
 
                 x_dataset.extend(sc_psednc.make_scpsednc_vec(seqs, all_property=True))
 
@@ -334,14 +332,14 @@ def prepare_data_with_repDNA(include_acceptor=False,
             # Initialize datasets
             x_dataset = []
 
+            sc_psetnc = SCPseTNC(lamada=2, w=0.05)
+
             for a in ["negative", "positive"]:
                 # Read data
                 file_name = "../data/{}_{}.fa".format(a, b)
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[:samples_per_file]
-
-                sc_psetnc = SCPseTNC(lamada=2, w=0.05)
 
                 x_dataset.extend(sc_psetnc.make_scpsetnc_vec(seqs, all_property=True))
 
@@ -361,7 +359,7 @@ if __name__ == '__main__':
                              include_donor=False,
                              save_file_name="acceptor_data",
                              samples_per_file=20000,
-                             include_kmer=True,
+                             include_kmer=False,
                              include_DAC=True,
                              include_DCC=True,
                              include_PC_PseDNC=True,
