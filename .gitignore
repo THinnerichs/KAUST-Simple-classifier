@@ -12,3 +12,4 @@ src/__pycache__/
 *.snm
 *.synctex.gz
 *.toc
+*.vrb
