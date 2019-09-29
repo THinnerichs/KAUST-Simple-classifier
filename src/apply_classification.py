@@ -104,14 +104,14 @@ if __name__ == '__main__':
     apply_classification(applied_model="DiProDB_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="kmer",
+                         dataset="dint",
                          pre_length=300,
                          post_length=300)
 
     apply_classification(applied_model="DiProDB_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="kmer",
+                         dataset="dint",
                          pre_length=300,
                          post_length=300)
 
