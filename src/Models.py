@@ -6,7 +6,7 @@ from keras.callbacks import TensorBoard
 from keras import backend
 import tensorflow as tf
 
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.metrics import confusion_matrix
 from sklearn import svm
 from sklearn.naive_bayes import GaussianNB
@@ -18,8 +18,7 @@ from xgboost import XGBClassifier
 class Model:
 
     def __init__(self,
-                 x_data,
-                 y_data,
+                 x_data, y_data,
                  filehandler,
                  pre_length=300,
                  post_length=300):
@@ -506,8 +505,6 @@ class Model:
                                            load_file_name="acceptor_data"):
         self.epochs = epochs
         self.batch_size = batch_size
-
-        print("Shape:", self.x_data[:15])
 
         scaler = StandardScaler().fit(self.x_data[train])
         self.x_data[train] = scaler.transform(self.x_data[train])
