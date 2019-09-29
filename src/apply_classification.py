@@ -34,7 +34,8 @@ def apply_classification(applied_model="simple_classifier",
                   y_data=y_data,
                   filehandler=filehandler,
                   pre_length=pre_length,
-                  post_length=post_length)
+                  post_length=post_length,
+                  load_file_name=load_file_name)
 
     # Perform Kfold cross validation
     for train, test in kfold.split(x_data, y_data):
@@ -72,15 +73,18 @@ def apply_classification(applied_model="simple_classifier",
                     model.simple_classifier_on_repDNA_IDKmer(cv_scores=cv_scores,
                                                              train=train,
                                                              test=test,
-                                                             epochs=10,
-                                                             load_file_name=load_file_name)
+                                                             epochs=10)
 
         elif applied_model == "repDNA_DAC_classifier":
                     model.simple_classifier_on_repDNA_DAC(cv_scores=cv_scores,
                                                           train=train,
                                                           test=test,
-                                                          epochs=10,
-                                                          load_file_name=load_file_name)
+                                                          epochs=10)
+        elif applied_model == "repDNA_DCC_classifier":
+                    model.simple_classifier_on_repDNA_DCC(cv_scores=cv_scores,
+                                                          train=train,
+                                                          test=test,
+                                                          epochs=10)
 
 
 
@@ -116,17 +120,17 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="repDNA_DAC_classifier",
+    apply_classification(applied_model="repDNA_DCC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="dac",
+                         dataset="dcc",
                          pre_length=0,
                          post_length=0)
 
-    apply_classification(applied_model="repDNA_DAC_classifier",
+    apply_classification(applied_model="repDNA_DCC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="dac",
+                         dataset="dcc",
                          pre_length=0,
                          post_length=0)
 

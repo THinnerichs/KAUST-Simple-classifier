@@ -21,12 +21,14 @@ class Model:
                  x_data, y_data,
                  filehandler,
                  pre_length=300,
-                 post_length=300):
+                 post_length=300,
+                 load_file_name="acceptor_data"):
         self.x_data = x_data
         self.y_data = y_data
         self.filehandler = filehandler
         self.pre_length = pre_length
         self.post_length = post_length
+        self.load_file_name = load_file_name
 
         # Find best epoch
         self.loss_val_index = []
@@ -489,10 +491,10 @@ class Model:
 
             # serialize model to JSON
             model_json = model.to_json()
-            with open("../models/kmer_model.json", "w") as json_file:
+            with open("../models/kmer_" + self.load_file_name + "_model.json", "w") as json_file:
                 json_file.write(model_json)
             # serialize weights to HDF5
-            model.save_weights("../models/kmer_model.h5")
+            model.save_weights("../models/kmer_" + self.load_file_name + "model.h5")
             print("Saved Kmer convolutional model to disk.")
 
 
@@ -501,8 +503,7 @@ class Model:
                                            train,
                                            test,
                                            epochs=10,
-                                           batch_size=500,
-                                           load_file_name="acceptor_data"):
+                                           batch_size=500):
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -590,21 +591,20 @@ class Model:
 
             # serialize model to JSON
             model_json = model.to_json()
-            with open("../models/IDkmer_" + load_file_name + "model.json", "w") as json_file:
+            with open("../models/IDkmer_" + self.load_file_name + "_model.json", "w") as json_file:
                 json_file.write(model_json)
             # serialize weights to HDF5
-            model.save_weights("../models/IDkmer_ " + load_file_name + "_model.h5")
+            model.save_weights("../models/IDkmer_" + self.load_file_name + "_model.h5")
             print("Saved IDkmer convolutional model to disk.")
 
 
 
     def simple_classifier_on_repDNA_DAC(self,
-                                           cv_scores,
-                                           train,
-                                           test,
-                                           epochs=10,
-                                           batch_size=500,
-                                           load_file_name="acceptor_data"):
+                                        cv_scores,
+                                        train,
+                                        test,
+                                        epochs=10,
+                                        batch_size=500):
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -619,8 +619,6 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(76,1))
-
-        '''
         convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
         max_pool_1_1 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_1)
 
@@ -630,18 +628,10 @@ class Model:
         merge_1 = layers.Concatenate(axis=1)([max_pool_1_1, max_pool_1_2])
 
         flatten = layers.Flatten()(merge_1)
-        '''
-
-        flatten = layers.Flatten()(input_tensor)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
 
-        dense_2 = layers.Dense(64, activation='relu')(dropout_1)
-        dropout_2 = layers.Dropout(0.5)(dense_2)
-        dense_3 = layers.Dense(64, activation='relu')(dropout_2)
-        dropout_3 = layers.Dropout(0.5)(dense_3)
-
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_3)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_1)
 
         model = models.Model(input_tensor, output_tensor)
 
@@ -708,8 +698,117 @@ class Model:
 
             # serialize model to JSON
             model_json = model.to_json()
-            with open("../models/dac_" + load_file_name + "model.json", "w") as json_file:
+            with open("../models/dac_" + self.load_file_name + "_model.json", "w") as json_file:
                 json_file.write(model_json)
             # serialize weights to HDF5
-            model.save_weights("../models/dac_ " + load_file_name + "_model.h5")
+            model.save_weights("../models/dac_" + self.load_file_name + "_model.h5")
             print("Saved DAC convolutional model to disk.")
+
+    def simple_classifier_on_repDNA_DCC(self,
+                                        cv_scores,
+                                        train,
+                                        test,
+                                        epochs=10,
+                                        batch_size=500):
+        self.epochs = epochs
+        self.batch_size = batch_size
+
+
+        print("Shape:", self.x_data.shape)
+        print(self.x_data[:15])
+
+
+        if self.x_data.ndim == 2:
+            scaler = StandardScaler().fit(self.x_data[train])
+            self.x_data[train] = scaler.transform(self.x_data[train])
+
+            self.x_data[test] = scaler.transform(self.x_data[test])
+
+        self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
+
+        # defining model
+        input_tensor = layers.Input(shape=(1406,1))
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
+        max_pool_1_1 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_1)
+
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
+        max_pool_1_2 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_2)
+
+        merge_1 = layers.Concatenate(axis=1)([max_pool_1_1, max_pool_1_2])
+
+        flatten = layers.Flatten()(merge_1)
+        dense_1 = layers.Dense(64, activation='relu')(flatten)
+        dropout_1 = layers.Dropout(0.5)(dense_1)
+
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_1)
+
+        model = models.Model(input_tensor, output_tensor)
+
+        # compile model
+        model.compile(loss='binary_crossentropy',
+                      optimizer='adam',
+                      metrics=['accuracy'])
+
+
+
+        # train model
+        history = model.fit(x=self.x_data[train],
+                            y=self.y_data[train],
+                            epochs=epochs,
+                            batch_size=batch_size,
+                            validation_data=(self.x_data[test],self.y_data[test]),
+                            callbacks=[TensorBoard(log_dir='/tmp/classifier')])
+
+        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
+                                    np.array(history.history["val_acc"]).argmax(),
+                                    np.array(history.history["acc"]).argmax()))
+        self.val_accuracy_values.append(history.history['val_acc'])
+        self.accuracy_values.append(history.history['acc'])
+
+        model.summary()
+
+        # evaluate the model
+        scores = model.evaluate(self.x_data[test], self.y_data[test], verbose=0)
+
+        print("\n--------------------------------------------------")
+        print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+        print("--------------------------------------------------\n")
+        cv_scores.append(scores[1] * 100)
+
+        if len(cv_scores) == 10:
+            print("repDNA: DCC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+            print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
+            model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
+
+            # print confusion matrix
+            y_pred = model.predict(self.x_data[test])
+            print("Confusion matrix:",
+                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+
+            # Calculate other validation scores
+            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+            tp = conf_matrix[0, 0]
+            tn = conf_matrix[1, 1]
+            fp = conf_matrix[0, 1]
+            fn = conf_matrix[1, 0]
+
+            precision = tp / (tp + fp) * 100
+            recall = tp/(tp + fn) * 100
+
+            print("Recall:", recall, file=self.filehandler)
+            print("Precision:",precision, file=self.filehandler)
+
+            print("------------------------------------------------\n")
+
+            # serialize model to JSON
+            model_json = model.to_json()
+            with open("../models/dcc_" + self.load_file_name + "_model.json", "w") as json_file:
+                json_file.write(model_json)
+            # serialize weights to HDF5
+            model.save_weights("../models/dcc_" + self.load_file_name + "_model.h5")
+            print("Saved DCC convolutional model to disk.")
