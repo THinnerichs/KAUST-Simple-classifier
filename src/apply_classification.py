@@ -141,6 +141,7 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
+    '''
     apply_classification(applied_model="repDNA_SC_PseTNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -156,6 +157,7 @@ if __name__ == '__main__':
                          post_length=0)
 
     '''
+
     apply_classification(applied_model="repDNA_PC_PseTNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -170,6 +172,7 @@ if __name__ == '__main__':
                          pre_length=0,
                          post_length=0)
 
+    '''
     apply_classification(applied_model="repDNA_SC_PseDNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
