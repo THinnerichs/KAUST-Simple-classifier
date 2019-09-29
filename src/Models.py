@@ -294,7 +294,7 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
-        convolutional_1_1 = layers.Conv2D(16, kernel_size=(2, 15), input_shape=(601, 15, 1), activation="relu")(input_tensor)
+        convolutional_1_1 = layers.Conv2D(16, kernel_size=(2, 15), activation="relu")(input_tensor)
         max_pool_1_1 = layers.MaxPooling2D((2,1))(convolutional_1_1)
 
         convolutional_1_2 = layers.Conv2D(16, kernel_size=(3, 15), activation='relu')(input_tensor)
@@ -332,8 +332,6 @@ class Model:
         model.compile(loss='binary_crossentropy',
                       optimizer='adam',
                       metrics=['accuracy'])
-
-
 
         self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[1], self.x_data.shape[2], 1))
 
