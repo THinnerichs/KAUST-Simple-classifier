@@ -2,13 +2,8 @@ data/negative_acceptor.fa
 data/negative_donor.fa
 data/positive_acceptor.fa
 data/positive_donor.fa
-data/x_acceptor*.npy
-data/x_donor*.npy
-data/x_both*.npy
 
-data/x_dint*.npy
-
-data/y_*.npy
+data/*.npy
 
 src/__pycache__/
 *.aux
