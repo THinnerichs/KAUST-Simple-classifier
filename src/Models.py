@@ -321,7 +321,7 @@ class Model:
 
         '''
 
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_2, convolutional_1_3])
+        merge_1 = layers.Concatenate(axis=1)([convolutional_1_2, convolutional_1_3, convolutional_1_4])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
