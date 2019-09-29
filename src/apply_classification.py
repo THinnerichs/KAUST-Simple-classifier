@@ -6,7 +6,7 @@ from Models import *
 
 def apply_classification(applied_model="simple_classifier",
                          load_file_name="acceptor_data",
-                         dataset="dint",
+                         dataset="",
                          results_log_file="../results/results_log",
                          samples_per_file=10000,
                          pre_length=300,
@@ -17,8 +17,8 @@ def apply_classification(applied_model="simple_classifier",
     np.random.seed(seed)
 
     print("Reading data")
-    x_data = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ load_file_name + "_" + str(samples_per_file) + "_samples_" + str(
-        pre_length) + "_pre_" + str(post_length) + "_post" + ".npy")
+    x_data = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ load_file_name + "_" + str(samples_per_file) + "_samples" + ("_" + str(
+        pre_length) + "_pre" if pre_length!=0 else "") + ("_" + str(post_length) + "_post" if post_length!=0 else "") + ".npy")
     y_data = np.load(file="../data/y_" + load_file_name + "_" + str(samples_per_file) + "_samples.npy")
     print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time() - start,
                                                                                  x_data.shape,
@@ -61,7 +61,13 @@ def apply_classification(applied_model="simple_classifier",
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                                train=train,
                                                test=test,
-                                               epochs=5)
+                                               epochs=10,
+                                               batch_size=50)
+        elif applied_model == "repDNA_Kmer_classifier":
+            model.simple_classifier_on_repDNA(cv_scores=cv_scores,
+                                              train=train,
+                                              test=test,
+                                              epochs=10)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
@@ -98,16 +104,16 @@ if __name__ == '__main__':
     apply_classification(applied_model="DiProDB_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="dint",
-                         pre_length=300,
-                         post_length=300)
+                         dataset="kmer",
+                         pre_length=0,
+                         post_length=0)
 
     apply_classification(applied_model="DiProDB_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="dint",
-                         pre_length=300,
-                         post_length=300)
+                         dataset="kmer",
+                         pre_length=0,
+                         post_length=0)
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))

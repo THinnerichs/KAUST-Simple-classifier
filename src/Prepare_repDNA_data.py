@@ -355,17 +355,18 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
 
 if __name__ == '__main__':
-    '''prepare_data_with_repDNA(include_acceptor=True,
+    prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
                              samples_per_file=20000,
                              include_kmer=False,
-                             include_DAC=True,
+                             include_DAC=False,
                              include_DCC=True,
-                             include_PC_PseDNC=True,
-                             include_PC_PseTNC=True,
-                             include_SC_PseDNC=True,
-                             include_SC_PseTNC=True)'''
+                             include_PC_PseDNC=False,
+                             include_PC_PseTNC=False,
+                             include_SC_PseDNC=False,
+                             include_SC_PseTNC=False)
+
 
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
@@ -374,7 +375,8 @@ if __name__ == '__main__':
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
-                             include_PC_PseDNC=True,
-                             include_PC_PseTNC=True,
-                             include_SC_PseDNC=True,
-                             include_SC_PseTNC=True)
+                             include_PC_PseDNC=False,
+                             include_PC_PseTNC=False,
+                             include_SC_PseDNC=False,
+                             include_SC_PseTNC=False)
+
