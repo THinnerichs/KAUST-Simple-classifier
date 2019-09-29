@@ -63,11 +63,17 @@ def apply_classification(applied_model="simple_classifier",
                                                test=test,
                                                epochs=10,
                                                batch_size=50)
-        elif applied_model == "repDNA_Kmer_classifier":
+        elif applied_model == "repDNA_classifier":
             model.simple_classifier_on_repDNA(cv_scores=cv_scores,
                                               train=train,
                                               test=test,
                                               epochs=10)
+        elif applied_model == "repDNA_IDkmer_classifier":
+                    model.simple_classifier_on_repDNA_IDKmer(cv_scores=cv_scores,
+                                                             train=train,
+                                                             test=test,
+                                                             epochs=10,
+                                                             load_file_name=load_file_name)
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
@@ -101,19 +107,19 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="DiProDB_classifier",
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="dint",
-                         pre_length=300,
-                         post_length=300)
+                         dataset="IDkmer",
+                         pre_length=0,
+                         post_length=0)
 
-    apply_classification(applied_model="DiProDB_classifier",
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="dint",
-                         pre_length=300,
-                         post_length=300)
+                         dataset="IDkmer",
+                         pre_length=0,
+                         post_length=0)
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))
