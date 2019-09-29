@@ -506,10 +506,12 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        scaler = StandardScaler().fit(self.x_data[train])
-        self.x_data[train] = scaler.transform(self.x_data[train])
 
-        self.x_data[test] = scaler.transform(self.x_data[test])
+        if self.x_data.ndim == 2:
+            scaler = StandardScaler().fit(self.x_data[train])
+            self.x_data[train] = scaler.transform(self.x_data[train])
+
+            self.x_data[test] = scaler.transform(self.x_data[test])
 
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
