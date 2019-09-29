@@ -1030,11 +1030,6 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        print(self.x_data.shape)
-        print(self.x_data[:15])
-
-        raise Exception
-
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -1045,7 +1040,7 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(66, 1))
+        input_tensor = layers.Input(shape=(92, 1))
         convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
 
         convolutional_1_2 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
