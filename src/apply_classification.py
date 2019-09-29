@@ -105,15 +105,15 @@ if __name__ == '__main__':
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
                          dataset="kmer",
-                         pre_length=0,
-                         post_length=0)
+                         pre_length=300,
+                         post_length=300)
 
     apply_classification(applied_model="DiProDB_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
                          dataset="kmer",
-                         pre_length=0,
-                         post_length=0)
+                         pre_length=300,
+                         post_length=300)
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))
