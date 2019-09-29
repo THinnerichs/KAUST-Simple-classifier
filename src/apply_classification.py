@@ -171,7 +171,6 @@ if __name__ == '__main__':
                          pre_length=0,
                          post_length=0)
 
-    '''
 
     apply_classification(applied_model="repDNA_SC_PseDNC_classifier",
                          load_file_name="acceptor_data",
@@ -188,6 +187,7 @@ if __name__ == '__main__':
                          post_length=0)
 
     '''
+
     apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -201,9 +201,6 @@ if __name__ == '__main__':
                          dataset="PC_PseDNC",
                          pre_length=0,
                          post_length=0)
-
-    '''
-
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))
