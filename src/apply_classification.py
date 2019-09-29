@@ -75,6 +75,15 @@ def apply_classification(applied_model="simple_classifier",
                                                              epochs=10,
                                                              load_file_name=load_file_name)
 
+        elif applied_model == "repDNA_DAC_classifier":
+                    model.simple_classifier_on_repDNA_DAC(cv_scores=cv_scores,
+                                                          train=train,
+                                                          test=test,
+                                                          epochs=10,
+                                                          load_file_name=load_file_name)
+
+
+
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
 
@@ -107,17 +116,17 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="repDNA_IDkmer_classifier",
+    apply_classification(applied_model="repDNA_DAC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="IDkmer",
+                         dataset="dac",
                          pre_length=0,
                          post_length=0)
 
-    apply_classification(applied_model="repDNA_IDkmer_classifier",
+    apply_classification(applied_model="repDNA_DAC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="IDkmer",
+                         dataset="dac",
                          pre_length=0,
                          post_length=0)
 
