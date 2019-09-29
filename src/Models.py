@@ -306,10 +306,8 @@ class Model:
         convolutional_1_3 = layers.Conv2D(16, kernel_size=(4, 15), activation='relu')(input_tensor)
         max_pool_1_3 = layers.MaxPooling2D((2,1))(convolutional_1_3)
         
-        '''
         convolutional_1_4 = layers.Conv2D(16, kernel_size=(5, 15), activation='relu')(input_tensor)
         max_pool_1_4 = layers.MaxPooling2D((2,1))(convolutional_1_4)
-        '''
 
         '''
         convolutional_1_5 = layers.Conv2D(16, kernel_size=(6, 15), activation='relu')(input_tensor)
