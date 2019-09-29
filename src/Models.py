@@ -937,10 +937,10 @@ class Model:
         # defining model
         input_tensor = layers.Input(shape=(66, 1))
         convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
+        convolutional_1_3 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
 
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
-
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2])
+        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
@@ -1042,10 +1042,10 @@ class Model:
         # defining model
         input_tensor = layers.Input(shape=(92, 1))
         convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
+        convolutional_1_3 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
 
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
-
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2])
+        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
@@ -1121,7 +1121,7 @@ class Model:
             with open("../models/SC_PseDNC_" + self.load_file_name + "_model.json", "w") as json_file:
                 json_file.write(model_json)
             # serialize weights to HDF5
-            model.save_weights("../models/PC_PseDNC_" + self.load_file_name + "_model.h5")
+            model.save_weights("../models/SC_PseDNC_" + self.load_file_name + "_model.h5")
             print("Saved SC-PseDNC convolutional model to disk.")
 
 
@@ -1149,10 +1149,11 @@ class Model:
         # defining model
         input_tensor = layers.Input(shape=(88, 1))
         convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
+        convolutional_1_3 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
 
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
 
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2])
+        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
@@ -1228,5 +1229,5 @@ class Model:
             with open("../models/SC_PseTNC_" + self.load_file_name + "_model.json", "w") as json_file:
                 json_file.write(model_json)
             # serialize weights to HDF5
-            model.save_weights("../models/PC_PseTNC_" + self.load_file_name + "_model.h5")
+            model.save_weights("../models/SC_PseTNC_" + self.load_file_name + "_model.h5")
             print("Saved SC-PseTNC convolutional model to disk.")
