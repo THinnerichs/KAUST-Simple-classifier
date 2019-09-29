@@ -91,6 +91,11 @@ def apply_classification(applied_model="simple_classifier",
                                                                 test=test,
                                                                 epochs=10)
 
+        elif applied_model == "repDNA_PC_PseTNC_classifier":
+                    model.simple_classifier_on_repDNA_PC_PseTNC(cv_scores=cv_scores,
+                                                                train=train,
+                                                                test=test,
+                                                                epochs=10)
 
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
@@ -125,17 +130,17 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
+    apply_classification(applied_model="repDNA_PC_PseTNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="PC_PseDNC",
+                         dataset="PC_PseTNC",
                          pre_length=0,
                          post_length=0)
 
-    apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
+    apply_classification(applied_model="repDNA_PC_PseTNC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="PC_PseDNC",
+                         dataset="PC_PseTNC",
                          pre_length=0,
                          post_length=0)
 
