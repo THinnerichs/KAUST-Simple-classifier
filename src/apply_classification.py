@@ -85,6 +85,11 @@ def apply_classification(applied_model="simple_classifier",
                                                           train=train,
                                                           test=test,
                                                           epochs=10)
+        elif applied_model == "repDNA_PC_PseDNC_classifier":
+                    model.simple_classifier_on_repDNA_PC_PseDNC(cv_scores=cv_scores,
+                                                                train=train,
+                                                                test=test,
+                                                                epochs=10)
 
 
 
@@ -120,17 +125,17 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="repDNA_DCC_classifier",
+    apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="dcc",
+                         dataset="PC_PseDNC",
                          pre_length=0,
                          post_length=0)
 
-    apply_classification(applied_model="repDNA_DCC_classifier",
+    apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="dcc",
+                         dataset="PC_PseDNC",
                          pre_length=0,
                          post_length=0)
 
