@@ -393,12 +393,13 @@ class Model:
 
             print("------------------------------------------------\n")
 
-    def simple_classifier_on_repDNA(self,
-                                    cv_scores,
-                                    train,
-                                    test,
-                                    epochs=10,
-                                    batch_size=500):
+    def simple_classifier_on_repDNA_Kmer(self,
+                                         cv_scores,
+                                         train,
+                                         test,
+                                         epochs=10,
+                                         batch_size=500):
+
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -406,19 +407,14 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(20,1))
-        convolutional_1_1 = layers.Conv1D(16, kernel_size=(2), activation="relu")(input_tensor)
-        max_pool_1_1 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_1)
 
-        convolutional_1_2 = layers.Conv1D(16, kernel_size=(3), activation='relu')(input_tensor)
-        max_pool_1_2 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_2)
+        convolutional_1_1 = layers.Conv1D(16, kernel_size=(3), activation='relu')(input_tensor)
 
-        convolutional_1_3 = layers.Conv1D(16, kernel_size=(4), activation='relu')(input_tensor)
-        max_pool_1_3 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_3)
+        convolutional_1_2 = layers.Conv1D(16, kernel_size=(4), activation='relu')(input_tensor)
 
-        convolutional_1_4 = layers.Conv1D(16, kernel_size=(5), activation='relu')(input_tensor)
-        max_pool_1_4 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_4)
+        convolutional_1_3 = layers.Conv1D(16, kernel_size=(5), activation='relu')(input_tensor)
 
-        merge_1 = layers.Concatenate(axis=1)([max_pool_1_1, max_pool_1_2, max_pool_1_3, max_pool_1_4])
+        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(64, activation='relu')(flatten)

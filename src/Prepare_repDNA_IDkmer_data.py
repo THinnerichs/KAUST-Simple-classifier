@@ -26,7 +26,7 @@ def prepare_data_with_repDNA_IDkmer(include_acceptor=False,
 
 
     # Read data and perform transformation
-    idkmer = nac.IDkmer(k=2)
+    idkmer = nac.IDkmer(k=3, upto=True)
     dir = "../data/"
     x_dataset = []
     y_dataset = []
