@@ -1384,10 +1384,9 @@ class Model:
         PC_PseDNC_classifier_model.load_weights("../models/PC_PseDNC_" + self.load_file_name + "_model.h5")
 
         for layer in PC_PseDNC_classifier_model.layers:
-            print("LAYER: ", layer)
             layer.trainable = False
         for i in range(3):
-            PC_PseDNC_classifier_model.pop()
+            PC_PseDNC_classifier_model.layers.pop()
 
         print("Loading PC-PseTNC model...")
         with open("../models/PC_PseTNC_" + self.load_file_name + "_model.json") as fh:
@@ -1398,7 +1397,7 @@ class Model:
         for layer in PC_PseTNC_classifier_model.layers:
             layer.trainable = False
         for i in range(3):
-            PC_PseTNC_classifier_model.pop()
+            PC_PseTNC_classifier_model.layers.pop()
 
         print("Loading SC-PseDNC model...")
         with open("../models/SC_PseDNC_" + self.load_file_name + "_model.json") as fh:
@@ -1409,7 +1408,7 @@ class Model:
         for layer in SC_PseDNC_classifier_model.layers:
             layer.trainable = False
         for i in range(3):
-            SC_PseDNC_classifier_model.pop()
+            SC_PseDNC_classifier_model.layers.pop()
 
         print("Loading SC-PseTNC model...")
         with open("../models/SC_PseTNC_" + self.load_file_name + "_model.json") as fh:
@@ -1420,7 +1419,7 @@ class Model:
         for layer in SC_PseTNC_classifier_model.layers:
             layer.trainable = False
         for i in range(3):
-            SC_PseTNC_classifier_model.pop()
+            SC_PseTNC_classifier_model.layers.pop()
 
         print("Finished truncating models.")
 
