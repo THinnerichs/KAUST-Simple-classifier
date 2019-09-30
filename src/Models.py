@@ -1362,10 +1362,9 @@ class Model:
         dac_classifier_model.load_weights("../models/dac_" + self.load_file_name + "_model.h5")
 
         for layer in dac_classifier_model.layers:
-            print("LAYER: ", layer)
             layer.trainable = False
         for i in range(3):
-            print(dac_classifier_model.layers.pop())
+            dac_classifier_model.layers.pop()
 
         print("Loading DCC model...")
         with open("../models/dcc_" + self.load_file_name + "_model.json") as fh:
@@ -1446,8 +1445,7 @@ class Model:
                                      SC_PseDNC_classifier_model.layers[-1].output,
                                      SC_PseTNC_classifier_model.layers[-1].output])
 
-        flatten = layers.Flatten()(concat)
-        dense_1 = layers.Dense(1024, activation='relu')(flatten)
+        dense_1 = layers.Dense(1024, activation='relu')(concat)
         dropout_1 = layers.Dropout(0.5)(dense_1)
         dense_2 = layers.Dense(1024, activation='relu')(dropout_1)
         dropout_2 = layers.Dropout(0.5)(dense_2)
