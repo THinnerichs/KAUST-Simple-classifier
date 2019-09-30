@@ -50,8 +50,8 @@ class Model:
                           cv_scores,
                           train,
                           test,
-                          epochs=10,
-                          batch_size=100):
+                          epochs=5,
+                          batch_size=200):
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -60,14 +60,20 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
-        convolutional_1 = layers.Conv2D(32, kernel_size=(3, 4), input_shape=(602, 4, 1))(input_tensor)
+        convolutional_1 = layers.Conv2D(32, kernel_size=(2, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_1 = layers.MaxPooling2D((2, 1))(convolutional_1)
-        convolutional_2 = layers.Conv2D(32, kernel_size=(4, 4), input_shape=(602, 4, 1))(input_tensor)
+        convolutional_2 = layers.Conv2D(32, kernel_size=(3, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_2 = layers.MaxPooling2D((2, 1))(convolutional_2)
-        convolutional_3 = layers.Conv2D(32, kernel_size=(5, 4), input_shape=(602, 4, 1))(input_tensor)
+        convolutional_3 = layers.Conv2D(32, kernel_size=(4, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_3 = layers.MaxPooling2D((2, 1))(convolutional_3)
+        convolutional_4 = layers.Conv2D(32, kernel_size=(5, 4), input_shape=(602, 4, 1))(input_tensor)
+        max_pool_4 = layers.MaxPooling2D((2, 1))(convolutional_4)
+        convolutional_5 = layers.Conv2D(32, kernel_size=(6, 4), input_shape=(602, 4, 1))(input_tensor)
+        max_pool_5 = layers.MaxPooling2D((2, 1))(convolutional_5)
+        convolutional_6 = layers.Conv2D(32, kernel_size=(7, 4), input_shape=(602, 4, 1))(input_tensor)
+        max_pool_6 = layers.MaxPooling2D((2, 1))(convolutional_6)
 
-        merge_1 = layers.Concatenate(axis=1)([max_pool_1, max_pool_2, max_pool_3])
+        merge_1 = layers.Concatenate(axis=1)([max_pool_1, max_pool_2, max_pool_3, max_pool_4, max_pool_5, max_pool_6])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
