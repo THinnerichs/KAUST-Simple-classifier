@@ -1279,41 +1279,49 @@ class Model:
         dataset = "kmer"
         x_data_kmer = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_kmer = x_data_kmer.reshape(x_data_kmer.shape + (1,))
 
         print("Reading IDkmer data...")
         dataset = "IDkmer"
         x_data_IDkmer = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_IDkmer = x_data_IDkmer.reshape(x_data_IDkmer.shape + (1,))
 
         print("Reading DAC data...")
         dataset = "dac"
         x_data_dac = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_dac = x_data_dac.reshape(x_data_dac.shape + (1,))
 
         print("Reading DCC data...")
         dataset = "dcc"
         x_data_dcc = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_dcc = x_data_dcc.reshape(x_data_dcc.shape + (1,))
 
         print("Reading PC-PseDNC data...")
         dataset = "PC_PseDNC"
         x_data_PC_PseDNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_PC_PseDNC = x_data_PC_PseDNC.reshape(x_data_PC_PseDNC.shape + (1,))
 
         print("Reading PC-PseTNC data...")
         dataset = "PC_PseTNC"
         x_data_PC_PseTNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_PC_PseTNC = x_data_PC_PseTNC.reshape(x_data_PC_PseTNC.shape + (1,))
 
         print("Reading SC-PseDNC data...")
         dataset = "SC_PseDNC"
         x_data_SC_PseDNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_SC_PseDNC = x_data_SC_PseDNC.reshape(x_data_SC_PseDNC.shape + (1,))
 
         print("Reading SC-PseTNC data...")
         dataset = "SC_PseTNC"
         x_data_SC_PseTNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_SC_PseTNC = x_data_SC_PseTNC.reshape(x_data_SC_PseTNC.shape + (1,))
 
         self.pre_length = 300
         self.post_length = 300
@@ -1331,7 +1339,6 @@ class Model:
         for layer in simple_classifier_model.layers:
             layer.name = "simple_" + layer.name
             layer.trainable = False
-            print(layer.name)
         for i in range(5):
             simple_classifier_model.layers.pop()
 
