@@ -141,6 +141,7 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
+    '''
     apply_classification(applied_model="overall_classification",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -154,6 +155,49 @@ if __name__ == '__main__':
                          dataset="dint",
                          pre_length=300,
                          post_length=300)
+    '''
 
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=20000,
+                         dataset="IDkmer",
+                         pre_length=0,
+                         post_length=0)
+
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=20000,
+                         dataset="IDkmer",
+                         pre_length=0,
+                         post_length=0)
+
+
+    apply_classification(applied_model="repDNA_DAC_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=20000,
+                         dataset="dac",
+                         pre_length=0,
+                         post_length=0)
+
+    apply_classification(applied_model="repDNA_DAC_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=20000,
+                         dataset="dac",
+                         pre_length=0,
+                         post_length=0)
+
+    apply_classification(applied_model="repDNA_DCC_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=20000,
+                         dataset="dcc",
+                         pre_length=0,
+                         post_length=0)
+
+    apply_classification(applied_model="repDNA_DCC_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=20000,
+                         dataset="dcc",
+                         pre_length=0,
+                         post_length=0)
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))
