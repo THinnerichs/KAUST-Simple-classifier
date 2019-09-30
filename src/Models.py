@@ -319,7 +319,7 @@ class Model:
         
         '''
 
-        convolutional_1_2 = layers.Conv2D(16, kernel_size=(3, 15), activation='relu')(input_tensor)
+        convolutional_1_2 = layers.Conv2D(32, kernel_size=(3, 15), activation='relu')(input_tensor)
         max_pool_1_2 = layers.MaxPooling2D((2,1))(convolutional_1_2)
 
         convolutional_1_3 = layers.Conv2D(32, kernel_size=(4, 15), activation='relu')(input_tensor)
@@ -328,13 +328,13 @@ class Model:
         convolutional_1_4 = layers.Conv2D(32, kernel_size=(5, 15), activation='relu')(input_tensor)
         max_pool_1_4 = layers.MaxPooling2D((2,1))(convolutional_1_4)
 
-        convolutional_1_5 = layers.Conv2D(16, kernel_size=(6, 15), activation='relu')(input_tensor)
+        convolutional_1_5 = layers.Conv2D(32, kernel_size=(6, 15), activation='relu')(input_tensor)
         max_pool_1_5 = layers.MaxPooling2D((2,1))(convolutional_1_5)
 
-        convolutional_1_6 = layers.Conv2D(16, kernel_size=(7, 15), activation='relu')(input_tensor)
+        convolutional_1_6 = layers.Conv2D(32, kernel_size=(7, 15), activation='relu')(input_tensor)
         max_pool_1_6 = layers.MaxPooling2D((2,1))(convolutional_1_6)
 
-        convolutional_1_7 = layers.Conv2D(16, kernel_size=(8, 15), activation='relu')(input_tensor)
+        convolutional_1_7 = layers.Conv2D(32, kernel_size=(8, 15), activation='relu')(input_tensor)
         max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
 
 
