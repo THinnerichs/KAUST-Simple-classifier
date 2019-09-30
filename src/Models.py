@@ -307,7 +307,7 @@ class Model:
                                      train,
                                      test,
                                      epochs=5,
-                                     batch_size=50):
+                                     batch_size=200):
         self.epochs = epochs
         self.batch_size = batch_size
 
