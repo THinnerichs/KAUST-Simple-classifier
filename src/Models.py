@@ -306,7 +306,7 @@ class Model:
                                      train,
                                      test,
                                      epochs=5,
-                                     batch_size=100):
+                                     batch_size=200):
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -338,7 +338,7 @@ class Model:
         max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
 
 
-        merge_1 = layers.Concatenate(axis=1)([max_pool_1_2, max_pool_1_3, max_pool_1_4, max_pool_1_5])
+        merge_1 = layers.Concatenate(axis=1)([max_pool_1_3, max_pool_1_4, max_pool_1_5])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
