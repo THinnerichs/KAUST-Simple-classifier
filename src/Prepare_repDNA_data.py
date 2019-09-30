@@ -7,6 +7,8 @@ from repDNA.nac import Kmer
 from repDNA.ac import DAC, DCC, TAC, TCC
 from repDNA.psenac import PseDNC, PseKNC, PCPseDNC, PCPseTNC, SCPseDNC, SCPseTNC
 
+import multiprocessing as mp
+
 import time
 
 
@@ -353,12 +355,168 @@ def prepare_data_with_repDNA(include_acceptor=False,
             print("Shape:", x_dataset.shape)
             print("Data saved in {}.".format(x_filename))
 
+def acceptor_kmer_DAC():
+    prepare_data_with_repDNA(include_acceptor=True,
+                         include_donor=False,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=True,
+                         include_DAC=True,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+def acceptor_DCC():
+    prepare_data_with_repDNA(include_acceptor=True,
+                         include_donor=False,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=True,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+
+def acceptor_PC_DNC():
+    prepare_data_with_repDNA(include_acceptor=True,
+                         include_donor=False,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=True,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+def acceptor_PC_TNC():
+    prepare_data_with_repDNA(include_acceptor=True,
+                         include_donor=False,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=True,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+
+def acceptor_SC_DNC():
+    prepare_data_with_repDNA(include_acceptor=True,
+                         include_donor=False,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=True,
+                         include_SC_PseTNC=False)
+def acceptor_SC_TNC():
+    prepare_data_with_repDNA(include_acceptor=True,
+                         include_donor=False,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=True)
+
+
+def donor_kmer_DAC():
+    prepare_data_with_repDNA(include_acceptor=False,
+                         include_donor=True,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=True,
+                         include_DAC=True,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+def donor_DCC():
+    prepare_data_with_repDNA(include_acceptor=False,
+                         include_donor=True,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=True,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+
+def donor_PC_DNC():
+    prepare_data_with_repDNA(include_acceptor=False,
+                         include_donor=True,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=True,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+def donor_PC_TNC():
+    prepare_data_with_repDNA(include_acceptor=False,
+                         include_donor=True,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=True,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=False)
+
+def donor_SC_DNC():
+    prepare_data_with_repDNA(include_acceptor=False,
+                         include_donor=True,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=True,
+                         include_SC_PseTNC=False)
+def donor_SC_TNC():
+    prepare_data_with_repDNA(include_acceptor=False,
+                         include_donor=True,
+                         save_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         include_kmer=False,
+                         include_DAC=False,
+                         include_DCC=False,
+                         include_PC_PseDNC=False,
+                         include_PC_PseTNC=False,
+                         include_SC_PseDNC=False,
+                         include_SC_PseTNC=True)
+
+
+
+
 
 if __name__ == '__main__':
+
+    '''
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=20000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=True,
@@ -371,7 +529,7 @@ if __name__ == '__main__':
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=20000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -379,4 +537,11 @@ if __name__ == '__main__':
                              include_PC_PseTNC=False,
                              include_SC_PseDNC=False,
                              include_SC_PseTNC=False)
+    '''
 
+    jobs = [acceptor_kmer_DAC, acceptor_DCC, acceptor_PC_DNC, acceptor_PC_TNC, acceptor_SC_DNC, acceptor_SC_TNC]
+    jobs.extend([donor_kmer_DAC, donor_DCC, donor_PC_DNC, donor_PC_TNC, donor_SC_DNC, donor_SC_TNC])
+
+    for job in jobs:
+        p = mp.Process(target=job)
+        p.start()
