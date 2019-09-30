@@ -39,7 +39,7 @@ class Model:
         self.epochs = None
         self.batch_size = None
 
-        config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 8})
+        config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 16})
         sess = tf.Session(config=config)
         backend.set_session(sess)
 
@@ -1423,9 +1423,7 @@ class Model:
 
         print("Finished truncating models.")
 
-
-        raise Exception
-
+        print("Building model...")
         simple_input_tensor = simple_classifier_model.layers[0]
         DiProDB_input_tensor = DiProDB_classifier_model.layers[0]
         IDkmer_input_tensor = IDkmer_classifier_model.layers[0]
