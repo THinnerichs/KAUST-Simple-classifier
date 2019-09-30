@@ -544,7 +544,7 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(4, 1))
+        input_tensor = layers.Input(shape=(6, 1))
         convolutional_1_1 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
 
         flatten = layers.Flatten()(convolutional_1_1)
