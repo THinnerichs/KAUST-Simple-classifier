@@ -138,6 +138,7 @@ def apply_classification(applied_model="simple_classifier",
 
 
     filehandler.close()
+
 def j1():
     apply_classification(applied_model="repDNA_IDkmer_classifier",
                          load_file_name="acceptor_data",
@@ -187,7 +188,6 @@ def j6():
 if __name__ == '__main__':
     test_start = time.time()
 
-    '''
     apply_classification(applied_model="overall_classification",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -195,17 +195,18 @@ if __name__ == '__main__':
                          pre_length=300,
                          post_length=300)
 
-    apply_classification(applied_model="DiProDB_classifier",
+    apply_classification(applied_model="overall_classifier",
                          load_file_name="donor_data",
-                         samples_per_file=100000,
-                         dataset="dint",
+                         samples_per_file=20000,
+                         dataset="",
                          pre_length=300,
                          post_length=300)
-    '''
 
+    '''
     for job in [j1, j2, j3, j4, j5, j6]:
         p = mp.Process(target=job)
         p.start()
+    '''
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))

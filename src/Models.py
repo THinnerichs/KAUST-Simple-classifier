@@ -39,7 +39,7 @@ class Model:
         self.epochs = None
         self.batch_size = None
 
-        config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 4})
+        config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 8})
         sess = tf.Session(config=config)
         backend.set_session(sess)
 
@@ -1330,7 +1330,7 @@ class Model:
 
         for layer in simple_classifier_model.layers:
             layer.trainable = False
-        for i in range(6):
+        for i in range(5):
             simple_classifier_model.layers.pop()
 
         print("Loading DiProDB model...")
@@ -1341,7 +1341,7 @@ class Model:
 
         for layer in DiProDB_classifier_model.layers:
             layer.trainable = False
-        for i in range(6):
+        for i in range(5):
             DiProDB_classifier_model.layers.pop()
 
         print("Loading IDkmer model...")
@@ -1352,7 +1352,7 @@ class Model:
 
         for layer in IDkmer_classifier_model.layers:
             layer.trainable = False
-        for i in range(4):
+        for i in range(3):
             IDkmer_classifier_model.layers.pop()
 
         print("Loading DAC model...")
@@ -1363,7 +1363,7 @@ class Model:
 
         for layer in dac_classifier_model.layers:
             layer.trainable = False
-        for i in range(len(dac_classifier_model.layers) - 3):
+        for i in range(len(dac_classifier_model.layers) - 4):
             dac_classifier_model.layers.pop()
 
         print("Loading DCC model...")
@@ -1374,7 +1374,7 @@ class Model:
 
         for layer in dcc_classifier_model.layers:
             layer.trainable = False
-        for i in range(4):
+        for i in range(3):
             dcc_classifier_model.layers.pop()
 
         print("Loading PC-PseDNC model...")
@@ -1385,7 +1385,7 @@ class Model:
 
         for layer in PC_PseDNC_classifier_model.layers:
             layer.trainable = False
-        for i in range(4):
+        for i in range(3):
             PC_PseDNC_classifier_model.pop()
 
         print("Loading PC-PseTNC model...")
@@ -1396,7 +1396,7 @@ class Model:
 
         for layer in PC_PseTNC_classifier_model.layers:
             layer.trainable = False
-        for i in range(4):
+        for i in range(3):
             PC_PseTNC_classifier_model.pop()
 
         print("Loading SC-PseDNC model...")
@@ -1407,7 +1407,7 @@ class Model:
 
         for layer in SC_PseDNC_classifier_model.layers:
             layer.trainable = False
-        for i in range(4):
+        for i in range(3):
             SC_PseDNC_classifier_model.pop()
 
         print("Loading SC-PseTNC model...")
@@ -1418,13 +1418,138 @@ class Model:
 
         for layer in SC_PseTNC_classifier_model.layers:
             layer.trainable = False
-        for i in range(4):
+        for i in range(3):
             SC_PseTNC_classifier_model.pop()
 
         print("Finished truncating models.")
 
 
         raise Exception
+
+        simple_input_tensor = simple_classifier_model.layers[0]
+        DiProDB_input_tensor = DiProDB_classifier_model.layers[0]
+        IDkmer_input_tensor = IDkmer_classifier_model.layers[0]
+        DAC_input_tensor = dac_classifier_model.layers[0]
+        DCC_input_tensor = dcc_classifier_model.layers[0]
+        PC_PseDNC_input_tensor = PC_PseDNC_classifier_model.layers[0]
+        PC_PseTNC_input_tensor = PC_PseTNC_classifier_model.layers[0]
+        SC_PseDNC_input_tensor = SC_PseDNC_classifier_model.layers[0]
+        SC_PseTNC_input_tensor = SC_PseTNC_classifier_model.layers[0]
+
+        merge_1 = layers.Concatenate()([simple_classifier_model[-1],
+                                        DiProDB_classifier_model[-1],
+                                        IDkmer_classifier_model[-1],
+                                        dac_classifier_model[-1],
+                                        dcc_classifier_model[-1],
+                                        PC_PseDNC_classifier_model[-1],
+                                        PC_PseTNC_classifier_model[-1],
+                                        SC_PseDNC_classifier_model[-1],
+                                        SC_PseTNC_classifier_model[-1]])
+
+        flatten = layers.Flatten()(merge_1)
+        dense_1 = layers.Dense(1024, activation='relu')(flatten)
+        dropout_1 = layers.Dropout(0.5)(dense_1)
+        dense_2 = layers.Dense(1024, activation='relu')(dropout_1)
+        dropout_2 = layers.Dropout(0.5)(dense_2)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
+
+        model = models.Model(inputs=[simple_input_tensor,
+                                     DiProDB_input_tensor,
+                                     IDkmer_input_tensor,
+                                     DAC_input_tensor,
+                                     DCC_input_tensor,
+                                     PC_PseDNC_input_tensor,
+                                     PC_PseTNC_input_tensor,
+                                     SC_PseDNC_input_tensor,
+                                     SC_PseTNC_input_tensor],
+                             outputs=[output_tensor])
+
+        # compile model
+        model.compile(loss='binary_crossentropy',
+                      optimizer='adam',
+                      metrics=['accuracy'])
+
+        # train model
+        history = model.fit(x=[x_data_simple[train],
+                               x_data_DiProDB[train],
+                               x_data_IDkmer[train],
+                               x_data_dac[train],
+                               x_data_dcc[train],
+                               x_data_PC_PseDNC[train],
+                               x_data_PC_PseTNC[train],
+                               x_data_SC_PseDNC[train],
+                               x_data_SC_PseTNC[train]],
+                            y=[self.y_data[train]],
+                            epochs=epochs,
+                            batch_size=batch_size,
+                            validation_data=([x_data_simple[test],
+                                              x_data_DiProDB[test],
+                                              x_data_IDkmer[test],
+                                              x_data_dac[test],
+                                              x_data_dcc[test],
+                                              x_data_PC_PseDNC[test],
+                                              x_data_PC_PseTNC[test],
+                                              x_data_SC_PseDNC[test],
+                                              x_data_SC_PseTNC[test]],
+                                             [self.y_data[test]]),
+                            callbacks=[TensorBoard(log_dir='/tmp/classifier')])
+
+        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
+                                    np.array(history.history["val_acc"]).argmax(),
+                                    np.array(history.history["acc"]).argmax()))
+        self.val_accuracy_values.append(history.history['val_acc'])
+        self.accuracy_values.append(history.history['acc'])
+
+        model.summary()
+
+        raise Exception
+
+        # evaluate the model
+        scores = model.evaluate(self.x_data[test], self.y_data[test], verbose=0)
+
+        print("\n--------------------------------------------------")
+        print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+        print("--------------------------------------------------\n")
+        cv_scores.append(scores[1] * 100)
+
+        if len(cv_scores) == 10:
+            print("repDNA: SC-PseTNC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+            print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
+            model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
+
+            # print confusion matrix
+            y_pred = model.predict(self.x_data[test])
+            print("Confusion matrix:",
+                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+
+            # Calculate other validation scores
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+            tp = conf_matrix[0, 0]
+            tn = conf_matrix[1, 1]
+            fp = conf_matrix[0, 1]
+            fn = conf_matrix[1, 0]
+
+            precision = tp / (tp + fp) * 100
+            recall = tp/(tp + fn) * 100
+
+            print("Recall:", recall, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
+
+            print("------------------------------------------------\n")
+
+            # serialize model to JSON
+            model_json = model.to_json()
+            with open("../models/SC_PseTNC_" + self.load_file_name + "_model.json", "w") as json_file:
+                json_file.write(model_json)
+            # serialize weights to HDF5
+            model.save_weights("../models/SC_PseTNC_" + self.load_file_name + "_model.h5")
+            print("Saved SC-PseTNC convolutional model to disk.")
 
 
 
