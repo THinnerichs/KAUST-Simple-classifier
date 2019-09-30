@@ -1364,7 +1364,7 @@ class Model:
         for layer in dac_classifier_model.layers:
             print("LAYER: ", layer)
             layer.trainable = False
-        for i in range(len(dac_classifier_model.layers) - 4):
+        for i in range(3):
             print(dac_classifier_model.layers.pop())
 
         raise Exception
