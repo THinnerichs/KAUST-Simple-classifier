@@ -2,6 +2,8 @@ import numpy as np
 import time
 from sklearn.model_selection import StratifiedKFold
 
+import multiprocessing as mp
+
 from Models import *
 
 def apply_classification(applied_model="simple_classifier",
@@ -136,6 +138,50 @@ def apply_classification(applied_model="simple_classifier",
 
 
     filehandler.close()
+def j1():
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=20000,
+                         dataset="IDkmer",
+                         pre_length=0,
+                         post_length=0)
+
+def j2():
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=20000,
+                         dataset="IDkmer",
+                         pre_length=0,
+                         post_length=0)
+def j3():
+    apply_classification(applied_model="repDNA_DAC_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=20000,
+                         dataset="dac",
+                         pre_length=0,
+                         post_length=0)
+def j4():
+    apply_classification(applied_model="repDNA_DAC_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=20000,
+                         dataset="dac",
+                         pre_length=0,
+                         post_length=0)
+
+def j5():
+    apply_classification(applied_model="repDNA_DCC_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=20000,
+                         dataset="dcc",
+                         pre_length=0,
+                         post_length=0)
+def j6():
+    apply_classification(applied_model="repDNA_DCC_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=20000,
+                         dataset="dcc",
+                         pre_length=0,
+                         post_length=0)
 
 
 if __name__ == '__main__':
@@ -157,47 +203,9 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
-    apply_classification(applied_model="repDNA_IDkmer_classifier",
-                         load_file_name="acceptor_data",
-                         samples_per_file=20000,
-                         dataset="IDkmer",
-                         pre_length=0,
-                         post_length=0)
+    for job in [j1, j2, j3, j4, j5, j6]:
+        p = mp.Process(target=job)
+        p.start()
 
-    apply_classification(applied_model="repDNA_IDkmer_classifier",
-                         load_file_name="donor_data",
-                         samples_per_file=20000,
-                         dataset="IDkmer",
-                         pre_length=0,
-                         post_length=0)
-
-
-    apply_classification(applied_model="repDNA_DAC_classifier",
-                         load_file_name="acceptor_data",
-                         samples_per_file=20000,
-                         dataset="dac",
-                         pre_length=0,
-                         post_length=0)
-
-    apply_classification(applied_model="repDNA_DAC_classifier",
-                         load_file_name="donor_data",
-                         samples_per_file=20000,
-                         dataset="dac",
-                         pre_length=0,
-                         post_length=0)
-
-    apply_classification(applied_model="repDNA_DCC_classifier",
-                         load_file_name="acceptor_data",
-                         samples_per_file=20000,
-                         dataset="dcc",
-                         pre_length=0,
-                         post_length=0)
-
-    apply_classification(applied_model="repDNA_DCC_classifier",
-                         load_file_name="donor_data",
-                         samples_per_file=20000,
-                         dataset="dcc",
-                         pre_length=0,
-                         post_length=0)
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))

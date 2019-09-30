@@ -15,7 +15,7 @@ import time
 def prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=False,
                              save_file_name="dataset",
-                             samples_per_file=10000,
+                             samples_per_file=20000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
