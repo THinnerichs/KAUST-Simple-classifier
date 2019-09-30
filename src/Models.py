@@ -305,7 +305,7 @@ class Model:
                                      cv_scores,
                                      train,
                                      test,
-                                     epochs=10,
+                                     epochs=5,
                                      batch_size=100):
         self.epochs = epochs
         self.batch_size = batch_size
@@ -316,11 +316,11 @@ class Model:
         '''
         convolutional_1_1 = layers.Conv2D(16, kernel_size=(2, 15), activation="relu")(input_tensor)
         max_pool_1_1 = layers.MaxPooling2D((2,1))(convolutional_1_1)
+        
+        '''
 
         convolutional_1_2 = layers.Conv2D(16, kernel_size=(3, 15), activation='relu')(input_tensor)
         max_pool_1_2 = layers.MaxPooling2D((2,1))(convolutional_1_2)
-
-        '''
 
         convolutional_1_3 = layers.Conv2D(32, kernel_size=(4, 15), activation='relu')(input_tensor)
         max_pool_1_3 = layers.MaxPooling2D((2,1))(convolutional_1_3)
@@ -331,16 +331,14 @@ class Model:
         convolutional_1_5 = layers.Conv2D(16, kernel_size=(6, 15), activation='relu')(input_tensor)
         max_pool_1_5 = layers.MaxPooling2D((2,1))(convolutional_1_5)
 
-        '''
         convolutional_1_6 = layers.Conv2D(16, kernel_size=(7, 15), activation='relu')(input_tensor)
         max_pool_1_6 = layers.MaxPooling2D((2,1))(convolutional_1_6)
 
         convolutional_1_7 = layers.Conv2D(16, kernel_size=(8, 15), activation='relu')(input_tensor)
         max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
 
-        '''
 
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_3, convolutional_1_4])
+        merge_1 = layers.Concatenate(axis=1)([max_pool_1_2, max_pool_1_3, max_pool_1_4, max_pool_1_5])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
