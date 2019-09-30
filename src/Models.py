@@ -1367,9 +1367,6 @@ class Model:
         for i in range(3):
             print(dac_classifier_model.layers.pop())
 
-        raise Exception
-
-
         print("Loading DCC model...")
         with open("../models/dcc_" + self.load_file_name + "_model.json") as fh:
             classifier_json_file = fh.read()
