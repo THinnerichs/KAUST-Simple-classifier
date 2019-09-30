@@ -1327,12 +1327,16 @@ class Model:
             classifier_json_file = fh.read()
         simple_classifier_model = model_from_json(classifier_json_file)
         simple_classifier_model.load_weights("../models/simple_" + self.load_file_name + "_model.h5")
-        simple_classifier_model.name = "simple_classifier_model"
 
         for layer in simple_classifier_model.layers:
+            print("Layer name: ", layer.name)
+            layer.name = "simple" + layer.name
             layer.trainable = False
+            print(layer.name)
         for i in range(5):
             simple_classifier_model.layers.pop()
+
+        raise Exception
 
         print("Loading DiProDB model...")
         with open("../models/DiProDB_" + self.load_file_name + "_model.json") as fh:
