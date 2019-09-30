@@ -1462,11 +1462,9 @@ class Model:
                                      SC_PseDNC_classifier_model.layers[-1].output,
                                      SC_PseTNC_classifier_model.layers[-1].output])
 
-        dense_1 = layers.Dense(1024, activation='relu')(concat)
+        dense_1 = layers.Dense(512, activation='relu')(concat)
         dropout_1 = layers.Dropout(0.5)(dense_1)
-        dense_2 = layers.Dense(1024, activation='relu')(dropout_1)
-        dropout_2 = layers.Dropout(0.5)(dense_2)
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_1)
 
         model = models.Model(inputs=[simple_input_tensor.input,
                                      DiProDB_input_tensor.input,
