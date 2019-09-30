@@ -120,13 +120,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -345,7 +348,6 @@ class Model:
         dense_2 = layers.Dense(128, activation='relu')(dropout_1)
         dropout_2 = layers.Dropout(0.5)(dense_2)
 
-
         output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
 
         model = models.Model(input_tensor, output_tensor)
@@ -362,7 +364,7 @@ class Model:
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -390,13 +392,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -407,7 +412,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -432,13 +437,13 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(20,1))
+        input_tensor = layers.Input(shape=(20, 1))
 
-        convolutional_1_1 = layers.Conv1D(16, kernel_size=(3), activation='relu')(input_tensor)
+        convolutional_1_1 = layers.Conv1D(16, kernel_size=3, activation='relu')(input_tensor)
 
-        convolutional_1_2 = layers.Conv1D(16, kernel_size=(4), activation='relu')(input_tensor)
+        convolutional_1_2 = layers.Conv1D(16, kernel_size=4, activation='relu')(input_tensor)
 
-        convolutional_1_3 = layers.Conv1D(16, kernel_size=(5), activation='relu')(input_tensor)
+        convolutional_1_3 = layers.Conv1D(16, kernel_size=5, activation='relu')(input_tensor)
 
         merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
@@ -455,14 +460,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -490,13 +493,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -507,7 +513,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -519,7 +525,6 @@ class Model:
             model.save_weights("../models/kmer_" + self.load_file_name + "model.h5")
             print("Saved Kmer convolutional model to disk.")
 
-
     def simple_classifier_on_repDNA_IDKmer(self,
                                            cv_scores,
                                            train,
@@ -528,7 +533,6 @@ class Model:
                                            batch_size=500):
         self.epochs = epochs
         self.batch_size = batch_size
-
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -539,8 +543,8 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(4,1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
+        input_tensor = layers.Input(shape=(4, 1))
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
 
         flatten = layers.Flatten()(convolutional_1_1)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
@@ -555,14 +559,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -590,13 +592,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -607,7 +612,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -619,8 +624,6 @@ class Model:
             model.save_weights("../models/IDkmer_" + self.load_file_name + "_model.h5")
             print("Saved IDkmer convolutional model to disk.")
 
-
-
     def simple_classifier_on_repDNA_DAC(self,
                                         cv_scores,
                                         train,
@@ -629,7 +632,6 @@ class Model:
                                         batch_size=500):
         self.epochs = epochs
         self.batch_size = batch_size
-
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -640,12 +642,12 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(76,1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
-        max_pool_1_1 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_1)
+        input_tensor = layers.Input(shape=(76, 1))
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        max_pool_1_1 = layers.MaxPooling1D(pool_size=3)(convolutional_1_1)
 
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
-        max_pool_1_2 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_2)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
+        max_pool_1_2 = layers.MaxPooling1D(pool_size=3)(convolutional_1_2)
 
         merge_1 = layers.Concatenate(axis=1)([max_pool_1_1, max_pool_1_2])
 
@@ -662,14 +664,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -697,13 +697,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -714,7 +717,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -735,7 +738,6 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
             self.x_data[train] = scaler.transform(self.x_data[train])
@@ -745,12 +747,12 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(1406,1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
-        max_pool_1_1 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_1)
+        input_tensor = layers.Input(shape=(1406, 1))
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        max_pool_1_1 = layers.MaxPooling1D(pool_size=3)(convolutional_1_1)
 
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
-        max_pool_1_2 = layers.MaxPooling1D(pool_size=(3))(convolutional_1_2)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
+        max_pool_1_2 = layers.MaxPooling1D(pool_size=3)(convolutional_1_2)
 
         merge_1 = layers.Concatenate(axis=1)([max_pool_1_1, max_pool_1_2])
 
@@ -767,14 +769,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -802,13 +802,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -819,7 +822,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -831,17 +834,15 @@ class Model:
             model.save_weights("../models/dcc_" + self.load_file_name + "_model.h5")
             print("Saved DCC convolutional model to disk.")
 
-
     def simple_classifier_on_repDNA_PC_PseDNC(self,
-                                           cv_scores,
-                                           train,
-                                           test,
-                                           epochs=10,
-                                           batch_size=500):
+                                              cv_scores,
+                                              train,
+                                              test,
+                                              epochs=10,
+                                              batch_size=500):
 
         self.epochs = epochs
         self.batch_size = batch_size
-
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -852,10 +853,10 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(18,1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
-        convolutional_1_3 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
+        input_tensor = layers.Input(shape=(18, 1))
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
+        convolutional_1_3 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
 
         merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
@@ -872,14 +873,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -907,13 +906,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -924,7 +926,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -936,17 +938,15 @@ class Model:
             model.save_weights("../models/PC_PseDNC_" + self.load_file_name + "_model.h5")
             print("Saved PC-PseDNC convolutional model to disk.")
 
-
     def simple_classifier_on_repDNA_PC_PseTNC(self,
-                                           cv_scores,
-                                           train,
-                                           test,
-                                           epochs=10,
-                                           batch_size=500):
+                                              cv_scores,
+                                              train,
+                                              test,
+                                              epochs=10,
+                                              batch_size=500):
 
         self.epochs = epochs
         self.batch_size = batch_size
-
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -958,9 +958,9 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(66, 1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
-        convolutional_1_3 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
+        convolutional_1_3 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
 
         merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
@@ -977,14 +977,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -1012,13 +1010,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -1029,7 +1030,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -1041,17 +1042,15 @@ class Model:
             model.save_weights("../models/PC_PseTNC_" + self.load_file_name + "_model.h5")
             print("Saved PC-PseTNC convolutional model to disk.")
 
-
     def simple_classifier_on_repDNA_SC_PseDNC(self,
-                                           cv_scores,
-                                           train,
-                                           test,
-                                           epochs=10,
-                                           batch_size=500):
+                                              cv_scores,
+                                              train,
+                                              test,
+                                              epochs=10,
+                                              batch_size=500):
 
         self.epochs = epochs
         self.batch_size = batch_size
-
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -1063,9 +1062,9 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(92, 1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
-        convolutional_1_3 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
+        convolutional_1_3 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
 
         merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
@@ -1082,14 +1081,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -1117,13 +1114,16 @@ class Model:
             # print confusion matrix
             y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=self.y_data[test],
+                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -1134,7 +1134,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -1146,19 +1146,15 @@ class Model:
             model.save_weights("../models/SC_PseDNC_" + self.load_file_name + "_model.h5")
             print("Saved SC-PseDNC convolutional model to disk.")
 
-
-
-
     def simple_classifier_on_repDNA_SC_PseTNC(self,
-                                           cv_scores,
-                                           train,
-                                           test,
-                                           epochs=10,
-                                           batch_size=500):
+                                              cv_scores,
+                                              train,
+                                              test,
+                                              epochs=10,
+                                              batch_size=500):
 
         self.epochs = epochs
         self.batch_size = batch_size
-
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -1170,10 +1166,9 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(88, 1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=(3), activation="relu")(input_tensor)
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=(4), activation="relu")(input_tensor)
-        convolutional_1_3 = layers.Conv1D(32, kernel_size=(5), activation="relu")(input_tensor)
-
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
+        convolutional_1_3 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
 
         merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
@@ -1190,14 +1185,12 @@ class Model:
                       optimizer='adam',
                       metrics=['accuracy'])
 
-
-
         # train model
         history = model.fit(x=self.x_data[train],
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
@@ -1231,7 +1224,8 @@ class Model:
                   confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -1242,7 +1236,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
