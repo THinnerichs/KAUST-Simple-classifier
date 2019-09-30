@@ -44,8 +44,8 @@ def apply_classification(applied_model="simple_classifier",
         # Execute model
         if applied_model == "simple_classifier":
             model.simple_classifier(cv_scores=cv_scores,
-                                 train=train,
-                                test=test)
+                                    train=train,
+                                    test=test)
         elif applied_model == "multi_label_classifier":
             model.multi_label_classifier(cv_scores=cv_scores,
                                          train=train,
@@ -61,9 +61,7 @@ def apply_classification(applied_model="simple_classifier",
         elif applied_model == "DiProDB_classifier":
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                                train=train,
-                                               test=test,
-                                               epochs=10,
-                                               batch_size=50)
+                                               test=test)
         elif applied_model == "repDNA_classifier":
             model.simple_classifier_on_repDNA(cv_scores=cv_scores,
                                               train=train,
