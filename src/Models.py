@@ -1451,15 +1451,15 @@ class Model:
         dropout_2 = layers.Dropout(0.5)(dense_2)
         output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
 
-        model = models.Model(inputs=[simple_input_tensor,
-                                     DiProDB_input_tensor,
-                                     IDkmer_input_tensor,
-                                     DAC_input_tensor,
-                                     DCC_input_tensor,
-                                     PC_PseDNC_input_tensor,
-                                     PC_PseTNC_input_tensor,
-                                     SC_PseDNC_input_tensor,
-                                     SC_PseTNC_input_tensor],
+        model = models.Model(inputs=[simple_input_tensor.input,
+                                     DiProDB_input_tensor.input,
+                                     IDkmer_input_tensor.input,
+                                     DAC_input_tensor.input,
+                                     DCC_input_tensor.input,
+                                     PC_PseDNC_input_tensor.input,
+                                     PC_PseTNC_input_tensor.input,
+                                     SC_PseDNC_input_tensor.input,
+                                     SC_PseTNC_input_tensor.input],
                              outputs=[output_tensor])
 
         # compile model
