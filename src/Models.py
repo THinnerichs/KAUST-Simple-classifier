@@ -1329,14 +1329,11 @@ class Model:
         simple_classifier_model.load_weights("../models/simple_" + self.load_file_name + "_model.h5")
 
         for layer in simple_classifier_model.layers:
-            print("Layer name: ", layer.name)
-            layer.name = "simple" + layer.name
+            layer.name = "simple_" + layer.name
             layer.trainable = False
             print(layer.name)
         for i in range(5):
             simple_classifier_model.layers.pop()
-
-        raise Exception
 
         print("Loading DiProDB model...")
         with open("../models/DiProDB_" + self.load_file_name + "_model.json") as fh:
@@ -1345,6 +1342,7 @@ class Model:
         DiProDB_classifier_model.load_weights("../models/DiProDB_" + self.load_file_name + "_model.h5")
 
         for layer in DiProDB_classifier_model.layers:
+            layer.name = "DiProDB_" + layer.name
             layer.trainable = False
         for i in range(5):
             DiProDB_classifier_model.layers.pop()
@@ -1356,6 +1354,7 @@ class Model:
         IDkmer_classifier_model.load_weights("../models/IDkmer_" + self.load_file_name + "_model.h5")
 
         for layer in IDkmer_classifier_model.layers:
+            layer.name = "IDkmer_" + layer.name
             layer.trainable = False
         for i in range(3):
             IDkmer_classifier_model.layers.pop()
@@ -1367,6 +1366,7 @@ class Model:
         dac_classifier_model.load_weights("../models/dac_" + self.load_file_name + "_model.h5")
 
         for layer in dac_classifier_model.layers:
+            layer.name = "DAC_" + layer.name
             layer.trainable = False
         for i in range(3):
             dac_classifier_model.layers.pop()
@@ -1378,6 +1378,7 @@ class Model:
         dcc_classifier_model.load_weights("../models/dcc_" + self.load_file_name + "_model.h5")
 
         for layer in dcc_classifier_model.layers:
+            layer.name = "DCC_" + layer.name
             layer.trainable = False
         for i in range(3):
             dcc_classifier_model.layers.pop()
@@ -1389,6 +1390,7 @@ class Model:
         PC_PseDNC_classifier_model.load_weights("../models/PC_PseDNC_" + self.load_file_name + "_model.h5")
 
         for layer in PC_PseDNC_classifier_model.layers:
+            layer.name = "PC_PseDNC_" + layer.name
             layer.trainable = False
         for i in range(3):
             PC_PseDNC_classifier_model.layers.pop()
@@ -1400,6 +1402,7 @@ class Model:
         PC_PseTNC_classifier_model.load_weights("../models/PC_PseTNC_" + self.load_file_name + "_model.h5")
 
         for layer in PC_PseTNC_classifier_model.layers:
+            layer.name = "PC_PseTNC_" + layer.name
             layer.trainable = False
         for i in range(3):
             PC_PseTNC_classifier_model.layers.pop()
@@ -1411,6 +1414,7 @@ class Model:
         SC_PseDNC_classifier_model.load_weights("../models/SC_PseDNC_" + self.load_file_name + "_model.h5")
 
         for layer in SC_PseDNC_classifier_model.layers:
+            layer.name = "SC_PseDNC_" + layer.name
             layer.trainable = False
         for i in range(3):
             SC_PseDNC_classifier_model.layers.pop()
@@ -1422,6 +1426,7 @@ class Model:
         SC_PseTNC_classifier_model.load_weights("../models/SC_PseTNC_" + self.load_file_name + "_model.h5")
 
         for layer in SC_PseTNC_classifier_model.layers:
+            layer.name = "SC_PseTNC_" + layer.name
             layer.trainable = False
         for i in range(3):
             SC_PseTNC_classifier_model.layers.pop()
