@@ -51,7 +51,7 @@ class Model:
                           train,
                           test,
                           epochs=10,
-                          batch_size=500):
+                          batch_size=100):
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -60,13 +60,16 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
-        convolutional_1 = layers.Conv2D(32, kernel_size=(2, 4), input_shape=(602, 4, 1))(input_tensor)
+        convolutional_1 = layers.Conv2D(32, kernel_size=(3, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_1 = layers.MaxPooling2D((2, 1))(convolutional_1)
-        convolutional_2 = layers.Conv2D(64, kernel_size=(3, 1))(max_pool_1)
+        convolutional_2 = layers.Conv2D(32, kernel_size=(4, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_2 = layers.MaxPooling2D((2, 1))(convolutional_2)
-        convolutional_3 = layers.Conv2D(128, kernel_size=(5,1))(max_pool_2)
+        convolutional_3 = layers.Conv2D(32, kernel_size=(5, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_3 = layers.MaxPooling2D((2, 1))(convolutional_3)
-        flatten = layers.Flatten()(max_pool_3)
+
+        merge_1 = layers.Concatenate(128, axis=1)([max_pool_1, max_pool_2, max_pool_3])
+
+        flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
         dense_2 = layers.Dense(64, activation='relu')(dropout_1)
@@ -133,6 +136,14 @@ class Model:
             print("Precision:",precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
+
+            # serialize model to JSON
+            model_json = model.to_json()
+            with open("../models/simple_" + self.load_file_name + "_model.json", "w") as json_file:
+                json_file.write(model_json)
+            # serialize weights to HDF5
+            model.save_weights("../models/simple_" + self.load_file_name + "_model.h5")
+            print("Saved simple convolutional model to disk.")
 
     def multi_label_classifier(self,
                                cv_scores,
@@ -289,7 +300,7 @@ class Model:
                                      train,
                                      test,
                                      epochs=10,
-                                     batch_size=500):
+                                     batch_size=100):
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -299,10 +310,11 @@ class Model:
         '''
         convolutional_1_1 = layers.Conv2D(16, kernel_size=(2, 15), activation="relu")(input_tensor)
         max_pool_1_1 = layers.MaxPooling2D((2,1))(convolutional_1_1)
-        '''
 
         convolutional_1_2 = layers.Conv2D(16, kernel_size=(3, 15), activation='relu')(input_tensor)
         max_pool_1_2 = layers.MaxPooling2D((2,1))(convolutional_1_2)
+
+        '''
 
         convolutional_1_3 = layers.Conv2D(16, kernel_size=(4, 15), activation='relu')(input_tensor)
         max_pool_1_3 = layers.MaxPooling2D((2,1))(convolutional_1_3)
@@ -322,7 +334,7 @@ class Model:
 
         '''
 
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_2, convolutional_1_3, convolutional_1_4])
+        merge_1 = layers.Concatenate(axis=1)([convolutional_1_3, convolutional_1_4])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
@@ -392,6 +404,14 @@ class Model:
             print("Precision:",precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
+
+            # serialize model to JSON
+            model_json = model.to_json()
+            with open("../models/DiProDB_" + self.load_file_name + "_model.json", "w") as json_file:
+                json_file.write(model_json)
+            # serialize weights to HDF5
+            model.save_weights("../models/DiProDB_" + self.load_file_name + "_model.h5")
+            print("Saved DiProDB convolutional model to disk.")
 
     def simple_classifier_on_repDNA_Kmer(self,
                                          cv_scores,

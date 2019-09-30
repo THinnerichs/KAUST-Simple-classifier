@@ -144,16 +144,16 @@ if __name__ == '__main__':
     apply_classification(applied_model="simple_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=100000,
-                         dataset="PC_PseDNC",
-                         pre_length=0,
-                         post_length=0)
+                         dataset="",
+                         pre_length=300,
+                         post_length=300)
 
     apply_classification(applied_model="simple_classifier",
                          load_file_name="donor_data",
                          samples_per_file=100000,
-                         dataset="PC_PseDNC",
-                         pre_length=0,
-                         post_length=0)
+                         dataset="",
+                         pre_length=300,
+                         post_length=300)
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))
