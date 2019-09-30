@@ -1435,15 +1435,15 @@ class Model:
         SC_PseTNC_input_tensor = SC_PseTNC_classifier_model.layers[0]
 
 
-        concat = layers.concatenate([simple_classifier_model.layers[-1],
-                                     DiProDB_classifier_model.layers[-1],
-                                     IDkmer_classifier_model.layers[-1],
-                                     dac_classifier_model.layers[-1],
-                                     dcc_classifier_model.layers[-1],
-                                     PC_PseDNC_classifier_model.layers[-1],
-                                     PC_PseTNC_classifier_model.layers[-1],
-                                     SC_PseDNC_classifier_model.layers[-1],
-                                     SC_PseTNC_classifier_model.layers[-1]])
+        concat = layers.concatenate([simple_classifier_model.layers[-1].output,
+                                     DiProDB_classifier_model.layers[-1].output,
+                                     IDkmer_classifier_model.layers[-1].output,
+                                     dac_classifier_model.layers[-1].output,
+                                     dcc_classifier_model.layers[-1].output,
+                                     PC_PseDNC_classifier_model.layers[-1].output,
+                                     PC_PseTNC_classifier_model.layers[-1].output,
+                                     SC_PseDNC_classifier_model.layers[-1].output,
+                                     SC_PseTNC_classifier_model.layers[-1].output])
 
         flatten = layers.Flatten()(concat)
         dense_1 = layers.Dense(1024, activation='relu')(flatten)
