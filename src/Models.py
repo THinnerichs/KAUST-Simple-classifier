@@ -1253,8 +1253,8 @@ class Model:
                            cv_scores,
                            train,
                            test,
-                           epochs=5,
-                           batch_size=200):
+                           epochs=10,
+                           batch_size=100):
         print("Starting overall classifier")
         # set parameter for training
         self.epochs = epochs
@@ -1535,7 +1535,7 @@ class Model:
         cv_scores.append(scores[1] * 100)
 
         if len(cv_scores) == 10:
-            print("repDNA: SC-PseTNC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+            print("OVERALL BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
