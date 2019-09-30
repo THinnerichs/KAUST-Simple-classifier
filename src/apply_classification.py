@@ -68,41 +68,45 @@ def apply_classification(applied_model="simple_classifier",
                                               test=test,
                                               epochs=10)
         elif applied_model == "repDNA_IDkmer_classifier":
-                    model.simple_classifier_on_repDNA_IDKmer(cv_scores=cv_scores,
-                                                             train=train,
-                                                             test=test,
-                                                             epochs=10)
-
+            model.simple_classifier_on_repDNA_IDKmer(cv_scores=cv_scores,
+                                                     train=train,
+                                                     test=test,
+                                                     epochs=10)
         elif applied_model == "repDNA_DAC_classifier":
-                    model.simple_classifier_on_repDNA_DAC(cv_scores=cv_scores,
-                                                          train=train,
-                                                          test=test,
-                                                          epochs=10)
+            model.simple_classifier_on_repDNA_DAC(cv_scores=cv_scores,
+                                                  train=train,
+                                                  test=test,
+                                                  epochs=10)
         elif applied_model == "repDNA_DCC_classifier":
-                    model.simple_classifier_on_repDNA_DCC(cv_scores=cv_scores,
-                                                          train=train,
-                                                          test=test,
-                                                          epochs=10)
+            model.simple_classifier_on_repDNA_DCC(cv_scores=cv_scores,
+                                                  train=train,
+                                                  test=test,
+                                                  epochs=10)
         elif applied_model == "repDNA_PC_PseDNC_classifier":
-                    model.simple_classifier_on_repDNA_PC_PseDNC(cv_scores=cv_scores,
-                                                                train=train,
-                                                                test=test,
-                                                                epochs=10)
+            model.simple_classifier_on_repDNA_PC_PseDNC(cv_scores=cv_scores,
+                                                        train=train,
+                                                        test=test,
+                                                        epochs=10)
         elif applied_model == "repDNA_PC_PseTNC_classifier":
-                    model.simple_classifier_on_repDNA_PC_PseTNC(cv_scores=cv_scores,
-                                                                train=train,
-                                                                test=test,
-                                                                epochs=10)
+            model.simple_classifier_on_repDNA_PC_PseTNC(cv_scores=cv_scores,
+                                                        train=train,
+                                                        test=test,
+                                                        epochs=10)
         elif applied_model == "repDNA_SC_PseDNC_classifier":
-                    model.simple_classifier_on_repDNA_SC_PseDNC(cv_scores=cv_scores,
-                                                                train=train,
-                                                                test=test,
-                                                                epochs=10)
+            model.simple_classifier_on_repDNA_SC_PseDNC(cv_scores=cv_scores,
+                                                        train=train,
+                                                        test=test,
+                                                        epochs=10)
         elif applied_model == "repDNA_SC_PseTNC_classifier":
-                    model.simple_classifier_on_repDNA_SC_PseTNC(cv_scores=cv_scores,
-                                                                train=train,
-                                                                test=test,
-                                                                epochs=10)
+            model.simple_classifier_on_repDNA_SC_PseTNC(cv_scores=cv_scores,
+                                                        train=train,
+                                                        test=test,
+                                                        epochs=10)
+        elif applied_model == "overall_classification":
+            model.samples_per_file = samples_per_file
+            model.overall_classifier(cv_scores=cv_scores,
+                                     train=train,
+                                     test=test)
         else:
             print("No valid model selected.")
             raise Exception
@@ -137,10 +141,10 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="DiProDB_classifier",
+    apply_classification(applied_model="overall_classification",
                          load_file_name="acceptor_data",
-                         samples_per_file=100000,
-                         dataset="dint",
+                         samples_per_file=20000,
+                         dataset="",
                          pre_length=300,
                          post_length=300)
 

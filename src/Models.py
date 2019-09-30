@@ -4,6 +4,7 @@ from keras import models
 from keras import layers
 from keras.callbacks import TensorBoard
 from keras import backend
+from keras.models import model_from_json
 import tensorflow as tf
 
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -28,6 +29,7 @@ class Model:
         self.pre_length = pre_length
         self.post_length = post_length
         self.load_file_name = load_file_name
+        self.samples_per_file = None
 
         # Find best epoch
         self.loss_val_index = []
@@ -521,7 +523,7 @@ class Model:
             with open("../models/kmer_" + self.load_file_name + "_model.json", "w") as json_file:
                 json_file.write(model_json)
             # serialize weights to HDF5
-            model.save_weights("../models/kmer_" + self.load_file_name + "model.h5")
+            model.save_weights("../models/kmer_" + self.load_file_name + "_model.h5")
             print("Saved Kmer convolutional model to disk.")
 
     def simple_classifier_on_repDNA_IDKmer(self,
@@ -1246,3 +1248,178 @@ class Model:
             # serialize weights to HDF5
             model.save_weights("../models/SC_PseTNC_" + self.load_file_name + "_model.h5")
             print("Saved SC-PseTNC convolutional model to disk.")
+
+    def overall_classifier(self,
+                           cv_scores,
+                           train,
+                           test,
+                           epochs=5,
+                           batch_size=200):
+        print("Starting overall classifier")
+        # set parameter for training
+        self.epochs = epochs
+        self.batch_size = batch_size
+
+        # Read simple data
+        x_data_simple = self.x_data.reshape(self.x_data.shape + (1,))
+
+        # Read DiProDB data
+        print("Reading DiProDB data...")
+        dataset = "dint"
+        x_data_DiProDB = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                              ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        x_data_DiProDB = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
+
+        # Read repDNA data
+        print("Reading Kmer data...")
+        dataset = "kmer"
+        x_data_kmer = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Reading IDkmer data...")
+        dataset = "IDkmer"
+        x_data_IDkmer = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Reading DAC data...")
+        dataset = "dac"
+        x_data_dac = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Reading DCC data...")
+        dataset = "dcc"
+        x_data_dcc = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Reading PC-PseDNC data...")
+        dataset = "PC_PseDNC"
+        x_data_PC_PseDNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Reading PC-PseTNC data...")
+        dataset = "PC_PseTNC"
+        x_data_PC_PseTNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Reading SC-PseDNC data...")
+        dataset = "SC_PseDNC"
+        x_data_SC_PseDNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Reading SC-PseTNC data...")
+        dataset = "SC_PseTNC"
+        x_data_SC_PseTNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
+                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+
+        print("Finished reading data.")
+
+        # Truncate and prepare models
+        print("Preparing models...")
+        print("Loading Simple model...")
+        classifier_json_file = None
+        with open("../models/simple_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        simple_classifier_model = model_from_json(classifier_json_file)
+        simple_classifier_model.load_weights("../models/simple_" + self.load_file_name + "_model.h5")
+
+        for layer in simple_classifier_model.layers:
+            layer.trainable = False
+        for i in range(6):
+            simple_classifier_model.layers.pop()
+
+        print("Loading DiProDB model...")
+        with open("../models/DiProDB_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        DiProDB_classifier_model = model_from_json(classifier_json_file)
+        DiProDB_classifier_model.load_weights("../models/DiProDB_" + self.load_file_name + "_model.h5")
+
+        for layer in DiProDB_classifier_model.layers:
+            layer.trainable = False
+        for i in range(6):
+            DiProDB_classifier_model.layers.pop()
+
+        print("Loading IDkmer model...")
+        with open("../models/IDkmer_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        IDkmer_classifier_model = model_from_json(classifier_json_file)
+        IDkmer_classifier_model.load_weights("../models/IDkmer_" + self.load_file_name + "_model.h5")
+
+        for layer in IDkmer_classifier_model.layers:
+            layer.trainable = False
+        for i in range(4):
+            IDkmer_classifier_model.layers.pop()
+
+        print("Loading DAC model...")
+        with open("../models/dac_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        dac_classifier_model = model_from_json(classifier_json_file)
+        dac_classifier_model.load_weights("../models/dac_" + self.load_file_name + "_model.h5")
+
+        for layer in dac_classifier_model.layers:
+            layer.trainable = False
+        for i in range(len(dac_classifier_model.layers) - 3):
+            dac_classifier_model.layers.pop()
+
+        print("Loading DCC model...")
+        with open("../models/dcc_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        dcc_classifier_model = model_from_json(classifier_json_file)
+        dcc_classifier_model.load_weights("../models/dcc_" + self.load_file_name + "_model.h5")
+
+        for layer in dcc_classifier_model.layers:
+            layer.trainable = False
+        for i in range(4):
+            dcc_classifier_model.layers.pop()
+
+        print("Loading PC-PseDNC model...")
+        with open("../models/PC_PseDNC_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        PC_PseDNC_classifier_model = model_from_json(classifier_json_file)
+        PC_PseDNC_classifier_model.load_weights("../models/PC_PseDNC_" + self.load_file_name + "_model.h5")
+
+        for layer in PC_PseDNC_classifier_model.layers:
+            layer.trainable = False
+        for i in range(4):
+            PC_PseDNC_classifier_model.pop()
+
+        print("Loading PC-PseTNC model...")
+        with open("../models/PC_PseTNC_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        PC_PseTNC_classifier_model = model_from_json(classifier_json_file)
+        PC_PseTNC_classifier_model.load_weights("../models/PC_PseTNC_" + self.load_file_name + "_model.h5")
+
+        for layer in PC_PseTNC_classifier_model.layers:
+            layer.trainable = False
+        for i in range(4):
+            PC_PseTNC_classifier_model.pop()
+
+        print("Loading SC-PseDNC model...")
+        with open("../models/SC_PseDNC_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        SC_PseDNC_classifier_model = model_from_json(classifier_json_file)
+        SC_PseDNC_classifier_model.load_weights("../models/SC_PseDNC_" + self.load_file_name + "_model.h5")
+
+        for layer in SC_PseDNC_classifier_model.layers:
+            layer.trainable = False
+        for i in range(4):
+            SC_PseDNC_classifier_model.pop()
+
+        print("Loading SC-PseTNC model...")
+        with open("../models/SC_PseTNC_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        SC_PseTNC_classifier_model = model_from_json(classifier_json_file)
+        SC_PseTNC_classifier_model.load_weights("../models/SC_PseTNC_" + self.load_file_name + "_model.h5")
+
+        for layer in SC_PseTNC_classifier_model.layers:
+            layer.trainable = False
+        for i in range(4):
+            SC_PseTNC_classifier_model.pop()
+
+        print("Finished truncating models.")
+
+
+        raise Exception
+
+
+
