@@ -1327,6 +1327,7 @@ class Model:
             classifier_json_file = fh.read()
         simple_classifier_model = model_from_json(classifier_json_file)
         simple_classifier_model.load_weights("../models/simple_" + self.load_file_name + "_model.h5")
+        simple_classifier_model.name = "simple_classifier_model"
 
         for layer in simple_classifier_model.layers:
             layer.trainable = False
