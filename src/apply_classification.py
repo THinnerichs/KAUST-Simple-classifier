@@ -141,17 +141,17 @@ def apply_classification(applied_model="simple_classifier",
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="simple_classifier",
+    apply_classification(applied_model="DiProDB_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=100000,
-                         dataset="",
+                         dataset="dint",
                          pre_length=300,
                          post_length=300)
 
-    apply_classification(applied_model="simple_classifier",
+    apply_classification(applied_model="DiProDB_classifier",
                          load_file_name="donor_data",
                          samples_per_file=100000,
-                         dataset="",
+                         dataset="dint",
                          pre_length=300,
                          post_length=300)
 

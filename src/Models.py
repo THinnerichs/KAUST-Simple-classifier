@@ -328,10 +328,10 @@ class Model:
         convolutional_1_4 = layers.Conv2D(32, kernel_size=(5, 15), activation='relu')(input_tensor)
         max_pool_1_4 = layers.MaxPooling2D((2,1))(convolutional_1_4)
 
-        '''
         convolutional_1_5 = layers.Conv2D(16, kernel_size=(6, 15), activation='relu')(input_tensor)
         max_pool_1_5 = layers.MaxPooling2D((2,1))(convolutional_1_5)
 
+        '''
         convolutional_1_6 = layers.Conv2D(16, kernel_size=(7, 15), activation='relu')(input_tensor)
         max_pool_1_6 = layers.MaxPooling2D((2,1))(convolutional_1_6)
 
@@ -345,8 +345,11 @@ class Model:
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
+        dense_2 = layers.Dense(128, activation='relu')(dropout_1)
+        dropout_2 = layers.Dropout(0.5)(dense_1)
 
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_1)
+
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
 
         model = models.Model(input_tensor, output_tensor)
 
