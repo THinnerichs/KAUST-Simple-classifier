@@ -1272,6 +1272,9 @@ class Model:
         x_data_DiProDB = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
 
         # Read repDNA data
+        self.pre_length = 0
+        self.post_length = 0
+
         print("Reading Kmer data...")
         dataset = "kmer"
         x_data_kmer = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
@@ -1312,6 +1315,8 @@ class Model:
         x_data_SC_PseTNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
                                    ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
 
+        self.pre_length = 300
+        self.post_length = 300
         print("Finished reading data.")
 
         # Truncate and prepare models
