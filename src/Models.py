@@ -1362,9 +1362,13 @@ class Model:
         dac_classifier_model.load_weights("../models/dac_" + self.load_file_name + "_model.h5")
 
         for layer in dac_classifier_model.layers:
+            print("LAYER: ", layer)
             layer.trainable = False
         for i in range(len(dac_classifier_model.layers) - 4):
-            dac_classifier_model.layers.pop()
+            print(dac_classifier_model.layers.pop())
+
+        raise Exception
+
 
         print("Loading DCC model...")
         with open("../models/dcc_" + self.load_file_name + "_model.json") as fh:
