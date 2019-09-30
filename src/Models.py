@@ -1384,6 +1384,7 @@ class Model:
         PC_PseDNC_classifier_model.load_weights("../models/PC_PseDNC_" + self.load_file_name + "_model.h5")
 
         for layer in PC_PseDNC_classifier_model.layers:
+            print("LAYER: ", layer)
             layer.trainable = False
         for i in range(3):
             PC_PseDNC_classifier_model.pop()
