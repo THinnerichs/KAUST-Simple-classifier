@@ -103,9 +103,9 @@ def apply_classification(applied_model="simple_classifier",
                                                                 train=train,
                                                                 test=test,
                                                                 epochs=10)
-
-
-
+        else:
+            print("No valid model selected.")
+            raise Exception
 
     print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
     print("File name:", load_file_name)
@@ -114,8 +114,6 @@ def apply_classification(applied_model="simple_classifier",
     print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=filehandler)
     print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
-
-    print("Loss values: (val_loss, val_acc, acc):", model.loss_val_index)
 
     # print accuracy progress
     print("\nRESULTS:")
