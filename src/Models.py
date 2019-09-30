@@ -10,7 +10,6 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.metrics import confusion_matrix
 from sklearn import svm
 from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import train_test_split
 
 from xgboost import XGBClassifier
 
@@ -38,10 +37,9 @@ class Model:
         self.epochs = None
         self.batch_size = None
 
-        config = tf.ConfigProto( device_count = {'GPU': 0 , 'CPU': 4} )
+        config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 4})
         sess = tf.Session(config=config)
         backend.set_session(sess)
-
 
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
@@ -94,7 +92,7 @@ class Model:
                             y=self.y_data[train],
                             epochs=epochs,
                             batch_size=batch_size,
-                            validation_data=(self.x_data[test],self.y_data[test]),
+                            validation_data=(self.x_data[test], self.y_data[test]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
         model.summary()
@@ -139,7 +137,7 @@ class Model:
             recall = tp/(tp + fn) * 100
 
             print("Recall:", recall, file=self.filehandler)
-            print("Precision:",precision, file=self.filehandler)
+            print("Precision:", precision, file=self.filehandler)
 
             print("------------------------------------------------\n")
 
@@ -317,26 +315,27 @@ class Model:
         convolutional_1_1 = layers.Conv2D(16, kernel_size=(2, 15), activation="relu")(input_tensor)
         max_pool_1_1 = layers.MaxPooling2D((2,1))(convolutional_1_1)
         
-        '''
 
         convolutional_1_2 = layers.Conv2D(32, kernel_size=(3, 15), activation='relu')(input_tensor)
         max_pool_1_2 = layers.MaxPooling2D((2,1))(convolutional_1_2)
+        '''
 
         convolutional_1_3 = layers.Conv2D(32, kernel_size=(4, 15), activation='relu')(input_tensor)
-        max_pool_1_3 = layers.MaxPooling2D((2,1))(convolutional_1_3)
+        max_pool_1_3 = layers.MaxPooling2D((2, 1))(convolutional_1_3)
         
         convolutional_1_4 = layers.Conv2D(32, kernel_size=(5, 15), activation='relu')(input_tensor)
-        max_pool_1_4 = layers.MaxPooling2D((2,1))(convolutional_1_4)
+        max_pool_1_4 = layers.MaxPooling2D((2, 1))(convolutional_1_4)
 
         convolutional_1_5 = layers.Conv2D(32, kernel_size=(6, 15), activation='relu')(input_tensor)
-        max_pool_1_5 = layers.MaxPooling2D((2,1))(convolutional_1_5)
+        max_pool_1_5 = layers.MaxPooling2D((2, 1))(convolutional_1_5)
 
+        '''
         convolutional_1_6 = layers.Conv2D(32, kernel_size=(7, 15), activation='relu')(input_tensor)
         max_pool_1_6 = layers.MaxPooling2D((2,1))(convolutional_1_6)
 
         convolutional_1_7 = layers.Conv2D(32, kernel_size=(8, 15), activation='relu')(input_tensor)
         max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
-
+        '''
 
         merge_1 = layers.Concatenate(axis=1)([max_pool_1_3, max_pool_1_4, max_pool_1_5])
 
@@ -344,7 +343,7 @@ class Model:
         dense_1 = layers.Dense(128, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
         dense_2 = layers.Dense(128, activation='relu')(dropout_1)
-        dropout_2 = layers.Dropout(0.5)(dense_1)
+        dropout_2 = layers.Dropout(0.5)(dense_2)
 
 
         output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
