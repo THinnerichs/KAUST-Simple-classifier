@@ -1515,10 +1515,19 @@ class Model:
 
         model.summary()
 
-        raise Exception
-
         # evaluate the model
-        scores = model.evaluate(self.x_data[test], self.y_data[test], verbose=0)
+        scores = model.evaluate([x_data_simple[test],
+                                 x_data_DiProDB[test],
+                                 x_data_IDkmer[test],
+                                 x_data_dac[test],
+                                 x_data_dcc[test],
+                                 x_data_PC_PseDNC[test],
+                                 x_data_PC_PseTNC[test],
+                                 x_data_SC_PseDNC[test],
+                                 x_data_SC_PseTNC[test]],
+                                [self.y_data[test]],
+                                verbose=0)
+
 
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
@@ -1532,16 +1541,24 @@ class Model:
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
+            y_pred = model.predict([x_data_simple[test],
+                                 x_data_DiProDB[test],
+                                 x_data_IDkmer[test],
+                                 x_data_dac[test],
+                                 x_data_dcc[test],
+                                 x_data_PC_PseDNC[test],
+                                 x_data_PC_PseTNC[test],
+                                 x_data_SC_PseDNC[test],
+                                 x_data_SC_PseTNC[test]])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred.reshape((len(y_pred))) > 0.5).astype(int)]),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
+                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred.reshape((len(y_pred))) > 0.5).astype(int)]))
 
             # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+            conf_matrix = confusion_matrix(y_true=[self.y_data[test]],
+                                           y_pred=[(y_pred.reshape((len(y_pred))) > 0.5).astype(int)])
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
