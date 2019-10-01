@@ -1551,14 +1551,14 @@ class Model:
                                  x_data_SC_PseDNC[test],
                                  x_data_SC_PseTNC[test]])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred.reshape((len(y_pred))) > 0.5).astype(int)]),
+                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred > 0.5).astype(int)]),
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred.reshape((len(y_pred))) > 0.5).astype(int)]))
+                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred > 0.5).astype(int)]))
 
             # Calculate other validation scores
             conf_matrix = confusion_matrix(y_true=[self.y_data[test]],
-                                           y_pred=[(y_pred.reshape((len(y_pred))) > 0.5).astype(int)])
+                                           y_pred=[(y_pred > 0.5).astype(int)])
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
@@ -1575,11 +1575,11 @@ class Model:
 
             # serialize model to JSON
             model_json = model.to_json()
-            with open("../models/SC_PseTNC_" + self.load_file_name + "_model.json", "w") as json_file:
+            with open("../models/overall_" + self.load_file_name + "_model.json", "w") as json_file:
                 json_file.write(model_json)
             # serialize weights to HDF5
-            model.save_weights("../models/SC_PseTNC_" + self.load_file_name + "_model.h5")
-            print("Saved SC-PseTNC convolutional model to disk.")
+            model.save_weights("../models/overall_" + self.load_file_name + "_model.h5")
+            print("Saved overall convolutional model to disk.")
 
 
 
