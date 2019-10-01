@@ -318,9 +318,10 @@ class Model:
             print("-----------------------------------------------------\n")
 
     def albaradei_classifier(self,
-                           cv_scores,
-                           train,
-                           test):
+                             cv_scores,
+                             train,
+                             test,
+                             org="at"):
         def load_pickle(pickle_file):
             try:
                 with open(pickle_file, 'rb') as f:
@@ -333,7 +334,6 @@ class Model:
                 raise
             return pickle_data
 
-        org = "at"
         models_path = "../models/AlbaradeiModels/"
         global_model = load_model(models_path + "acc_global_model_" + org)
         up_model = load_model(models_path + 'acc_up_model_' + org)
@@ -341,9 +341,6 @@ class Model:
         # print(down_model)
         finalmodel = models_path + 'acc_splicedeep_' + org + '.pkl'
         final_model = load_pickle(finalmodel)
-
-        self.x_data = self.x_data_dict['simple'][test].transpose((0, 2, 1))
-        self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
 
         prediction = global_model.predict(self.x_data)
 
