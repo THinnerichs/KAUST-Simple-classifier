@@ -342,6 +342,11 @@ class Model:
         finalmodel = models_path + 'acc_splicedeep_' + org + '.pkl'
         final_model = load_pickle(finalmodel)
 
+        self.x_data = self.x_data_dict['simple'][test]
+        print(self.x_data)
+
+        raise Exception
+
         prediction = global_model.predict(self.x_data_dict['simple'][test])
 
         print("Prediction", prediction)
