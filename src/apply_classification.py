@@ -24,13 +24,13 @@ def apply_classification(applied_model="simple_classifier",
         print("Reading {} data".format(dataset))
         if dataset in ['kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC']:
             x_data_dict[dataset] = np.load(file="../data/x_" +
-                                                (dataset + "_" if len(dataset)!="simple" else "") +
+                                                (dataset + "_" if dataset!="simple" else "") +
                                                 load_file_name + "_" + str(samples_per_file) +
                                                 "_samples" + ".npy")
 
         else:
             x_data_dict[dataset] = np.load(file="../data/x_" +
-                                                (dataset + "_" if len(dataset)!="simple" else "") +
+                                                (dataset + "_" if dataset!="simple" else "") +
                                                 load_file_name + "_" +
                                                 str(samples_per_file) + "_samples" +
                                                 ("_" + str(pre_length) + "_pre" if pre_length!=0 else "") +
