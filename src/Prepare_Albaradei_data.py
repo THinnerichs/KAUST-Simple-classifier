@@ -104,9 +104,6 @@ def prepare_albaradei_data(include_acceptor=False,
             data.append(img_to_array(image))
             image = np.zeros((64, n))
 
-            if len(data)>=samples_per_file:
-                break
-
         return data
 
     # check seqence and make sure it contains ACGT letters only
