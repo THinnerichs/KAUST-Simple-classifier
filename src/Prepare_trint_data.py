@@ -37,8 +37,6 @@ def prepare_trint_data(include_acceptor=False,
 
     trint_example_seq = ["".join(a) for a in itertools.product(example_seq, example_seq, example_seq)]
 
-    print(trint_example_seq)
-
     encoded_seq = onehot_encoder.fit_transform(np.array(trint_example_seq).reshape((64, 1)))
 
     trint_nucleotide_dict = {trint_example_seq[i]: encoded_seq[i] for i in range(len(trint_example_seq))}
@@ -95,9 +93,9 @@ if __name__ == '__main__':
     prepare_trint_data(include_acceptor=True,
                        include_donor=False,
                        save_file_name="acceptor_data",
-                       samples_per_file=20000)
+                       samples_per_file=100000)
 
     prepare_trint_data(include_acceptor=False,
                        include_donor=True,
                        save_file_name="donor_data",
-                       samples_per_file=20000)
+                       samples_per_file=100000)
