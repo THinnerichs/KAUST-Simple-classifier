@@ -342,7 +342,7 @@ class Model:
         finalmodel = models_path + 'acc_splicedeep_' + org + '.pkl'
         final_model = load_pickle(finalmodel)
 
-        self.x_data = self.x_data_dict['simple'][test]
+        self.x_data = self.x_data_dict['simple'][test].transpose((0, 2, 1))
         print(self.x_data.shape)
 
         raise Exception
