@@ -11,6 +11,7 @@ from keras.preprocessing.image import img_to_array
 
 def prepare_albaradei_data(include_acceptor=False,
                            include_donor=False,
+                           save_file_name="acceptor_data",
                            samples_per_file=10000,
                            pre_length=300,
                            post_length=300):
@@ -143,9 +144,7 @@ def prepare_albaradei_data(include_acceptor=False,
 
     print("Finished reading data")
 
-    save_file_name = "albaradei"
-
-    x_filename = "../data/x_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
+    x_filename = "../data/x_albaradei" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=test_data)
 
@@ -167,9 +166,8 @@ def prepare_albaradei_data(include_acceptor=False,
 
     print("Finished reading data")
 
-    save_file_name = "albaradei_down"
 
-    x_filename = "../data/x_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
+    x_filename = "../data/x_albaradei_down" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=test_images)
 
@@ -184,9 +182,8 @@ def prepare_albaradei_data(include_acceptor=False,
 
     print("Finished reading data")
 
-    save_file_name = "albaradei_up"
 
-    x_filename = "../data/x_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
+    x_filename = "../data/x_albaradei_up" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=test_images)
 
@@ -197,10 +194,12 @@ if __name__ == '__main__':
     start = time.time()
     prepare_albaradei_data(include_acceptor=True,
                            include_donor=False,
+                           save_file_name="acceptor_data",
                            samples_per_file=20000)
 
     prepare_albaradei_data(include_acceptor=False,
                            include_donor=True,
+                           save_file_name="donor_data",
                            samples_per_file=20000)
 
     end = time.time()
