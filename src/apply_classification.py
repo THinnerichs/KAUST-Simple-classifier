@@ -49,7 +49,7 @@ def apply_classification(applied_model="simple_classifier",
     cv_scores = []
 
     filehandler = open(file=results_log_file, mode='a')
-    model = Model(x_data=x_data_dict,
+    model = Model(x_data_dict=x_data_dict,
                   y_data=y_data,
                   filehandler=filehandler,
                   pre_length=pre_length,

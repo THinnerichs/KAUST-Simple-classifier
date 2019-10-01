@@ -35,7 +35,7 @@ class Model:
         self.load_file_name = load_file_name
         self.samples_per_file = None
 
-        # self.x_data = None
+        self.x_data = None
 
         # Find best epoch
         self.loss_val_index = []
