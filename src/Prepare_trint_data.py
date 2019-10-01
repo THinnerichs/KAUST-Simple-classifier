@@ -33,6 +33,14 @@ def prepare_trint_data(include_acceptor=False,
     if include_donor:
         mode_list.append("donor")
 
+    example_seq = ['A', 'C', 'G', 'T']
+
+    trint_example_seq = ["".join(a) for a in itertools.product(example_seq, example_seq, example_seq)]
+
+    encoded_seq = onehot_encoder.fit_transform(np.array(trint_example_seq).reshape((64, 1)))
+
+    trint_nucleotide_dict = {trint_example_seq[i]: encoded_seq[i] for i in range(len(example_seq))}
+
     # Read data and perform transformation
     N = 3
     for a, b in itertools.product(["negative", "positive"], mode_list):
@@ -44,7 +52,7 @@ def prepare_trint_data(include_acceptor=False,
 
         for record in SeqIO.parse(file_name, "fasta"):
             loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
-            onehot_encoded = [onehot_encoder.fit_transform(np.array(list(loop_record[i:i+N])).reshape(64, 1)) for i in range(len(loop_record) -N+1)]
+            onehot_encoded = [trint_nucleotide_dict[loop_record[i:i+N]] for i in range(len(loop_record) -N+1)]
 
             x_dataset.append(onehot_encoded)
             counter += 1
