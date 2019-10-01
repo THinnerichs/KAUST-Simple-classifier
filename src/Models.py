@@ -1454,7 +1454,7 @@ class Model:
 
         concat = layers.concatenate([simple_classifier_model.layers[-1].output,
                                      DiProDB_classifier_model.layers[-1].output,
-                                     # IDkmer_classifier_model.layers[-1].output,
+                                     IDkmer_classifier_model.layers[-1].output,
                                      # dac_classifier_model.layers[-1].output,
                                      # dcc_classifier_model.layers[-1].output,
                                      # PC_PseDNC_classifier_model.layers[-1].output,
@@ -1468,7 +1468,7 @@ class Model:
 
         model = models.Model(inputs=[simple_input_tensor.input,
                                      DiProDB_input_tensor.input,
-                                     # IDkmer_input_tensor.input,
+                                     IDkmer_input_tensor.input,
                                      # DAC_input_tensor.input,
                                      # DCC_input_tensor.input,
                                      # PC_PseDNC_input_tensor.input,
@@ -1486,7 +1486,7 @@ class Model:
         # train model
         history = model.fit(x=[x_data_simple[train],
                                x_data_DiProDB[train],
-                               # x_data_IDkmer[train],
+                               x_data_IDkmer[train],
                                # x_data_dac[train],
                                # x_data_dcc[train],
                                # x_data_PC_PseDNC[train],
@@ -1499,7 +1499,7 @@ class Model:
                             batch_size=batch_size,
                             validation_data=([x_data_simple[test],
                                               x_data_DiProDB[test],
-                                              # x_data_IDkmer[test],
+                                              x_data_IDkmer[test],
                                               # x_data_dac[test],
                                               # x_data_dcc[test],
                                               # x_data_PC_PseDNC[test],
@@ -1521,7 +1521,7 @@ class Model:
         # evaluate the model
         scores = model.evaluate([x_data_simple[test],
                                  x_data_DiProDB[test],
-                                 # x_data_IDkmer[test],
+                                 x_data_IDkmer[test],
                                  # x_data_dac[test],
                                  # x_data_dcc[test],
                                  # x_data_PC_PseDNC[test],
@@ -1547,7 +1547,7 @@ class Model:
             # print confusion matrix
             y_pred = model.predict([x_data_simple[test],
                                     x_data_DiProDB[test],
-                                    # x_data_IDkmer[test],
+                                    x_data_IDkmer[test],
                                     # x_data_dac[test],
                                     # x_data_dcc[test],
                                     # x_data_PC_PseDNC[test],
