@@ -44,7 +44,7 @@ def prepare_trint_data(include_acceptor=False,
 
         for record in SeqIO.parse(file_name, "fasta"):
             loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
-            onehot_encoded = [onehot_encoder.fit_transform(loop_record[i:i+N]) for i in range(len(loop_record) -N+1)]
+            onehot_encoded = [onehot_encoder.fit_transform(np.array(list(loop_record[i:i+N])).reshape(64, 1)) for i in range(len(loop_record) -N+1)]
 
             x_dataset.append(onehot_encoded)
             counter += 1
