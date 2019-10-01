@@ -27,7 +27,7 @@ def apply_classification(applied_model="simple_classifier",
                                                                                  y_data.shape))
 
     # Prepare train and test data
-    kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=seed)
+    kfold = StratifiedKFold(n_splits=1, shuffle=True, random_state=seed)
 
     cv_scores = []
 
@@ -109,7 +109,8 @@ def apply_classification(applied_model="simple_classifier",
             model.overall_classifier(cv_scores=cv_scores,
                                      train=train,
                                      test=test,
-                                     epochs=1)
+                                     epochs=1,
+                                     batch_size=500)
         else:
             print("No valid model selected.")
             raise Exception
@@ -147,7 +148,6 @@ def j1():
                          dataset="PC_PseDNC",
                          pre_length=0,
                          post_length=0)
-
 def j2():
     apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="donor_data",
@@ -169,7 +169,6 @@ def j4():
                          dataset="PC_PseTNC",
                          pre_length=0,
                          post_length=0)
-
 def j5():
     apply_classification(applied_model="repDNA_SC_PseDNC_classifier",
                          load_file_name="acceptor_data",
@@ -184,7 +183,6 @@ def j6():
                          dataset="SC_PseDNC",
                          pre_length=0,
                          post_length=0)
-
 def j7():
     apply_classification(applied_model="repDNA_SC_PseTNC_classifier",
                          load_file_name="acceptor_data",

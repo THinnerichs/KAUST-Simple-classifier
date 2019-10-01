@@ -1462,9 +1462,8 @@ class Model:
                                      SC_PseDNC_classifier_model.layers[-1].output,
                                      SC_PseTNC_classifier_model.layers[-1].output])
 
-        dense_1 = layers.Dense(512, activation='relu')(concat)
-        dropout_1 = layers.Dropout(0.5)(dense_1)
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_1)
+        dense_1 = layers.Dense(1024, activation='relu')(concat)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dense_1)
 
         model = models.Model(inputs=[simple_input_tensor.input,
                                      DiProDB_input_tensor.input,
@@ -1534,7 +1533,7 @@ class Model:
         print("--------------------------------------------------\n")
         cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 3:
+        if len(cv_scores) == 1:
             print("OVERALL BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
@@ -1550,6 +1549,12 @@ class Model:
                                  x_data_PC_PseTNC[test],
                                  x_data_SC_PseDNC[test],
                                  x_data_SC_PseTNC[test]])
+
+            print("[self.y_data[test]]", [self.y_data[test]])
+            print("[(y_pred > 0.5).astype(int)]", [(y_pred > 0.5).astype(int)])
+
+
+            raise Exception
 
 
             conf_matrix = confusion_matrix(y_true=[self.y_data[test]],
@@ -1579,6 +1584,3 @@ class Model:
             # serialize weights to HDF5
             model.save_weights("../models/overall_" + self.load_file_name + "_model.h5")
             print("Saved overall convolutional model to disk.")
-
-
-
