@@ -104,7 +104,7 @@ def apply_classification(applied_model="simple_classifier",
                                                         train=train,
                                                         test=test,
                                                         epochs=10)
-        elif applied_model == "overall_classification":
+        elif applied_model == "overall_classifier":
             model.samples_per_file = samples_per_file
             model.overall_classifier(cv_scores=cv_scores,
                                      train=train,
@@ -202,7 +202,7 @@ def j8():
 if __name__ == '__main__':
     test_start = time.time()
 
-    apply_classification(applied_model="overall_classification",
+    apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
                          dataset="",
