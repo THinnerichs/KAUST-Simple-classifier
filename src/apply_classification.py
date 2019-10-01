@@ -8,7 +8,7 @@ from Models import *
 
 def apply_classification(applied_model="simple_classifier",
                          load_file_name="acceptor_data",
-                         dataset="",
+                         datasets=None,
                          results_log_file="../results/results_log",
                          samples_per_file=10000,
                          pre_length=300,
@@ -19,12 +19,29 @@ def apply_classification(applied_model="simple_classifier",
     np.random.seed(seed)
 
     print("Reading data")
-    x_data = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ load_file_name + "_" + str(samples_per_file) + "_samples" + ("_" + str(
-        pre_length) + "_pre" if pre_length!=0 else "") + ("_" + str(post_length) + "_post" if post_length!=0 else "") + ".npy")
+    x_data_dict = {}
+    for dataset in datasets:
+        print("Reading {} data".format(dataset))
+        if dataset in ['kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC']:
+            x_data_dict[dataset] = np.load(file="../data/x_" +
+                                                (dataset + "_" if len(dataset)!="simple" else "") +
+                                                load_file_name + "_" + str(samples_per_file) +
+                                                "_samples" + ".npy")
+
+        else:
+            x_data_dict[dataset] = np.load(file="../data/x_" +
+                                                (dataset + "_" if len(dataset)!="simple" else "") +
+                                                load_file_name + "_" +
+                                                str(samples_per_file) + "_samples" +
+                                                ("_" + str(pre_length) + "_pre" if pre_length!=0 else "") +
+                                                ("_" + str(post_length) + "_post" if post_length!=0 else "") +
+                                                ".npy")
+
     y_data = np.load(file="../data/y_" + load_file_name + "_" + str(samples_per_file) + "_samples.npy")
-    print("Finished reading data in {}. x_data.shape {}, y_data.shape {}".format(time.time() - start,
-                                                                                 x_data.shape,
-                                                                                 y_data.shape))
+    print("Finished reading data in {}. y_data.shape {}".format(time.time() - start,
+                                                                y_data.shape))
+    for key in list(x_data_dict.keys()):
+        print("x_data_shape", key, x_data_dict[key].shape)
 
     # Prepare train and test data
     kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
@@ -32,7 +49,7 @@ def apply_classification(applied_model="simple_classifier",
     cv_scores = []
 
     filehandler = open(file=results_log_file, mode='a')
-    model = Model(x_data=x_data,
+    model = Model(x_data=x_data_dict,
                   y_data=y_data,
                   filehandler=filehandler,
                   pre_length=pre_length,
@@ -40,7 +57,7 @@ def apply_classification(applied_model="simple_classifier",
                   load_file_name=load_file_name)
 
     # Perform Kfold cross validation
-    for train, test in kfold.split(x_data, y_data):
+    for train, test in kfold.split(x_data_dict[list(x_data_dict.keys())[0]], y_data):
         print("Round: {}".format(len(cv_scores) + 1))
 
         # Execute model
@@ -111,6 +128,10 @@ def apply_classification(applied_model="simple_classifier",
                                      test=test,
                                      epochs=15,
                                      batch_size=200)
+        elif applied_model == "Albaradei_classifier":
+            model.albaradei_classifier(cv_scores=cv_scores,
+                                       train=train,
+                                       test=test)
         else:
             print("No valid model selected.")
             raise Exception
@@ -145,56 +166,56 @@ def j1():
     apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="PC_PseDNC",
+                         datasets=["PC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j2():
     apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="PC_PseDNC",
+                         datasets=["PC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j3():
     apply_classification(applied_model="repDNA_PC_PseTNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="PC_PseTNC",
+                         datasets=["PC_PseTNC"],
                          pre_length=0,
                          post_length=0)
 def j4():
     apply_classification(applied_model="repDNA_PC_PseTNC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="PC_PseTNC",
+                         datasets=["PC_PseTNC"],
                          pre_length=0,
                          post_length=0)
 def j5():
     apply_classification(applied_model="repDNA_SC_PseDNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="SC_PseDNC",
+                         datasets=["SC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j6():
     apply_classification(applied_model="repDNA_SC_PseDNC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="SC_PseDNC",
+                         datasets=["SC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j7():
     apply_classification(applied_model="repDNA_SC_PseTNC_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="SC_PseTNC",
+                         datasets=["SC_PseTNC"],
                          pre_length=0,
                          post_length=0)
 def j8():
     apply_classification(applied_model="repDNA_SC_PseTNC_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="SC_PseTNC",
+                         datasets=["SC_PseTNC"],
                          pre_length=0,
                          post_length=0)
 
@@ -202,19 +223,27 @@ def j8():
 if __name__ == '__main__':
     test_start = time.time()
 
+    '''
     apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         dataset="",
+                         datasets=['simple', 'dint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
 
     apply_classification(applied_model="overall_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         dataset="",
+                         datasets=['simple', 'dint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
+    '''
+
+    apply_classification(applied_model="Albaradei_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=20000,
+                         datasets=['simple', 'trint'])
+
 
     '''
 

@@ -1,10 +1,13 @@
 import numpy as np
 
+import pickle
+
 from keras import models
 from keras import layers
 from keras.callbacks import TensorBoard
 from keras import backend
-from keras.models import model_from_json
+from keras.models import model_from_json, load_model
+
 import tensorflow as tf
 
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -18,18 +21,21 @@ from xgboost import XGBClassifier
 class Model:
 
     def __init__(self,
-                 x_data, y_data,
+                 x_data_dict,
+                 y_data,
                  filehandler,
                  pre_length=300,
                  post_length=300,
                  load_file_name="acceptor_data"):
-        self.x_data = x_data
+        self.x_data_dict = x_data_dict
         self.y_data = y_data
         self.filehandler = filehandler
         self.pre_length = pre_length
         self.post_length = post_length
         self.load_file_name = load_file_name
         self.samples_per_file = None
+
+        # self.x_data = None
 
         # Find best epoch
         self.loss_val_index = []
@@ -42,6 +48,8 @@ class Model:
         config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 16})
         sess = tf.Session(config=config)
         backend.set_session(sess)
+
+        tf.python.util.deprecation._PRINT_DEPRECATION_WARNINGS = False
 
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
@@ -56,7 +64,7 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[1], self.x_data.shape[2], 1))
+        self.x_data = self.x_data_dict['simple'].reshape(self.x_data_dict.shape + (1,))
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
@@ -163,7 +171,9 @@ class Model:
 
         self.epochs = epochs
         self.batch_size = batch_size
-        
+
+        self.x_data = self.x_data_dict['simple']
+
         onehot_encoder = OneHotEncoder(sparse=False)
 
         # prepare One Hot Encoding after kfold
@@ -227,6 +237,8 @@ class Model:
             cv_scores,
             train,
             test):
+        self.x_data = self.x_data_dict['simple']
+
         clf = svm.SVC(gamma='scale', verbose=True)
         clf.fit(self.normalize_labels()[train], self.y_data[train])
 
@@ -253,6 +265,8 @@ class Model:
                     cv_scores,
                     train,
                     test):
+        self.x_data = self.x_data_dict['simple']
+
         gnb = GaussianNB()
         gnb.fit(self.normalize_labels()[train], self.y_data[train])
 
@@ -279,6 +293,7 @@ class Model:
                           cv_scores,
                           train,
                           test):
+        self.x_data = self.x_data_dict['simple']
 
         model = XGBClassifier()
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train], verbose=True)
@@ -304,12 +319,46 @@ class Model:
             print("Confusion matrix:", conf_matrix, file=self.filehandler)
             print("-----------------------------------------------------\n")
 
+    def albaradei_classifier(self,
+                           cv_scores,
+                           train,
+                           test):
+        def load_pickle(pickle_file):
+            try:
+                with open(pickle_file, 'rb') as f:
+                    pickle_data = pickle.load(f)
+            except UnicodeDecodeError as e:
+                with open(pickle_file, 'rb') as f:
+                    pickle_data = pickle.load(f, encoding='latin1')
+            except Exception as e:
+                print('Unable to load data ', pickle_file, ':', e)
+                raise
+            return pickle_data
+
+        org = "at"
+        models_path = "../models/AlbaradeiModels/"
+        global_model = load_model(models_path + "acc_global_model_" + org)
+        up_model = load_model(models_path + 'acc_up_model_' + org)
+        down_model = load_model(models_path + 'acc_down_model_' + org)
+        # print(down_model)
+        finalmodel = models_path + 'acc_splicedeep_' + org + '.pkl'
+        final_model = load_pickle(finalmodel)
+
+        prediction = global_model.predict(self.x_data_dict['simple'][test])
+
+        print("Prediction", prediction)
+
+        raise Exception
+
+
     def simple_classifier_on_DiProDB(self,
                                      cv_scores,
                                      train,
                                      test,
                                      epochs=5,
                                      batch_size=200):
+        self.x_data = self.x_data_dict['dint']
+
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -431,11 +480,12 @@ class Model:
                                          test,
                                          epochs=10,
                                          batch_size=500):
+        self.x_data = self.x_data_dict['Kmer']
 
         self.epochs = epochs
         self.batch_size = batch_size
 
-        self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
+        self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
 
         # defining model
         input_tensor = layers.Input(shape=(20, 1))
@@ -532,6 +582,8 @@ class Model:
                                            test,
                                            epochs=10,
                                            batch_size=500):
+        self.x_data = self.x_data_dict['IDkmer']
+
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -631,6 +683,8 @@ class Model:
                                         test,
                                         epochs=10,
                                         batch_size=500):
+        self.x_data = self.x_data_dict['dac']
+
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -736,6 +790,8 @@ class Model:
                                         test,
                                         epochs=10,
                                         batch_size=500):
+        self.x_data = self.x_data_dict['dcc']
+
         self.epochs = epochs
         self.batch_size = batch_size
 
@@ -841,6 +897,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
+        self.x_data = self.x_data_dict['PC_PseDNC']
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -945,6 +1002,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
+        self.x_data = self.x_data_dict['PC_PseTNC']
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1049,6 +1107,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
+        self.x_data = self.x_data_dict['SC_PseDNC']
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1153,6 +1212,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
+        self.x_data = self.x_data_dict['SC_PseTNC']
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1265,10 +1325,7 @@ class Model:
 
         # Read DiProDB data
         print("Reading DiProDB data...")
-        dataset = "dint"
-        x_data_DiProDB = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                              ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
-
+        x_data_DiProDB = self.x_data_dict['dint']
         x_data_DiProDB = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
 
         # Read repDNA data
@@ -1276,51 +1333,35 @@ class Model:
         self.post_length = 0
 
         print("Reading Kmer data...")
-        dataset = "kmer"
-        x_data_kmer = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_kmer = self.x_data_dict['kmer']
         x_data_kmer = x_data_kmer.reshape(x_data_kmer.shape + (1,))
 
         print("Reading IDkmer data...")
-        dataset = "IDkmer"
-        x_data_IDkmer = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_IDkmer = self.x_data_dict['IDkmer']
         x_data_IDkmer = x_data_IDkmer.reshape(x_data_IDkmer.shape + (1,))
 
         print("Reading DAC data...")
-        dataset = "dac"
-        x_data_dac = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_dac = self.x_data_dict['dac']
         x_data_dac = x_data_dac.reshape(x_data_dac.shape + (1,))
 
         print("Reading DCC data...")
-        dataset = "dcc"
-        x_data_dcc = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_dcc = self.x_data_dict['dcc']
         x_data_dcc = x_data_dcc.reshape(x_data_dcc.shape + (1,))
 
         print("Reading PC-PseDNC data...")
-        dataset = "PC_PseDNC"
-        x_data_PC_PseDNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_PC_PseDNC = self.x_data_dict['PC_PseDNC']
         x_data_PC_PseDNC = x_data_PC_PseDNC.reshape(x_data_PC_PseDNC.shape + (1,))
 
         print("Reading PC-PseTNC data...")
-        dataset = "PC_PseTNC"
-        x_data_PC_PseTNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_PC_PseTNC = self.x_data_dict['PC_PseTNC']
         x_data_PC_PseTNC = x_data_PC_PseTNC.reshape(x_data_PC_PseTNC.shape + (1,))
 
         print("Reading SC-PseDNC data...")
-        dataset = "SC_PseDNC"
-        x_data_SC_PseDNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_SC_PseDNC = self.x_data_dict['SC_PseDNC']
         x_data_SC_PseDNC = x_data_SC_PseDNC.reshape(x_data_SC_PseDNC.shape + (1,))
 
         print("Reading SC-PseTNC data...")
-        dataset = "SC_PseTNC"
-        x_data_SC_PseTNC = np.load(file="../data/x_" + dataset + ("_" if len(dataset)!=0 else "")+ self.load_file_name + "_" + str(self.samples_per_file) + "_samples" +
-                                   ("_" + str(self.pre_length) + "_pre" if self.pre_length!=0 else "") + ("_" + str(self.post_length) + "_post" if self.post_length!=0 else "") + ".npy")
+        x_data_SC_PseTNC = self.x_data_dict['SC_PseTNC']
         x_data_SC_PseTNC = x_data_SC_PseTNC.reshape(x_data_SC_PseTNC.shape + (1,))
 
         self.pre_length = 300
