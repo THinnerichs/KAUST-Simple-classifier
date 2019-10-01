@@ -49,8 +49,6 @@ class Model:
         sess = tf.Session(config=config)
         backend.set_session(sess)
 
-        tf.python.util.deprecation._PRINT_DEPRECATION_WARNINGS = False
-
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
 
