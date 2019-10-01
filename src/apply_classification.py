@@ -27,7 +27,7 @@ def apply_classification(applied_model="simple_classifier",
                                                                                  y_data.shape))
 
     # Prepare train and test data
-    kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
+    kfold = StratifiedKFold(n_splits=3, shuffle=True, random_state=seed)
 
     cv_scores = []
 
@@ -108,7 +108,8 @@ def apply_classification(applied_model="simple_classifier",
             model.samples_per_file = samples_per_file
             model.overall_classifier(cv_scores=cv_scores,
                                      train=train,
-                                     test=test)
+                                     test=test,
+                                     epochs=1)
         else:
             print("No valid model selected.")
             raise Exception

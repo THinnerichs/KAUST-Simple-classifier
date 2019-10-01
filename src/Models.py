@@ -1534,7 +1534,7 @@ class Model:
         print("--------------------------------------------------\n")
         cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
+        if len(cv_scores) == 3:
             print("OVERALL BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
