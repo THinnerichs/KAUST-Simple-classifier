@@ -27,7 +27,7 @@ def apply_classification(applied_model="simple_classifier",
                                                                                  y_data.shape))
 
     # Prepare train and test data
-    kfold = StratifiedKFold(n_splits=1, shuffle=True, random_state=seed)
+    kfold = StratifiedKFold(n_splits=2, shuffle=True, random_state=seed)
 
     cv_scores = []
 
