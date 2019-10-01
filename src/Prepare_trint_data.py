@@ -24,7 +24,6 @@ def prepare_trint_data(include_acceptor=False,
 
     # Initialize datasets
     x_dataset = []
-    y_dataset = []
 
     # Prepare selected modes
     mode_list = []
@@ -63,27 +62,16 @@ def prepare_trint_data(include_acceptor=False,
             if counter >= samples_per_file:
                 break
 
-        # Prepare y labels
-        y_dataset.extend(counter * [a+b])
-
-
-    # Transform data type of datasets
-    y_dataset = np.array(y_dataset)
-    y_dataset = label_encoder.fit_transform(y_dataset)
-    print("y_dataset shape:", y_dataset.shape)
-
     x_dataset = np.array(x_dataset, dtype=np.int64)
     print("x_dataset shape:", x_dataset.shape)
 
     print("Finished reading data")
 
     x_filename = "../data/x_trint_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
-    y_filename = "../data/y_trint_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
-    np.save(file=y_filename, arr=y_dataset)
 
-    print("Data saved in {} and {}.".format(x_filename,y_filename))
+    print("Data saved in {}.".format(x_filename))
 
     end = time.time()
     print("This took {} seconds.".format(end-start))
