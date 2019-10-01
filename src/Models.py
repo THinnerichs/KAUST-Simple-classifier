@@ -1550,15 +1550,14 @@ class Model:
                                  x_data_PC_PseTNC[test],
                                  x_data_SC_PseDNC[test],
                                  x_data_SC_PseTNC[test]])
-            print("Confusion matrix:",
-                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred > 0.5).astype(int)]),
-                  file=self.filehandler)
-            print("Confusion matrix:",
-                  confusion_matrix(y_true=[self.y_data[test]], y_pred=[(y_pred > 0.5).astype(int)]))
 
-            # Calculate other validation scores
+
             conf_matrix = confusion_matrix(y_true=[self.y_data[test]],
                                            y_pred=[(y_pred > 0.5).astype(int)])
+            print("Confusion matrix:", conf_matrix, file=self.filehandler)
+            print("Confusion matrix:", conf_matrix)
+
+            # Calculate other validation scores
 
             tp = conf_matrix[0, 0]
             tn = conf_matrix[1, 1]
