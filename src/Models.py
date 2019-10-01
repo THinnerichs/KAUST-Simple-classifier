@@ -1455,11 +1455,11 @@ class Model:
         concat = layers.concatenate([simple_classifier_model.layers[-1].output,
                                      DiProDB_classifier_model.layers[-1].output,
                                      IDkmer_classifier_model.layers[-1].output,
-                                     dac_classifier_model.layers[-1].output,
-                                     dcc_classifier_model.layers[-1].output,
-                                     PC_PseDNC_classifier_model.layers[-1].output,
-                                     PC_PseTNC_classifier_model.layers[-1].output,
-                                     SC_PseDNC_classifier_model.layers[-1].output,
+                                     # dac_classifier_model.layers[-1].output,
+                                     # dcc_classifier_model.layers[-1].output,
+                                     # PC_PseDNC_classifier_model.layers[-1].output,
+                                     # PC_PseTNC_classifier_model.layers[-1].output,
+                                     # SC_PseDNC_classifier_model.layers[-1].output,
                                      SC_PseTNC_classifier_model.layers[-1].output])
 
         dense_1 = layers.Dense(1024, activation='relu')(concat)
@@ -1468,11 +1468,11 @@ class Model:
         model = models.Model(inputs=[simple_input_tensor.input,
                                      DiProDB_input_tensor.input,
                                      IDkmer_input_tensor.input,
-                                     DAC_input_tensor.input,
-                                     DCC_input_tensor.input,
-                                     PC_PseDNC_input_tensor.input,
-                                     PC_PseTNC_input_tensor.input,
-                                     SC_PseDNC_input_tensor.input,
+                                     # DAC_input_tensor.input,
+                                     # DCC_input_tensor.input,
+                                     # PC_PseDNC_input_tensor.input,
+                                     # PC_PseTNC_input_tensor.input,
+                                     # SC_PseDNC_input_tensor.input,
                                      SC_PseTNC_input_tensor.input],
                              outputs=[output_tensor])
 
@@ -1485,11 +1485,11 @@ class Model:
         history = model.fit(x=[x_data_simple[train],
                                x_data_DiProDB[train],
                                x_data_IDkmer[train],
-                               x_data_dac[train],
-                               x_data_dcc[train],
-                               x_data_PC_PseDNC[train],
-                               x_data_PC_PseTNC[train],
-                               x_data_SC_PseDNC[train],
+                               # x_data_dac[train],
+                               # x_data_dcc[train],
+                               # x_data_PC_PseDNC[train],
+                               # x_data_PC_PseTNC[train],
+                               # x_data_SC_PseDNC[train],
                                x_data_SC_PseTNC[train]],
                             y=[self.y_data[train]],
                             epochs=epochs,
@@ -1497,11 +1497,11 @@ class Model:
                             validation_data=([x_data_simple[test],
                                               x_data_DiProDB[test],
                                               x_data_IDkmer[test],
-                                              x_data_dac[test],
-                                              x_data_dcc[test],
-                                              x_data_PC_PseDNC[test],
-                                              x_data_PC_PseTNC[test],
-                                              x_data_SC_PseDNC[test],
+                                              # x_data_dac[test],
+                                              # x_data_dcc[test],
+                                              # x_data_PC_PseDNC[test],
+                                              # x_data_PC_PseTNC[test],
+                                              # x_data_SC_PseDNC[test],
                                               x_data_SC_PseTNC[test]],
                                              [self.y_data[test]]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
@@ -1518,11 +1518,11 @@ class Model:
         scores = model.evaluate([x_data_simple[test],
                                  x_data_DiProDB[test],
                                  x_data_IDkmer[test],
-                                 x_data_dac[test],
-                                 x_data_dcc[test],
-                                 x_data_PC_PseDNC[test],
-                                 x_data_PC_PseTNC[test],
-                                 x_data_SC_PseDNC[test],
+                                 # x_data_dac[test],
+                                 # x_data_dcc[test],
+                                 # x_data_PC_PseDNC[test],
+                                 # x_data_PC_PseTNC[test],
+                                 # x_data_SC_PseDNC[test],
                                  x_data_SC_PseTNC[test]],
                                 [self.y_data[test]],
                                 verbose=0)
@@ -1533,7 +1533,7 @@ class Model:
         print("--------------------------------------------------\n")
         cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 1:
+        if len(cv_scores) == 10:
             print("OVERALL BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
@@ -1543,22 +1543,17 @@ class Model:
             y_pred = model.predict([x_data_simple[test],
                                  x_data_DiProDB[test],
                                  x_data_IDkmer[test],
-                                 x_data_dac[test],
-                                 x_data_dcc[test],
-                                 x_data_PC_PseDNC[test],
-                                 x_data_PC_PseTNC[test],
-                                 x_data_SC_PseDNC[test],
+                                 # x_data_dac[test],
+                                 # x_data_dcc[test],
+                                 # x_data_PC_PseDNC[test],
+                                 # x_data_PC_PseTNC[test],
+                                 # x_data_SC_PseDNC[test],
                                  x_data_SC_PseTNC[test]])
 
-            print("[self.y_data[test]]", self.y_data[test])
-            print("[(y_pred > 0.5).astype(int)]", (y_pred > 0.5).astype(int)[:, 0])
 
+            conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                           y_pred=(y_pred > 0.5).astype(int)[:, 0])
 
-            raise Exception
-
-
-            conf_matrix = confusion_matrix(y_true=[self.y_data[test]],
-                                           y_pred=[(y_pred > 0.5).astype(int)])
             print("Confusion matrix:", conf_matrix, file=self.filehandler)
             print("Confusion matrix:", conf_matrix)
 
