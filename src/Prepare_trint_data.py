@@ -9,22 +9,13 @@ import itertools
 import time
 
 
-def prepare_data(include_acceptor=False,
-                 include_donor=False,
-                 save_file_name="dataset",
-                 samples_per_file=10000,
-                 pre_length=300,
-                 post_length=300):
-    """
-    This function preprocesses the created fasta file.
-    It reads the records as numpy arrays, performs a One Hot Encoding and the saves both x_data and y_data seperately in .npy files.
+def prepare_trint_data(include_acceptor=False,
+                       include_donor=False,
+                       save_file_name="dataset",
+                       samples_per_file=10000,
+                       pre_length=300,
+                       post_length=300):
 
-    :param include_acceptor:
-    :param include_donor:
-    :param save_file_name:
-    :param samples_per_file:
-    :return:
-    """
     # Initialize classes for later processing
     print("Reading data ...")
     label_encoder = LabelEncoder()
@@ -42,12 +33,8 @@ def prepare_data(include_acceptor=False,
     if include_donor:
         mode_list.append("donor")
 
-    example_seq = ['G', 'A', 'T', 'C']
-    encoded_seq = onehot_encoder.fit_transform(np.array(example_seq).reshape((4, 1)))
-
-    nucleotide_dict = {example_seq[i]: encoded_seq[i] for i in range(len(example_seq))}
-
     # Read data and perform transformation
+    N = 3
     for a, b in itertools.product(["negative", "positive"], mode_list):
         # Read data
         file_name = "../data/{}_{}.fa".format(a, b)
@@ -57,7 +44,7 @@ def prepare_data(include_acceptor=False,
 
         for record in SeqIO.parse(file_name, "fasta"):
             loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
-            onehot_encoded = [nucleotide_dict[loop_record[i]] for i in range(len(loop_record))]
+            onehot_encoded = [onehot_encoder.fit_transform(loop_record[i:i+N]) for i in range(len(loop_record) -N+1)]
 
             x_dataset.append(onehot_encoded)
             counter += 1
@@ -82,8 +69,8 @@ def prepare_data(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
-    y_filename = "../data/y_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
+    x_filename = "../data/x_trint_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    y_filename = "../data/y_trint_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
     np.save(file=y_filename, arr=y_dataset)
@@ -95,12 +82,12 @@ def prepare_data(include_acceptor=False,
 
 
 if __name__ == '__main__':
-    prepare_data(include_acceptor=True,
-                 include_donor=False,
-                 save_file_name="acceptor_data",
-                 samples_per_file=20000)
+    prepare_trint_data(include_acceptor=True,
+                       include_donor=False,
+                       save_file_name="acceptor_data",
+                       samples_per_file=20000)
 
-    prepare_data(include_acceptor=False,
-                 include_donor=True,
-                 save_file_name="donor_data",
-                 samples_per_file=20000)
+    prepare_trint_data(include_acceptor=False,
+                       include_donor=True,
+                       save_file_name="donor_data",
+                       samples_per_file=20000)
