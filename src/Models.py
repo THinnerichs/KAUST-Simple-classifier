@@ -1339,8 +1339,8 @@ class Model:
         for layer in simple_classifier_model.layers:
             layer.name = "simple_" + layer.name
             layer.trainable = False
-        for i in range(5):
-            simple_classifier_model.layers.pop()
+        # for i in range(5):
+            # simple_classifier_model.layers.pop()
 
         print("Loading DiProDB model...")
         with open("../models/DiProDB_" + self.load_file_name + "_model.json") as fh:
@@ -1351,8 +1351,8 @@ class Model:
         for layer in DiProDB_classifier_model.layers:
             layer.name = "DiProDB_" + layer.name
             layer.trainable = False
-        for i in range(5):
-            DiProDB_classifier_model.layers.pop()
+        # for i in range(5):
+            # DiProDB_classifier_model.layers.pop()
 
         print("Loading IDkmer model...")
         with open("../models/IDkmer_" + self.load_file_name + "_model.json") as fh:
@@ -1363,8 +1363,8 @@ class Model:
         for layer in IDkmer_classifier_model.layers:
             layer.name = "IDkmer_" + layer.name
             layer.trainable = False
-        for i in range(3):
-            IDkmer_classifier_model.layers.pop()
+        # for i in range(3):
+            # IDkmer_classifier_model.layers.pop()
 
         print("Loading DAC model...")
         with open("../models/dac_" + self.load_file_name + "_model.json") as fh:
@@ -1375,8 +1375,8 @@ class Model:
         for layer in dac_classifier_model.layers:
             layer.name = "DAC_" + layer.name
             layer.trainable = False
-        for i in range(3):
-            dac_classifier_model.layers.pop()
+        # for i in range(3):
+            # dac_classifier_model.layers.pop()
 
         print("Loading DCC model...")
         with open("../models/dcc_" + self.load_file_name + "_model.json") as fh:
@@ -1387,8 +1387,8 @@ class Model:
         for layer in dcc_classifier_model.layers:
             layer.name = "DCC_" + layer.name
             layer.trainable = False
-        for i in range(3):
-            dcc_classifier_model.layers.pop()
+        # for i in range(3):
+            # dcc_classifier_model.layers.pop()
 
         print("Loading PC-PseDNC model...")
         with open("../models/PC_PseDNC_" + self.load_file_name + "_model.json") as fh:
@@ -1399,8 +1399,8 @@ class Model:
         for layer in PC_PseDNC_classifier_model.layers:
             layer.name = "PC_PseDNC_" + layer.name
             layer.trainable = False
-        for i in range(3):
-            PC_PseDNC_classifier_model.layers.pop()
+        # for i in range(3):
+            # PC_PseDNC_classifier_model.layers.pop()
 
         print("Loading PC-PseTNC model...")
         with open("../models/PC_PseTNC_" + self.load_file_name + "_model.json") as fh:
@@ -1411,8 +1411,8 @@ class Model:
         for layer in PC_PseTNC_classifier_model.layers:
             layer.name = "PC_PseTNC_" + layer.name
             layer.trainable = False
-        for i in range(3):
-            PC_PseTNC_classifier_model.layers.pop()
+        # for i in range(3):
+            # PC_PseTNC_classifier_model.layers.pop()
 
         print("Loading SC-PseDNC model...")
         with open("../models/SC_PseDNC_" + self.load_file_name + "_model.json") as fh:
@@ -1423,8 +1423,8 @@ class Model:
         for layer in SC_PseDNC_classifier_model.layers:
             layer.name = "SC_PseDNC_" + layer.name
             layer.trainable = False
-        for i in range(3):
-            SC_PseDNC_classifier_model.layers.pop()
+        # for i in range(3):
+            # SC_PseDNC_classifier_model.layers.pop()
 
         print("Loading SC-PseTNC model...")
         with open("../models/SC_PseTNC_" + self.load_file_name + "_model.json") as fh:
@@ -1435,8 +1435,8 @@ class Model:
         for layer in SC_PseTNC_classifier_model.layers:
             layer.name = "SC_PseTNC_" + layer.name
             layer.trainable = False
-        for i in range(3):
-            SC_PseTNC_classifier_model.layers.pop()
+        # for i in range(3):
+            # SC_PseTNC_classifier_model.layers.pop()
 
         print("Finished truncating models.")
 
@@ -1463,7 +1463,7 @@ class Model:
                                      # SC_PseTNC_classifier_model.layers[-1].output
                                      ])
 
-        dense_1 = layers.Dense(1024, activation='relu')(concat)
+        dense_1 = layers.Dense(4, activation='relu')(concat)
         output_tensor = layers.Dense(1, activation='sigmoid')(dense_1)
 
         model = models.Model(inputs=[simple_input_tensor.input,
