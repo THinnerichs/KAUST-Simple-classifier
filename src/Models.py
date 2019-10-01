@@ -1551,7 +1551,7 @@ class Model:
                                  x_data_SC_PseTNC[test]])
 
             print("[self.y_data[test]]", self.y_data[test])
-            print("[(y_pred > 0.5).astype(int)]", (y_pred > 0.5).astype(int)[0, :])
+            print("[(y_pred > 0.5).astype(int)]", (y_pred > 0.5).astype(int)[:, 0])
 
 
             raise Exception
