@@ -109,8 +109,8 @@ def apply_classification(applied_model="simple_classifier",
             model.overall_classifier(cv_scores=cv_scores,
                                      train=train,
                                      test=test,
-                                     epochs=25,
-                                     batch_size=100)
+                                     epochs=15,
+                                     batch_size=200)
         else:
             print("No valid model selected.")
             raise Exception
