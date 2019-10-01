@@ -343,7 +343,7 @@ class Model:
         final_model = load_pickle(finalmodel)
 
         self.x_data = self.x_data_dict['simple'][test]
-        print(self.x_data)
+        print(self.x_data.shape)
 
         raise Exception
 
