@@ -343,11 +343,9 @@ class Model:
         final_model = load_pickle(finalmodel)
 
         self.x_data = self.x_data_dict['simple'][test].transpose((0, 2, 1))
-        print(self.x_data.shape)
+        self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
 
-        raise Exception
-
-        prediction = global_model.predict(self.x_data_dict['simple'][test])
+        prediction = global_model.predict(self.x_data)
 
         print("Prediction", prediction)
 
