@@ -1457,10 +1457,10 @@ class Model:
                                      IDkmer_classifier_model.layers[-1].output,
                                      # dac_classifier_model.layers[-1].output,
                                      # dcc_classifier_model.layers[-1].output,
-                                     # PC_PseDNC_classifier_model.layers[-1].output,
-                                     # PC_PseTNC_classifier_model.layers[-1].output,
-                                     # SC_PseDNC_classifier_model.layers[-1].output,
-                                     # SC_PseTNC_classifier_model.layers[-1].output
+                                     PC_PseDNC_classifier_model.layers[-1].output,
+                                     PC_PseTNC_classifier_model.layers[-1].output,
+                                     SC_PseDNC_classifier_model.layers[-1].output,
+                                     SC_PseTNC_classifier_model.layers[-1].output
                                      ])
 
         dense_1 = layers.Dense(4, activation='relu')(concat)
@@ -1471,10 +1471,10 @@ class Model:
                                      IDkmer_input_tensor.input,
                                      # DAC_input_tensor.input,
                                      # DCC_input_tensor.input,
-                                     # PC_PseDNC_input_tensor.input,
-                                     # PC_PseTNC_input_tensor.input,
-                                     # SC_PseDNC_input_tensor.input,
-                                     # SC_PseTNC_input_tensor.input
+                                     PC_PseDNC_input_tensor.input,
+                                     PC_PseTNC_input_tensor.input,
+                                     SC_PseDNC_input_tensor.input,
+                                     SC_PseTNC_input_tensor.input
                                      ],
                              outputs=[output_tensor])
 
@@ -1489,10 +1489,10 @@ class Model:
                                x_data_IDkmer[train],
                                # x_data_dac[train],
                                # x_data_dcc[train],
-                               # x_data_PC_PseDNC[train],
-                               # x_data_PC_PseTNC[train],
-                               # x_data_SC_PseDNC[train],
-                               # x_data_SC_PseTNC[train]
+                               x_data_PC_PseDNC[train],
+                               x_data_PC_PseTNC[train],
+                               x_data_SC_PseDNC[train],
+                               x_data_SC_PseTNC[train]
                                ],
                             y=[self.y_data[train]],
                             epochs=epochs,
@@ -1502,10 +1502,10 @@ class Model:
                                               x_data_IDkmer[test],
                                               # x_data_dac[test],
                                               # x_data_dcc[test],
-                                              # x_data_PC_PseDNC[test],
-                                              # x_data_PC_PseTNC[test],
-                                              # x_data_SC_PseDNC[test],
-                                              # x_data_SC_PseTNC[test]
+                                              x_data_PC_PseDNC[test],
+                                              x_data_PC_PseTNC[test],
+                                              x_data_SC_PseDNC[test],
+                                              x_data_SC_PseTNC[test]
                                               ],
                                              [self.y_data[test]]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
@@ -1524,10 +1524,10 @@ class Model:
                                  x_data_IDkmer[test],
                                  # x_data_dac[test],
                                  # x_data_dcc[test],
-                                 # x_data_PC_PseDNC[test],
-                                 # x_data_PC_PseTNC[test],
-                                 # x_data_SC_PseDNC[test],
-                                 # x_data_SC_PseTNC[test]
+                                 x_data_PC_PseDNC[test],
+                                 x_data_PC_PseTNC[test],
+                                 x_data_SC_PseDNC[test],
+                                 x_data_SC_PseTNC[test]
                                  ],
                                 [self.y_data[test]],
                                 verbose=0)
@@ -1550,10 +1550,10 @@ class Model:
                                     x_data_IDkmer[test],
                                     # x_data_dac[test],
                                     # x_data_dcc[test],
-                                    # x_data_PC_PseDNC[test],
-                                    # x_data_PC_PseTNC[test],
-                                    # x_data_SC_PseDNC[test],
-                                    # x_data_SC_PseTNC[test]
+                                    x_data_PC_PseDNC[test],
+                                    x_data_PC_PseTNC[test],
+                                    x_data_SC_PseDNC[test],
+                                    x_data_SC_PseTNC[test]
                                     ])
 
 
