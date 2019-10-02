@@ -49,7 +49,7 @@ class Model:
         sess = tf.Session(config=config)
         backend.set_session(sess)
 
-        tf.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+        tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
@@ -385,7 +385,8 @@ class Model:
         final_pred = final_model.predict(d_t)
 
         print("Final prediction", final_pred)
-        conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=final_pred)
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(final_pred.reshape((len(final_pred))) > 0.5).astype(int))
 
         print("Confusion matrix", conf_matrix)
 
