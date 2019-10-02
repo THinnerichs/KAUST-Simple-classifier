@@ -357,10 +357,10 @@ class Model:
         prediction = global_model.predict(self.x_data_dict['albaradei'])
         globalfeatures_t = prediction.tolist()
 
-        prediction = up_model.predict(self.x_data_dict['albaradei_up'])
+        prediction = up_model.predict(self.x_data_dict['albaradei_down'])
         upfeatures_t = prediction.tolist()
 
-        prediction = down_model.predict(self.x_data_dict['albaradei_down'])
+        prediction = down_model.predict(self.x_data_dict['albaradei_up'])
         downfeatures_t = prediction.tolist()
 
         # final model
