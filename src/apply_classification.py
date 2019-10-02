@@ -22,9 +22,10 @@ def apply_classification(applied_model="simple_classifier",
     x_data_dict = {}
     for dataset in datasets:
         print("Reading {} data".format(dataset))
-        if dataset in ['kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC']:
+        if dataset in ['kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC',
+                       'albaradei', 'albaradei_up', 'albaradei_down']:
             x_data_dict[dataset] = np.load(file="../data/x_" +
-                                                (dataset + "_" if dataset!="simple" else "") +
+                                                dataset + "_" +
                                                 load_file_name + "_" + str(samples_per_file) +
                                                 "_samples" + ".npy")
 
