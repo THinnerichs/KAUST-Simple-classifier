@@ -162,6 +162,7 @@ def apply_classification(applied_model="simple_classifier",
     print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
+    '''
     # print accuracy progress
     print("\nRESULTS:")
 
@@ -176,7 +177,7 @@ def apply_classification(applied_model="simple_classifier",
     for i in range(model.epochs):
         column = model.accuracy_values[:, i]
         print("Round: {},\tMean: {},\tStd: {}".format(i, np.mean(column), np.std(column)))
-
+    '''
 
     filehandler.close()
 
@@ -241,7 +242,6 @@ def j8():
 if __name__ == '__main__':
     test_start = time.time()
 
-    '''
     apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -255,7 +255,6 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
-    '''
 
     '''
     apply_classification(applied_model="Albaradei_classifier",
@@ -276,9 +275,12 @@ if __name__ == '__main__':
                          samples_per_file=100000)
     '''
 
+    '''
     apply_classification(applied_model="draw_models",
                          datasets=['simple'],
                          samples_per_file=20000)
+
+    '''
 
     '''
 
