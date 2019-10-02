@@ -66,7 +66,6 @@ def prepare_albaradei_data(include_acceptor=False,
         return data
 
     def EncodeSeqToTri_64D(dna_list):
-        print("DNA_LIST length:", len(dna_list))
         seq = dna_list[0]
         n = len(seq)
         profile = {'AAA': [0] * n, 'ACA': [0] * n, 'AGA': [0] * n, 'ATA': [0] * n,
@@ -158,13 +157,12 @@ def prepare_albaradei_data(include_acceptor=False,
     end = 302 + post_length
 
     test_up, test_down = split_up_down(data, sig_str, sig_end, begin, end)
-    print("LENGTHS:", len(test_up), len(test_down))
+
 
     test_images = np.array(EncodeSeqToMono_4D(test_down), dtype=np.int64)
     print("x_dataset shape:", test_images.shape)
 
     print("Finished reading data")
-
 
     x_filename = "../data/x_albaradei_down_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files

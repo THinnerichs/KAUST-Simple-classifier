@@ -45,8 +45,8 @@ class Model:
         self.epochs = None
         self.batch_size = None
 
-        config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 16})
-        sess = tf.Session(config=config)
+        config = tf.compat.v1.ConfigProto(device_count={'GPU': 0, 'CPU': 16})
+        sess = tf.compat.v1.Session(config=config)
         backend.set_session(sess)
 
         tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
