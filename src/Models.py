@@ -1890,12 +1890,9 @@ class Model:
                                              [self.y_data[test]]),
                             callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
-        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
-                                    np.array(history.history["val_acc"]).argmax(),
-                                    np.array(history.history["acc"]).argmax()))
-        self.val_accuracy_values.append(history.history['val_acc'])
-        self.accuracy_values.append(history.history['acc'])
-
+        self.loss_val_index.append((np.array(history.history["val_loss"]),
+                                    np.array(history.history["val_acc"]),
+                                    np.array(history.history["acc"])))
         model.summary()
 
         # evaluate the model
