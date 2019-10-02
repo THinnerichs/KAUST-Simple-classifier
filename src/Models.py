@@ -1862,7 +1862,7 @@ class Model:
         # Calculate other validation scores
         y_pred = model.predict([x_data_simple[test],
                                 x_data_DiProDB[test],
-                                x_data_trint[test]
+                                x_data_trint[test],
                                 x_data_IDkmer[test],
                                 x_data_dac[test],
                                 x_data_dcc[test],
