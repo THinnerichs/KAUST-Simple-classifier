@@ -47,7 +47,7 @@ def apply_classification(applied_model="simple_classifier",
     # Prepare train and test data
     kfold = StratifiedKFold(n_splits=10, shuffle=True, random_state=seed)
 
-    cv_scores = []
+    cv_scores = {"acc": [], "prec": [], "rec": []}
 
     filehandler = open(file=results_log_file, mode='a')
     model = Model(x_data_dict=x_data_dict,
@@ -59,7 +59,7 @@ def apply_classification(applied_model="simple_classifier",
 
     # Perform Kfold cross validation
     for train, test in kfold.split(x_data_dict[list(x_data_dict.keys())[0]], y_data):
-        print("Round: {}".format(len(cv_scores) + 1))
+        print("Round: {}".format(len(cv_scores['acc']) + 1))
 
         # Execute model
         if applied_model == "simple_classifier":
@@ -86,7 +86,7 @@ def apply_classification(applied_model="simple_classifier",
             model.simple_classifier_on_trint(cv_scores=cv_scores,
                                              train=train,
                                              test=test,
-                                             epochs=5)
+                                             epochs=3)
         elif applied_model == "repDNA_classifier":
             model.simple_classifier_on_repDNA(cv_scores=cv_scores,
                                               train=train,
@@ -146,11 +146,15 @@ def apply_classification(applied_model="simple_classifier",
             print("No valid model selected.")
             raise Exception
 
-    print("Mean: {}, Std: {}".format(np.mean(cv_scores), np.std(cv_scores)))
+
+    print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
+    print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
+    print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
+
     print("File name:", load_file_name)
 
     print("Classified {}".format(load_file_name), file=filehandler)
-    print("Mean: {}, Std: {}\n".format(np.mean(cv_scores), np.std(cv_scores)), file=filehandler)
+    print("Mean: {}, Std: {}\n".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
     print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
@@ -237,14 +241,14 @@ if __name__ == '__main__':
     apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         datasets=['simple', 'dint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
 
     apply_classification(applied_model="overall_classifier",
                          load_file_name="donor_data",
                          samples_per_file=20000,
-                         datasets=['simple', 'dint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
     '''
@@ -256,21 +260,21 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    '''
     apply_classification(applied_model="trint_classifier",
                          load_file_name="acceptor_data",
                          datasets=['trint'],
-                         samples_per_file=20000)
+                         samples_per_file=100000)
 
     apply_classification(applied_model="trint_classifier",
                          load_file_name="donor_data",
                          datasets=['trint'],
-                         samples_per_file=20000)
-    '''
+                         samples_per_file=100000)
 
+    '''
     apply_classification(applied_model="draw_models",
                          datasets=['simple'],
                          samples_per_file=20000)
+    '''
 
     '''
 

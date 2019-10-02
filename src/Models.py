@@ -129,38 +129,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp/(tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("Simple classifier evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
             print("BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -228,20 +229,40 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("MULTI LABEL APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=y_test.argmax(axis=1), y_pred=y_pred.argmax(axis=1))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("Multi Label classifier evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("MULTI LABEL CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
-            print("Confusion matrix:", confusion_matrix(y_true=y_test.argmax(axis=1), y_pred=y_pred.argmax(axis=1)),
+            print("Confusion matrix:",
+                  conf_matrix,
                   file=self.filehandler)
-            print("Confusion matrix:", confusion_matrix(y_true=y_test.argmax(axis=1), y_pred=y_pred.argmax(axis=1)))
-            print("-----------------------------------------------------\n")
+            print("Confusion matrix:",
+                  conf_matrix)
+
+            print("------------------------------------------------\n")
 
     def svm(self,
             cv_scores,
@@ -261,11 +282,17 @@ class Model:
         fp = conf_matrix[0, 1]
         fn = conf_matrix[1, 0]
         
-        accuracy = (tp + tn)/(tp + tn + fp + fn) * 100
-        print("SVM accuracy:", accuracy)
-        cv_scores.append(accuracy)
 
-        if len(cv_scores) == 10:
+        precision = tp / (tp + fp)
+        recall = tp/(tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+        print("SVM accuracy:", accuracy)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        if len(cv_scores['acc']) == 10:
             print("SVM APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Confusion matrix:", conf_matrix, file=self.filehandler)
@@ -289,15 +316,25 @@ class Model:
         fp = conf_matrix[0, 1]
         fn = conf_matrix[1, 0]
 
-        accuracy = (tp + tn)/(tp + tn + fp + fn) * 100
-        print("Naive Bayes accuracy:", accuracy)
-        cv_scores.append(accuracy)
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
 
-        if len(cv_scores) == 10:
-            print("NAIVE BAYES APPROACH", file=self.filehandler)
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        if len(cv_scores['acc']) == 10:
+            print("NAIVE BAYES CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
-            print("Confusion matrix:", conf_matrix, file=self.filehandler)
-            print("-----------------------------------------------------\n")
+
+            print("Confusion matrix:",
+                  conf_matrix,
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  conf_matrix)
+
+            print("------------------------------------------------\n")
 
     def gradient_boosting(self,
                           cv_scores,
@@ -314,14 +351,39 @@ class Model:
 
         conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=y_pred)
 
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
         tp = conf_matrix[0, 0]
         tn = conf_matrix[1, 1]
         fp = conf_matrix[0, 1]
         fn = conf_matrix[1, 0]
 
-        accuracy = (tp + tn)/(tp + tn + fp + fn) * 100
-        print("Gradient boosting accuracy:", accuracy)
-        cv_scores.append(accuracy)
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("Gradient boosting evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("GRADIENT BOOSTING APPROACH", file=self.filehandler)
+            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+
+            # print confusion matrix
+            print("Confusion matrix:",
+                  conf_matrix,
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  conf_matrix)
+
+            print("------------------------------------------------\n")
+
 
         if len(cv_scores) == 10:
             print("GRADIENT BOOSTING APPROACH", file=self.filehandler)
@@ -491,38 +553,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("DiProDB evaluation:", accuracy, precision, recall)
+        
+        if len(cv_scores['acc']) == 10:
             print("DiProDB: BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -614,38 +677,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("trint evaluation:", accuracy, precision, recall)
+        
+        if len(cv_scores['acc']) == 10:
             print("TRINUCLEOTIDES: BINARY CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -717,38 +781,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: KMER BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("kmer evaluation:", accuracy, precision, recall)
+        
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: KMER CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -818,38 +883,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: IDKMER BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("IDkmer evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: IDKMER CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -925,38 +991,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: DAC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("DAC evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: DAC CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -1032,41 +1099,42 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: DCC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("DCC evaluation:", accuracy, precision, recall)
+        
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: DCC CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
-
+            
             # serialize model to JSON
             model_json = model.to_json()
             with open("../models/dcc_" + self.load_file_name + "_model.json", "w") as json_file:
@@ -1137,41 +1205,42 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: PC-PseDNC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("PC-PseDNC evaluation:", accuracy, precision, recall)
+        
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: PC-PseDNC CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
-
+        
             # serialize model to JSON
             model_json = model.to_json()
             with open("../models/PC_PseDNC_" + self.load_file_name + "_model.json", "w") as json_file:
@@ -1242,38 +1311,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: PC-PseTNC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("PC-PseTNC evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: PC-PseTNC CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -1347,38 +1417,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: SC-PseDNC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("SC-PseDNC evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: SC-PseDNC CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test],
-                                   y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -1452,36 +1523,39 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("repDNA: SC-PseTNC BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("SC-PseTNC evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("repDNA: SC-PseTNC CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict(self.x_data[test])
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)),
+                  conf_matrix,
                   file=self.filehandler)
             print("Confusion matrix:",
-                  confusion_matrix(y_true=self.y_data[test], y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int)))
-
-            # Calculate other validation scores
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
@@ -1511,6 +1585,11 @@ class Model:
         print("Reading DiProDB data...")
         x_data_DiProDB = self.x_data_dict['dint']
         x_data_DiProDB = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
+
+        # Read trint data
+        print("Reading trint data...")
+        x_data_trint = self.x_data_dict['trint']
+        x_data_trint = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
 
         # Read repDNA data
         self.pre_length = 0
@@ -1761,45 +1840,49 @@ class Model:
         print("\n--------------------------------------------------")
         print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
         print("--------------------------------------------------\n")
-        cv_scores.append(scores[1] * 100)
 
-        if len(cv_scores) == 10:
-            print("OVERALL BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+        # Calculate other validation scores
+        y_pred = model.predict([x_data_simple[test],
+                                x_data_DiProDB[test],
+                                x_data_IDkmer[test],
+                                x_data_dac[test],
+                                x_data_dcc[test],
+                                x_data_PC_PseDNC[test],
+                                x_data_PC_PseTNC[test],
+                                x_data_SC_PseDNC[test],
+                                x_data_SC_PseTNC[test]
+                                ])
+
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred > 0.5).astype(int)[:, 0])
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        print("Overall classification evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("OVERALL CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
             # print confusion matrix
-            y_pred = model.predict([x_data_simple[test],
-                                    x_data_DiProDB[test],
-                                    x_data_IDkmer[test],
-                                    x_data_dac[test],
-                                    x_data_dcc[test],
-                                    x_data_PC_PseDNC[test],
-                                    x_data_PC_PseTNC[test],
-                                    x_data_SC_PseDNC[test],
-                                    x_data_SC_PseTNC[test]
-                                    ])
-
-
-            conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                           y_pred=(y_pred > 0.5).astype(int)[:, 0])
-
-            print("Confusion matrix:", conf_matrix, file=self.filehandler)
-            print("Confusion matrix:", conf_matrix)
-
-            # Calculate other validation scores
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp) * 100
-            recall = tp/(tp + fn) * 100
-
-            print("Recall:", recall, file=self.filehandler)
-            print("Precision:", precision, file=self.filehandler)
+            print("Confusion matrix:",
+                  conf_matrix,
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  conf_matrix)
 
             print("------------------------------------------------\n")
 
