@@ -1,3 +1,5 @@
+import datetime
+
 import numpy as np
 
 import pickle
@@ -56,13 +58,14 @@ class Model:
         return self.x_data.argmax(axis=2)*2/3 - 1
 
     def draw_models(self):
-        for infix in ['simple', 'DiProDB', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC']:
+        date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        for infix in ['simple', 'DiProDB', 'trint', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC', 'overall']:
             with open("../models/" + infix + "_" + self.load_file_name + "_model.json") as fh:
                 classifier_json_file = fh.read()
             model = model_from_json(classifier_json_file)
             plot_model(model,
                        show_shapes=True,
-                       to_file='../models/plotted_models/' + infix + '_model.png')
+                       to_file='../models/plotted_models/' + infix + '_model_' + date_string + '.png')
 
     def simple_classifier(self,
                           cv_scores,
@@ -172,6 +175,11 @@ class Model:
             # serialize weights to HDF5
             model.save_weights("../models/simple_" + self.load_file_name + "_model.h5")
             print("Saved simple convolutional model to disk.")
+
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/simple_model_' + date_string + '.png')
 
     def multi_label_classifier(self,
                                cv_scores,
@@ -597,6 +605,11 @@ class Model:
             model.save_weights("../models/DiProDB_" + self.load_file_name + "_model.h5")
             print("Saved DiProDB convolutional model to disk.")
 
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/DiProDB_model_' + date_string + '.png')
+
 
     def simple_classifier_on_trint(self,
                                    cv_scores,
@@ -721,6 +734,11 @@ class Model:
             model.save_weights("../models/trint_" + self.load_file_name + "_model.h5")
             print("Saved trint convolutional model to disk.")
 
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/trint_model_' + date_string + '.png')
+
 
     def simple_classifier_on_repDNA_Kmer(self,
                                          cv_scores,
@@ -825,6 +843,11 @@ class Model:
             model.save_weights("../models/kmer_" + self.load_file_name + "_model.h5")
             print("Saved Kmer convolutional model to disk.")
 
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/kmer_model_' + date_string + '.png')
+
     def simple_classifier_on_repDNA_IDKmer(self,
                                            cv_scores,
                                            train,
@@ -926,6 +949,11 @@ class Model:
             # serialize weights to HDF5
             model.save_weights("../models/IDkmer_" + self.load_file_name + "_model.h5")
             print("Saved IDkmer convolutional model to disk.")
+
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/IDkmer_model_' + date_string + '.png')
 
     def simple_classifier_on_repDNA_DAC(self,
                                         cv_scores,
@@ -1035,6 +1063,11 @@ class Model:
             model.save_weights("../models/dac_" + self.load_file_name + "_model.h5")
             print("Saved DAC convolutional model to disk.")
 
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/dac_model_' + date_string + '.png')
+
     def simple_classifier_on_repDNA_DCC(self,
                                         cv_scores,
                                         train,
@@ -1143,6 +1176,11 @@ class Model:
             model.save_weights("../models/dcc_" + self.load_file_name + "_model.h5")
             print("Saved DCC convolutional model to disk.")
 
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/dcc_model_' + date_string + '.png')
+
     def simple_classifier_on_repDNA_PC_PseDNC(self,
                                               cv_scores,
                                               train,
@@ -1248,6 +1286,11 @@ class Model:
             # serialize weights to HDF5
             model.save_weights("../models/PC_PseDNC_" + self.load_file_name + "_model.h5")
             print("Saved PC-PseDNC convolutional model to disk.")
+
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/PC_PseDNC_model_' + date_string + '.png')
 
     def simple_classifier_on_repDNA_PC_PseTNC(self,
                                               cv_scores,
@@ -1355,6 +1398,11 @@ class Model:
             model.save_weights("../models/PC_PseTNC_" + self.load_file_name + "_model.h5")
             print("Saved PC-PseTNC convolutional model to disk.")
 
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/PC_PseTNC_model_' + date_string + '.png')
+
     def simple_classifier_on_repDNA_SC_PseDNC(self,
                                               cv_scores,
                                               train,
@@ -1461,6 +1509,11 @@ class Model:
             model.save_weights("../models/SC_PseDNC_" + self.load_file_name + "_model.h5")
             print("Saved SC-PseDNC convolutional model to disk.")
 
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/SC_PseDNC_model_' + date_string + '.png')
+
     def simple_classifier_on_repDNA_SC_PseTNC(self,
                                               cv_scores,
                                               train,
@@ -1566,6 +1619,11 @@ class Model:
             # serialize weights to HDF5
             model.save_weights("../models/SC_PseTNC_" + self.load_file_name + "_model.h5")
             print("Saved SC-PseTNC convolutional model to disk.")
+
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/SC_PseTNC_model_' + date_string + '.png')
 
     def overall_classifier(self,
                            cv_scores,
@@ -1913,3 +1971,8 @@ class Model:
             # serialize weights to HDF5
             model.save_weights("../models/overall_" + self.load_file_name + "_model.h5")
             print("Saved overall convolutional model to disk.")
+
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/overall_model_' + date_string + '.png')
