@@ -1948,7 +1948,6 @@ class Model:
 
         if len(cv_scores['acc']) == 10:
             print("OVERALL CLASSIFICATION APPROACH", file=self.filehandler)
-            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
 
