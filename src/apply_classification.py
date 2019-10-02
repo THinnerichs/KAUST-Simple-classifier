@@ -86,7 +86,7 @@ def apply_classification(applied_model="simple_classifier",
             model.simple_classifier_on_trint(cv_scores=cv_scores,
                                              train=train,
                                              test=test,
-                                             epochs=10)
+                                             epochs=5)
         elif applied_model == "repDNA_classifier":
             model.simple_classifier_on_repDNA(cv_scores=cv_scores,
                                               train=train,
