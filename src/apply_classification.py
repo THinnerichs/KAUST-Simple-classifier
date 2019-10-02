@@ -82,6 +82,11 @@ def apply_classification(applied_model="simple_classifier",
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                                train=train,
                                                test=test)
+        elif applied_model == "trint_classifier":
+            model.simple_classifier_on_trint(cv_scores=cv_scores,
+                                             train=train,
+                                             test=test,
+                                             epochs=10)
         elif applied_model == "repDNA_classifier":
             model.simple_classifier_on_repDNA(cv_scores=cv_scores,
                                               train=train,
@@ -240,11 +245,23 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
+    '''
     apply_classification(applied_model="Albaradei_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
+    '''
 
+
+    apply_classification(applied_model="trint_classifier",
+                         load_file_name="acceptor_data",
+                         datasets=['trint'],
+                         samples_per_file=20000)
+
+    apply_classification(applied_model="trint_classifier",
+                         load_file_name="donor_data",
+                         datasets=['trint'],
+                         samples_per_file=20000)
 
     '''
 
