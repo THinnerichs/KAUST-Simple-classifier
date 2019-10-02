@@ -321,7 +321,19 @@ class Model:
                              cv_scores,
                              train,
                              test,
+                             mode="acc",
                              org="at"):
+        """
+        Adapted from https://github.com/SomayahAlbaradei/Splice_Deep
+
+        :param cv_scores:
+        :param train:
+        :param test:
+        :param mode:
+        :param org:
+        :return:
+        """
+
         def load_pickle(pickle_file):
             try:
                 with open(pickle_file, 'rb') as f:
@@ -335,16 +347,50 @@ class Model:
             return pickle_data
 
         models_path = "../models/AlbaradeiModels/"
-        global_model = load_model(models_path + "acc_global_model_" + org)
-        up_model = load_model(models_path + 'acc_up_model_' + org)
-        down_model = load_model(models_path + 'acc_down_model_' + org)
+        global_model = load_model(models_path + mode + "_global_model_" + org)
+        up_model = load_model(models_path + mode + '_up_model_' + org)
+        down_model = load_model(models_path + mode + '_down_model_' + org)
         # print(down_model)
-        finalmodel = models_path + 'acc_splicedeep_' + org + '.pkl'
-        final_model = load_pickle(finalmodel)
+        finalmodel_path = models_path + mode + '_splicedeep_' + org + '.pkl'
+        final_model = load_pickle(finalmodel_path)
 
-        prediction = global_model.predict(self.x_data)
+        prediction = global_model.predict(self.x_data_dict['albaradei'])
+        globalfeatures_t = prediction.tolist()
 
-        print("Prediction", prediction)
+        prediction = up_model.predict(self.x_data_dict['albaradei_up'])
+        upfeatures_t = prediction.tolist()
+
+        prediction = down_model.predict(self.x_data_dict['albaradei_down'])
+        downfeatures_t = prediction.tolist()
+
+        # final model
+        d_t = np.zeros((len(self.x_data_dict['albaradei']), 6))
+        idx = 0
+
+        for idx in range(len(self.x_data_dict['albaradei'])):
+            d_t[idx][0] = globalfeatures_t[idx][0]
+
+            d_t[idx][1] = globalfeatures_t[idx][1]
+
+            d_t[idx][2] = upfeatures_t[idx][0]
+
+            d_t[idx][3] = upfeatures_t[idx][1]
+
+            d_t[idx][4] = downfeatures_t[idx][0]
+            d_t[idx][5] = downfeatures_t[idx][1]
+
+        final_pred = final_model.predict(d_t)
+
+        print("Final prediction", final_pred)
+        conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=y_pred)
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        accuracy = (tp + tn)/(tp + tn + fp + fn) * 100
+        print("Albaradei accuracy:", accuracy)
 
         raise Exception
 

@@ -242,7 +242,7 @@ if __name__ == '__main__':
     apply_classification(applied_model="Albaradei_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
-                         datasets=['simple', 'trint'])
+                         datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
 
 
     '''
