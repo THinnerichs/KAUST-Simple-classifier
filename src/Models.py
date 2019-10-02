@@ -57,7 +57,7 @@ class Model:
 
     def draw_models(self):
         for infix in ['simple', 'DiProDB', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC']:
-            with open("../models/infix_" + self.load_file_name + "_model.json") as fh:
+            with open("../models/" + infix + "_" + self.load_file_name + "_model.json") as fh:
                 classifier_json_file = fh.read()
             model = model_from_json(classifier_json_file)
             plot_model(model, to_file=infix+'_model.png')
