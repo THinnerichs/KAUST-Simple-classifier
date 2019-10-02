@@ -60,7 +60,7 @@ class Model:
             with open("../models/" + infix + "_" + self.load_file_name + "_model.json") as fh:
                 classifier_json_file = fh.read()
             model = model_from_json(classifier_json_file)
-            plot_model(model, to_file=infix+'_model.png')
+            plot_model(model, to_file='../models/plotted_models/' + infix + '_model.png')
 
     def simple_classifier(self,
                           cv_scores,
