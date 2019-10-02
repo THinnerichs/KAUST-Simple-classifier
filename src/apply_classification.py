@@ -158,7 +158,6 @@ def apply_classification(applied_model="simple_classifier",
     print("File name:", load_file_name)
 
     print("Classified {}".format(load_file_name), file=filehandler)
-    print("Mean: {}, Std: {}\n".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
     print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
