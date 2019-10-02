@@ -241,6 +241,7 @@ def j8():
 if __name__ == '__main__':
     test_start = time.time()
 
+    '''
     apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -254,6 +255,7 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
+    '''
 
     '''
     apply_classification(applied_model="Albaradei_classifier",
@@ -274,11 +276,9 @@ if __name__ == '__main__':
                          samples_per_file=100000)
     '''
 
-    '''
     apply_classification(applied_model="draw_models",
                          datasets=['simple'],
                          samples_per_file=20000)
-    '''
 
     '''
 
