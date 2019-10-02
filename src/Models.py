@@ -49,7 +49,7 @@ class Model:
         sess = tf.Session(config=config)
         backend.set_session(sess)
 
-        tf.logging.set_verbosity(tf.logging.ERROR)
+        tf.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
@@ -352,24 +352,25 @@ class Model:
         global_model = load_model(models_path + mode + "_global_model_" + org)
         up_model = load_model(models_path + mode + '_up_model_' + org)
         down_model = load_model(models_path + mode + '_down_model_' + org)
-        # print(down_model)
+
+        # initializin models
         finalmodel_path = models_path + mode + '_splicedeep_' + org + '.pkl'
         final_model = load_pickle(finalmodel_path)
 
-        prediction = global_model.predict(self.x_data_dict['albaradei'])
+        prediction = global_model.predict(self.x_data_dict['albaradei'][test])
         globalfeatures_t = prediction.tolist()
 
-        prediction = up_model.predict(self.x_data_dict['albaradei_down'])
+        prediction = up_model.predict(self.x_data_dict['albaradei_down'][test])
         upfeatures_t = prediction.tolist()
 
-        prediction = down_model.predict(self.x_data_dict['albaradei_up'])
+        prediction = down_model.predict(self.x_data_dict['albaradei_up'][test])
         downfeatures_t = prediction.tolist()
 
         # final model
-        d_t = np.zeros((len(self.x_data_dict['albaradei']), 6))
+        d_t = np.zeros((len(self.x_data_dict['albaradei'][test]), 6))
         idx = 0
 
-        for idx in range(len(self.x_data_dict['albaradei'])):
+        for idx in range(len(self.x_data_dict['albaradei'][test])):
             d_t[idx][0] = globalfeatures_t[idx][0]
 
             d_t[idx][1] = globalfeatures_t[idx][1]
@@ -384,7 +385,9 @@ class Model:
         final_pred = final_model.predict(d_t)
 
         print("Final prediction", final_pred)
-        conf_matrix = confusion_matrix(y_true=self.y_data, y_pred=final_pred)
+        conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=final_pred)
+
+        print("Confusion matrix", conf_matrix)
 
         tp = conf_matrix[0, 0]
         tn = conf_matrix[1, 1]
