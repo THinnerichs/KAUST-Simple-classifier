@@ -1589,7 +1589,7 @@ class Model:
         # Read trint data
         print("Reading trint data...")
         x_data_trint = self.x_data_dict['trint']
-        x_data_trint = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
+        x_data_trint = x_data_DiProDB.reshape(x_data_trint.shape + (1,))
 
         # Read repDNA data
         self.pre_length = 0
@@ -1654,6 +1654,18 @@ class Model:
 
         for layer in DiProDB_classifier_model.layers:
             layer.name = "DiProDB_" + layer.name
+            layer.trainable = False
+        # for i in range(5):
+            # DiProDB_classifier_model.layers.pop()
+
+        print("Loading trint model...")
+        with open("../models/trint_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        trint_classifier_model = model_from_json(classifier_json_file)
+        trint_classifier_model.load_weights("../models/trint_" + self.load_file_name + "_model.h5")
+
+        for layer in trint_classifier_model.layers:
+            layer.name = "trint_" + layer.name
             layer.trainable = False
         # for i in range(5):
             # DiProDB_classifier_model.layers.pop()
@@ -1747,6 +1759,7 @@ class Model:
         print("Building model...")
         simple_input_tensor = simple_classifier_model.layers[0]
         DiProDB_input_tensor = DiProDB_classifier_model.layers[0]
+        trint_input_tensor = trint_classifier_model.layers[0]
         IDkmer_input_tensor = IDkmer_classifier_model.layers[0]
         DAC_input_tensor = dac_classifier_model.layers[0]
         DCC_input_tensor = dcc_classifier_model.layers[0]
@@ -1758,6 +1771,7 @@ class Model:
 
         concat = layers.concatenate([simple_classifier_model.layers[-1].output,
                                      DiProDB_classifier_model.layers[-1].output,
+                                     trint_classifier_model.layers[-1].output,
                                      IDkmer_classifier_model.layers[-1].output,
                                      dac_classifier_model.layers[-1].output,
                                      dcc_classifier_model.layers[-1].output,
@@ -1772,6 +1786,7 @@ class Model:
 
         model = models.Model(inputs=[simple_input_tensor.input,
                                      DiProDB_input_tensor.input,
+                                     trint_input_tensor.input,
                                      IDkmer_input_tensor.input,
                                      DAC_input_tensor.input,
                                      DCC_input_tensor.input,
@@ -1790,6 +1805,7 @@ class Model:
         # train model
         history = model.fit(x=[x_data_simple[train],
                                x_data_DiProDB[train],
+                               x_data_trint[train],
                                x_data_IDkmer[train],
                                x_data_dac[train],
                                x_data_dcc[train],
@@ -1803,6 +1819,7 @@ class Model:
                             batch_size=batch_size,
                             validation_data=([x_data_simple[test],
                                               x_data_DiProDB[test],
+                                              x_data_trint[test],
                                               x_data_IDkmer[test],
                                               x_data_dac[test],
                                               x_data_dcc[test],
@@ -1825,6 +1842,7 @@ class Model:
         # evaluate the model
         scores = model.evaluate([x_data_simple[test],
                                  x_data_DiProDB[test],
+                                 x_data_trint[test],
                                  x_data_IDkmer[test],
                                  x_data_dac[test],
                                  x_data_dcc[test],
@@ -1844,6 +1862,7 @@ class Model:
         # Calculate other validation scores
         y_pred = model.predict([x_data_simple[test],
                                 x_data_DiProDB[test],
+                                x_data_trint[test]
                                 x_data_IDkmer[test],
                                 x_data_dac[test],
                                 x_data_dcc[test],

@@ -151,6 +151,10 @@ def apply_classification(applied_model="simple_classifier",
     print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
     print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
 
+    print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
+    print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
+    print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
+
     print("File name:", load_file_name)
 
     print("Classified {}".format(load_file_name), file=filehandler)
@@ -237,7 +241,6 @@ def j8():
 if __name__ == '__main__':
     test_start = time.time()
 
-    '''
     apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
@@ -251,7 +254,6 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
-    '''
 
     '''
     apply_classification(applied_model="Albaradei_classifier",
@@ -260,6 +262,7 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
+    '''
     apply_classification(applied_model="trint_classifier",
                          load_file_name="acceptor_data",
                          datasets=['trint'],
@@ -269,6 +272,7 @@ if __name__ == '__main__':
                          load_file_name="donor_data",
                          datasets=['trint'],
                          samples_per_file=100000)
+    '''
 
     '''
     apply_classification(applied_model="draw_models",
