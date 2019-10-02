@@ -138,6 +138,10 @@ def apply_classification(applied_model="simple_classifier",
             model.albaradei_classifier(cv_scores=cv_scores,
                                        train=train,
                                        test=test)
+        elif applied_model == "draw_models":
+            model.draw_models()
+            print("Plotted all models.")
+            raise Exception
         else:
             print("No valid model selected.")
             raise Exception
@@ -252,7 +256,7 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-
+    '''
     apply_classification(applied_model="trint_classifier",
                          load_file_name="acceptor_data",
                          datasets=['trint'],
@@ -262,6 +266,10 @@ if __name__ == '__main__':
                          load_file_name="donor_data",
                          datasets=['trint'],
                          samples_per_file=20000)
+    '''
+
+    apply_classification(applied_model="draw_models",
+                         datasets=['simple'])
 
     '''
 

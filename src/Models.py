@@ -7,6 +7,7 @@ from keras import layers
 from keras.callbacks import TensorBoard
 from keras import backend
 from keras.models import model_from_json, load_model
+from keras.utils import plot_model
 
 import tensorflow as tf
 
@@ -53,6 +54,13 @@ class Model:
 
     def normalize_labels(self):
         return self.x_data.argmax(axis=2)*2/3 - 1
+
+    def draw_models(self):
+        for infix in ['simple', 'DiProDB', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC']:
+            with open("../models/infix_" + self.load_file_name + "_model.json") as fh:
+                classifier_json_file = fh.read()
+            model = model_from_json(classifier_json_file)
+            plot_model(model, to_file=infix+'_model.png')
 
     def simple_classifier(self,
                           cv_scores,
