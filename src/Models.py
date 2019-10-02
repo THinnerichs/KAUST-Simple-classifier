@@ -1579,7 +1579,8 @@ class Model:
         self.batch_size = batch_size
 
         # Read simple data
-        x_data_simple = self.x_data.reshape(self.x_data.shape + (1,))
+        x_data_simple = self.x_data_dict['simple']
+        x_data_simple = x_data_simple.reshape(x_data_simple.shape + (1,))
 
         # Read DiProDB data
         print("Reading DiProDB data...")
