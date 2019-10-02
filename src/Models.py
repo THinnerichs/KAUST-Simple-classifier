@@ -1590,7 +1590,7 @@ class Model:
         # Read trint data
         print("Reading trint data...")
         x_data_trint = self.x_data_dict['trint']
-        x_data_trint = x_data_DiProDB.reshape(x_data_trint.shape + (1,))
+        x_data_trint = x_data_trint.reshape(x_data_trint.shape + (1,))
 
         # Read repDNA data
         self.pre_length = 0
