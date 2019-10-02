@@ -269,7 +269,8 @@ if __name__ == '__main__':
     '''
 
     apply_classification(applied_model="draw_models",
-                         datasets=['simple'])
+                         datasets=['simple'],
+                         samples_per_file=20000)
 
     '''
 
