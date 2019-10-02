@@ -386,7 +386,7 @@ class Model:
 
         print("Final prediction", final_pred)
         conf_matrix = confusion_matrix(y_true=self.y_data[test],
-                                       y_pred=(final_pred.reshape((len(final_pred))) > 0.5).astype(int))
+                                       y_pred=(final_pred.reshape((len(final_pred))) < 0.5).astype(int))
 
         print("Confusion matrix", conf_matrix)
 

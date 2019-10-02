@@ -212,7 +212,7 @@ pred = final_model.predict(d_t)
 
 print("Data shape:", len(Data1), len(Data2))
 
-conf_matrix = confusion_matrix(y_true=len(Data1) * [0] + len(Data2) * [1],
+conf_matrix = confusion_matrix(y_true=len(Data1) * [1] + len(Data2) * [0],
                                y_pred=pred)
 print("Confusion matrix", conf_matrix)
 
