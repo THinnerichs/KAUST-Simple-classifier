@@ -262,7 +262,6 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    '''
     apply_classification(applied_model="trint_classifier",
                          load_file_name="acceptor_data",
                          datasets=['trint'],
@@ -272,7 +271,6 @@ if __name__ == '__main__':
                          load_file_name="donor_data",
                          datasets=['trint'],
                          samples_per_file=100000)
-    '''
 
     '''
     apply_classification(applied_model="draw_models",
