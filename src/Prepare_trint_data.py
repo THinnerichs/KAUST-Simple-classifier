@@ -62,7 +62,7 @@ def prepare_trint_data(include_acceptor=False,
             if counter >= samples_per_file:
                 break
 
-    x_dataset = np.array(x_dataset, dtype=np.int64)
+    x_dataset = np.array(x_dataset, dtype=np.int8)
     print("x_dataset shape:", x_dataset.shape)
 
     print("Finished reading data")

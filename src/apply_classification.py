@@ -18,10 +18,10 @@ def apply_classification(applied_model="simple_classifier",
     seed = 12
     np.random.seed(seed)
 
-    print("Reading data")
+    print("Starting to read data:")
     x_data_dict = {}
     for dataset in datasets:
-        print("Reading {} data".format(dataset))
+        print("Reading {} data...".format(dataset))
         if dataset in ['kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC',
                        'albaradei', 'albaradei_up', 'albaradei_down']:
             x_data_dict[dataset] = np.load(file="../data/x_" +
@@ -41,6 +41,8 @@ def apply_classification(applied_model="simple_classifier",
     y_data = np.load(file="../data/y_" + load_file_name + "_" + str(samples_per_file) + "_samples.npy")
     print("Finished reading data in {}. y_data.shape {}".format(time.time() - start,
                                                                 y_data.shape))
+    print("Finished reading all data.")
+
     for key in list(x_data_dict.keys()):
         print("x_data_shape", key, x_data_dict[key].shape)
 
@@ -86,7 +88,8 @@ def apply_classification(applied_model="simple_classifier",
             model.simple_classifier_on_trint(cv_scores=cv_scores,
                                              train=train,
                                              test=test,
-                                             epochs=3)
+                                             epochs=3,
+                                             batch_size=500)
         elif applied_model == "repDNA_classifier":
             model.simple_classifier_on_repDNA(cv_scores=cv_scores,
                                               train=train,
@@ -183,59 +186,102 @@ def apply_classification(applied_model="simple_classifier",
 def j1():
     apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="acceptor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["PC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j2():
     apply_classification(applied_model="repDNA_PC_PseDNC_classifier",
                          load_file_name="donor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["PC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j3():
     apply_classification(applied_model="repDNA_PC_PseTNC_classifier",
                          load_file_name="acceptor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["PC_PseTNC"],
                          pre_length=0,
                          post_length=0)
 def j4():
     apply_classification(applied_model="repDNA_PC_PseTNC_classifier",
                          load_file_name="donor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["PC_PseTNC"],
                          pre_length=0,
                          post_length=0)
 def j5():
     apply_classification(applied_model="repDNA_SC_PseDNC_classifier",
                          load_file_name="acceptor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["SC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j6():
     apply_classification(applied_model="repDNA_SC_PseDNC_classifier",
                          load_file_name="donor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["SC_PseDNC"],
                          pre_length=0,
                          post_length=0)
 def j7():
     apply_classification(applied_model="repDNA_SC_PseTNC_classifier",
                          load_file_name="acceptor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["SC_PseTNC"],
                          pre_length=0,
                          post_length=0)
 def j8():
     apply_classification(applied_model="repDNA_SC_PseTNC_classifier",
                          load_file_name="donor_data",
-                         samples_per_file=20000,
+                         samples_per_file=100000,
                          datasets=["SC_PseTNC"],
                          pre_length=0,
                          post_length=0)
+def j9():
+    apply_classification(applied_model="repDNA_DAC_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         datasets=["dac"],
+                         pre_length=0,
+                         post_length=0)
+def j10():
+    apply_classification(applied_model="repDNA_DAC_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=100000,
+                         datasets=["dac"],
+                         pre_length=0,
+                         post_length=0)
+def j11():
+    apply_classification(applied_model="repDNA_DCC_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         datasets=["dcc"],
+                         pre_length=0,
+                         post_length=0)
+def j12():
+    apply_classification(applied_model="repDNA_DCC_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=100000,
+                         datasets=["dcc"],
+                         pre_length=0,
+                         post_length=0)
+def j13():
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
+                         load_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         datasets=["IDkmer"],
+                         pre_length=0,
+                         post_length=0)
+def j14():
+    apply_classification(applied_model="repDNA_IDkmer_classifier",
+                         load_file_name="donor_data",
+                         samples_per_file=100000,
+                         datasets=["IDkmer"],
+                         pre_length=0,
+                         post_length=0)
+
 
 
 if __name__ == '__main__':
@@ -264,6 +310,7 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
+    '''
     apply_classification(applied_model="trint_classifier",
                          load_file_name="acceptor_data",
                          datasets=['trint'],
@@ -273,6 +320,7 @@ if __name__ == '__main__':
                          load_file_name="donor_data",
                          datasets=['trint'],
                          samples_per_file=100000)
+    '''
 
     '''
     apply_classification(applied_model="draw_models",
@@ -281,12 +329,10 @@ if __name__ == '__main__':
 
     '''
 
-    '''
 
-    for job in [j1, j2, j3, j4, j5, j6, j7, j8]:
+    for job in [j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14]:
         p = mp.Process(target=job)
         p.start()
-    '''
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))
