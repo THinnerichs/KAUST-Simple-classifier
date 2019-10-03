@@ -73,7 +73,7 @@ def prepare_data(include_acceptor=False,
 
 
     # Transform data type of datasets
-    y_dataset = np.array(y_dataset, dtype=np.int8)
+    y_dataset = np.array(y_dataset)
     y_dataset = label_encoder.fit_transform(y_dataset)
     print("y_dataset shape:", y_dataset.shape)
 
