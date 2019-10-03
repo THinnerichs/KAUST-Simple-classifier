@@ -58,6 +58,7 @@ def prepare_data(include_acceptor=False,
 
         for record in SeqIO.parse(file_name, "fasta"):
             if counter < start:
+                counter+=1
                 continue
             loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
             onehot_encoded = [nucleotide_dict[loop_record[i]] for i in range(len(loop_record))]
@@ -85,8 +86,8 @@ def prepare_data(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
-    y_filename = "../data/y_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+    x_filename = "../data/x_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    y_filename = "../data/y_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
     np.save(file=y_filename, arr=y_dataset)

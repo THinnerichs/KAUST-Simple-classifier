@@ -70,12 +70,15 @@ def prepare_data_with_DiProDB(include_acceptor=False,
 
         for record in SeqIO.parse(file_name, "fasta"):
             if counter<start:
+                counter+=1
                 continue
             loop_record = str(record.seq)[300 - pre_length: 301 + post_length + 1]
             encoded = [dinucleotide_dict[loop_record[i:i+N]] for i in range(len(loop_record) -N+1)]
 
             x_dataset.append(encoded)
             counter += 1
+            if counter % 2000 == 0:
+                print("Counter:", counter)
 
             if counter>= start and counter % 2000 == 0:
                 print("Processed records", counter, ", Time:", time.time() - my_time)
@@ -98,9 +101,9 @@ def prepare_data_with_DiProDB(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_dint_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(
+    x_filename = "../data/x_dint_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(
         pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
-    y_filename = "../data/y_" + save_file_name+ (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+    y_filename = "../data/y_" + save_file_name+ ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
     np.save(file=y_filename, arr=y_dataset)

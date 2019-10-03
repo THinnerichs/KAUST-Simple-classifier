@@ -42,30 +42,6 @@ def prepare_data_with_repDNA(include_acceptor=False,
     # Read data and perform transformation
     for b in mode_list:
 
-        # Calculate and store kmer data
-        # Initialize datasets
-        y_dataset = []
-
-        for a in ["negative", "positive"]:
-            # Read data
-            file_name = "../data/{}_{}.fa".format(a, b)
-            print("Processing", file_name)
-            my_time = time.time()
-
-            y_dataset.extend(samples_per_file * [a + b])
-
-        label_encoder = LabelEncoder()
-
-        y_dataset = np.array(y_dataset)
-        y_dataset = label_encoder.fit_transform(y_dataset)
-
-        y_filename = "../data/y_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
-
-        np.save(file=y_filename, arr=y_dataset)
-
-        print("Shape:", y_dataset.shape)
-        print("Data saved in {}.".format(y_filename))
-
         if include_kmer:
             x_dataset = []
             # kmer count occurences:
@@ -77,13 +53,13 @@ def prepare_data_with_repDNA(include_acceptor=False,
                 print("Processing", file_name)
                 my_time = time.time()
 
-                seqs = util.get_data(open(file_name))[:samples_per_file]
+                seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
                 x_dataset.extend(kmer.make_kmer_vec(seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_kmer_" + save_file_name + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_kmer_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -108,7 +84,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_dac_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_dac_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -134,7 +110,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_dcc_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_dcc_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -160,7 +136,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_tac_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_tac_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -187,7 +163,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_tcc_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_tcc_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -213,7 +189,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_pseDNC_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_pseDNC_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -238,7 +214,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_pseKNC_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_pseKNC_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -264,7 +240,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_PC_PseDNC_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_PC_PseDNC_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -291,7 +267,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_PC_PseTNC_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_PC_PseTNC_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -318,7 +294,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_SC_PseDNC_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_SC_PseDNC_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 
@@ -345,7 +321,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
-            x_filename = "../data/x_SC_PseTNC_" + save_file_name+ (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
+            x_filename = "../data/x_SC_PseTNC_" + save_file_name+ ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
             # save dataset in numpy readable files
             np.save(file=x_filename, arr=x_dataset)
 

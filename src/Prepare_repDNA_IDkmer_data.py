@@ -41,7 +41,7 @@ def prepare_data_with_repDNA_IDkmer(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_IDkmer_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples" + ".npy"
+    x_filename = "../data/x_IDkmer_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples" + ".npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
 
