@@ -73,7 +73,7 @@ def prepare_data(include_acceptor=False,
 
 
     # Transform data type of datasets
-    y_dataset = np.array(y_dataset)
+    y_dataset = np.array(y_dataset, dtype=np.int8)
     y_dataset = label_encoder.fit_transform(y_dataset)
     print("y_dataset shape:", y_dataset.shape)
 
@@ -95,6 +95,16 @@ def prepare_data(include_acceptor=False,
 
 
 if __name__ == '__main__':
+    prepare_data(include_acceptor=True,
+                 include_donor=False,
+                 save_file_name="acceptor_data",
+                 samples_per_file=20000)
+
+    prepare_data(include_acceptor=False,
+                 include_donor=True,
+                 save_file_name="donor_data",
+                 samples_per_file=20000)
+
     prepare_data(include_acceptor=True,
                  include_donor=False,
                  save_file_name="acceptor_data",
