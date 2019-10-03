@@ -11,6 +11,7 @@ def apply_classification(applied_model="simple_classifier",
                          datasets=None,
                          results_log_file="../results/results_log",
                          samples_per_file=10000,
+                         start=0,
                          pre_length=300,
                          post_length=300):
 
@@ -26,14 +27,17 @@ def apply_classification(applied_model="simple_classifier",
                        'albaradei', 'albaradei_up', 'albaradei_down']:
             x_data_dict[dataset] = np.load(file="../data/x_" +
                                                 dataset + "_" +
-                                                load_file_name + "_" + str(samples_per_file) +
+                                                load_file_name +
+                                                ("_"+str(start) + "_start" if start != 0 else "") +
+                                                "_" + str(samples_per_file) +
                                                 "_samples" + ".npy")
 
         else:
             x_data_dict[dataset] = np.load(file="../data/x_" +
                                                 (dataset + "_" if dataset!="simple" else "") +
-                                                load_file_name + "_" +
-                                                str(samples_per_file) + "_samples" +
+                                                load_file_name + 
+                                                ("_"+str(start) + "_start" if start != 0 else "") + 
+                                                "_" + str(samples_per_file) + "_samples" +
                                                 ("_" + str(pre_length) + "_pre" if pre_length!=0 else "") +
                                                 ("_" + str(post_length) + "_post" if post_length!=0 else "") +
                                                 ".npy")
@@ -287,21 +291,21 @@ def j14():
 if __name__ == '__main__':
     test_start = time.time()
 
-    '''
     apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
-                         samples_per_file=20000,
+                         samples_per_file=10000,
+                         start=100000,
                          datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
 
     apply_classification(applied_model="overall_classifier",
                          load_file_name="donor_data",
-                         samples_per_file=20000,
+                         samples_per_file=10000,
+                         start=100000,
                          datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
-    '''
 
     '''
     apply_classification(applied_model="Albaradei_classifier",
@@ -310,6 +314,7 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
+    '''
     apply_classification(applied_model="trint_classifier",
                          load_file_name="acceptor_data",
                          datasets=['trint'],
@@ -319,6 +324,7 @@ if __name__ == '__main__':
                          load_file_name="donor_data",
                          datasets=['trint'],
                          samples_per_file=100000)
+    '''
 
     '''
     apply_classification(applied_model="draw_models",

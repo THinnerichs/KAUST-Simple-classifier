@@ -297,7 +297,8 @@
 				\cline{3-8}
 				& & Acc. & Prec. & Rec. & Acc. & Prec. & Rec. \\
 				\hline
-				Simple & 200000 & 94.6 & 93.3 & 96.7 & 95.0 & 92.5 & 96.3 \\
+				Simple & 40000 & 94.6 & 93.3 & 96.7 & 95.0 & 92.5 & 96.3 \\
+				Simple & 200000 & 95.6 & 96.6 & 94.6 & $\sim$95.8 & --- & ---\\
 				
 				\hline  
 			\end{tabular}
@@ -507,7 +508,7 @@
 			\hline
 			40000&X & X & X & X & X &  & 97.5 & 98.2 & 96.5 & 97.4 & 97.3 & 96.3 \\
 			\hline
-			40000 & X & X & &&&X & 98.0 & 98.4 & 97.7 & 98.7 & 1.27 & (*) \\
+			40000(*) & X & X & &&&X & 98.0 & 98.4 & 97.7 & 98.7 & 1.27 & (*) \\
 			
 			
 			
@@ -520,10 +521,9 @@
 \section{Next Steps}
 \begin{frame}{Next steps}
 	\begin{itemize}
-		\item Follow improvements of SpliceRover
-		\item repDNA (Liu et al., 2015) for different embeddings of the sequences
-		\item Train CNN on all embeddings
-		\item Freeze convolutional layers and funnel them into DNN
+		\item Eliminate train/test set dependency
+		\item Include other chemical properties from repDNA
+		\item Maybe include other chemical properties, e.g., propagation of hydration spheres 
 	\end{itemize}
 \end{frame}
 
