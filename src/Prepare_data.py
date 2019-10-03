@@ -77,7 +77,7 @@ def prepare_data(include_acceptor=False,
     y_dataset = label_encoder.fit_transform(y_dataset)
     print("y_dataset shape:", y_dataset.shape)
 
-    x_dataset = np.array(x_dataset, dtype=np.int64)
+    x_dataset = np.array(x_dataset, dtype=np.int8)
     print("x_dataset shape:", x_dataset.shape)
 
     print("Finished reading data")
