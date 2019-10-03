@@ -310,7 +310,6 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    '''
     apply_classification(applied_model="trint_classifier",
                          load_file_name="acceptor_data",
                          datasets=['trint'],
@@ -320,7 +319,6 @@ if __name__ == '__main__':
                          load_file_name="donor_data",
                          datasets=['trint'],
                          samples_per_file=100000)
-    '''
 
     '''
     apply_classification(applied_model="draw_models",
@@ -329,10 +327,11 @@ if __name__ == '__main__':
 
     '''
 
-
+    '''
     for job in [j1, j2, j3, j4, j5, j6, j7, j8, j9, j10, j11, j12, j13, j14]:
         p = mp.Process(target=job)
         p.start()
+    '''
 
     # apply_classification(samples_per_file=20000)
     print("This took {} seconds".format(time.time()-test_start))
