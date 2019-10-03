@@ -21,7 +21,7 @@ def prepare_trint_data(include_acceptor=False,
     print("Reading data ...")
     label_encoder = LabelEncoder()
     onehot_encoder = OneHotEncoder(sparse=False)
-    start = time.time()
+    start_time = time.time()
 
     # Initialize datasets
     x_dataset = []
@@ -78,7 +78,7 @@ def prepare_trint_data(include_acceptor=False,
     print("Data saved in {}.".format(x_filename))
 
     end = time.time()
-    print("This took {} seconds.".format(end-start))
+    print("This took {} seconds.".format(end-start_time))
 
 
 if __name__ == '__main__':
