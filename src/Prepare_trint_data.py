@@ -13,6 +13,7 @@ def prepare_trint_data(include_acceptor=False,
                        include_donor=False,
                        save_file_name="dataset",
                        samples_per_file=10000,
+                       start=0,
                        pre_length=300,
                        post_length=300):
 
@@ -50,16 +51,18 @@ def prepare_trint_data(include_acceptor=False,
         counter = 0
 
         for record in SeqIO.parse(file_name, "fasta"):
+            if counter < start:
+                continue
             loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
             onehot_encoded = [trint_nucleotide_dict[loop_record[i:i+N]] for i in range(len(loop_record) -N+1)]
 
             x_dataset.append(onehot_encoded)
             counter += 1
 
-            if counter % 2000 == 0:
+            if counter >= start and counter % 2000 == 0:
                 print("Processed records", counter, time.time() - my_time)
                 my_time = time.time()
-            if counter >= samples_per_file:
+            if counter >= samples_per_file + start:
                 break
 
     x_dataset = np.array(x_dataset, dtype=np.int8)
@@ -67,7 +70,7 @@ def prepare_trint_data(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_trint_" + save_file_name + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    x_filename = "../data/x_trint_" + save_file_name + (str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
 
@@ -78,6 +81,7 @@ def prepare_trint_data(include_acceptor=False,
 
 
 if __name__ == '__main__':
+    '''
     prepare_trint_data(include_acceptor=True,
                        include_donor=False,
                        save_file_name="acceptor_data",
@@ -97,3 +101,17 @@ if __name__ == '__main__':
                        include_donor=True,
                        save_file_name="donor_data",
                        samples_per_file=100000)
+    '''
+    
+    
+    prepare_trint_data(include_acceptor=True,
+                       include_donor=False,
+                       save_file_name="acceptor_data",
+                       start=100000,
+                       samples_per_file=10000)
+
+    prepare_trint_data(include_acceptor=False,
+                       include_donor=True,
+                       save_file_name="donor_data",
+                       start=100000,
+                       samples_per_file=10000)
