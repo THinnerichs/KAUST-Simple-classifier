@@ -89,7 +89,7 @@ def apply_classification(applied_model="simple_classifier",
                                              train=train,
                                              test=test,
                                              epochs=3,
-                                             batch_size=500)
+                                             batch_size=200)
         elif applied_model == "repDNA_classifier":
             model.simple_classifier_on_repDNA(cv_scores=cv_scores,
                                               train=train,
