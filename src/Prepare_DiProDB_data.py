@@ -80,7 +80,7 @@ def prepare_data_with_DiProDB(include_acceptor=False,
             if counter>= start and counter % 2000 == 0:
                 print("Processed records", counter, ", Time:", time.time() - my_time)
                 my_time = time.time()
-            if counter >= samples_per_file:
+            if counter >= samples_per_file + start:
                 break
 
         # Prepare y labels
