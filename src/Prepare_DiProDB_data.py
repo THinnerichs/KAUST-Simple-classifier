@@ -114,11 +114,11 @@ if __name__ == '__main__':
     prepare_data_with_DiProDB(include_acceptor=True,
                               include_donor=False,
                               save_file_name="acceptor_data",
-                              start=0,
+                              start=100000,
                               samples_per_file=10000)
 
     prepare_data_with_DiProDB(include_acceptor=False,
                               include_donor=True,
                               save_file_name="donor_data",
-                              start=0,
+                              start=100000,
                               samples_per_file=10000)
