@@ -2061,17 +2061,19 @@ class Model:
         x_data_SC_PseTNC = self.x_data_dict['SC_PseTNC']
         x_data_SC_PseTNC = x_data_SC_PseTNC.reshape(x_data_SC_PseTNC.shape + (1,))
 
+
+        print("Predicting test data...")
         # Calculate other validation scores
         y_pred = model.predict([x_data_simple,
                                 x_data_DiProDB,
                                 x_data_trint,
-                                x_data_IDkmer,
-                                x_data_dac,
-                                x_data_dcc,
-                                x_data_PC_PseDNC,
-                                x_data_PC_PseTNC,
-                                x_data_SC_PseDNC,
-                                x_data_SC_PseTNC
+                                # x_data_IDkmer,
+                                # x_data_dac,
+                                # x_data_dcc,
+                                # x_data_PC_PseDNC,
+                                # x_data_PC_PseTNC,
+                                # x_data_SC_PseDNC,
+                                # x_data_SC_PseTNC
                                 ])
 
         conf_matrix = confusion_matrix(y_true=self.y_data,
