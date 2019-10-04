@@ -135,12 +135,13 @@ def apply_classification(applied_model="simple_classifier",
                                                         test=test,
                                                         epochs=10)
         elif applied_model == "overall_classifier":
-            model.samples_per_file = samples_per_file
             model.overall_classifier(cv_scores=cv_scores,
                                      train=train,
                                      test=test,
                                      epochs=15,
                                      batch_size=200)
+        elif applied_model == "overall_classifer_test":
+            model.lost_hope_overall_model_test()
         elif applied_model == "Albaradei_classifier":
             model.albaradei_classifier(cv_scores=cv_scores,
                                        train=train,
@@ -291,6 +292,7 @@ def j14():
 if __name__ == '__main__':
     test_start = time.time()
 
+    '''
     apply_classification(applied_model="overall_classifier",
                          load_file_name="acceptor_data",
                          samples_per_file=10000,
@@ -306,6 +308,23 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
+    '''
+    apply_classification(applied_model="overall_classifier_test",
+                         load_file_name="acceptor_data",
+                         samples_per_file=10000,
+                         start=100000,
+                         datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         pre_length=300,
+                         post_length=300)
+
+    apply_classification(applied_model="overall_classifier_test",
+                         load_file_name="donor_data",
+                         samples_per_file=10000,
+                         start=100000,
+                         datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         pre_length=300,
+                         post_length=300)
+
 
     '''
     apply_classification(applied_model="Albaradei_classifier",

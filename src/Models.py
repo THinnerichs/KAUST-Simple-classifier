@@ -36,7 +36,6 @@ class Model:
         self.pre_length = pre_length
         self.post_length = post_length
         self.load_file_name = load_file_name
-        self.samples_per_file = None
 
         self.x_data = None
 
@@ -1968,7 +1967,7 @@ class Model:
                        show_shapes=True,
                        to_file='../models/plotted_models/overall_model_' + date_string + '.png')
             
-    def lost_hope_overall_mode_test(self):
+    def lost_hope_overall_model_test(self):
 
         print("Preparing models...")
         print("Loading Overall model...")
