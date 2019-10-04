@@ -37,6 +37,8 @@ class Model:
         self.post_length = post_length
         self.load_file_name = load_file_name
 
+        self.round = None
+
         self.x_data = None
 
         # Find best epoch
@@ -150,6 +152,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/simple" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("Simple classifier evaluation:", accuracy, precision, recall)
 
         if len(cv_scores['acc']) == 10:
@@ -254,6 +258,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/multi_label" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("Multi Label classifier evaluation:", accuracy, precision, recall)
 
         if len(cv_scores['acc']) == 10:
@@ -299,6 +305,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/svm" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         if len(cv_scores['acc']) == 10:
             print("SVM APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
@@ -330,6 +338,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
+
+        np.save(file="../data/naive_bayes" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         if len(cv_scores['acc']) == 10:
             print("NAIVE BAYES CLASSIFICATION APPROACH", file=self.filehandler)
@@ -375,6 +385,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
+
+        np.save(file="../data/gradient_boosting" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("Gradient boosting evaluation:", accuracy, precision, recall)
 
@@ -579,6 +591,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/DiProDB" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("DiProDB evaluation:", accuracy, precision, recall)
         
         if len(cv_scores['acc']) == 10:
@@ -708,6 +722,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/trint" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("trint evaluation:", accuracy, precision, recall)
         
         if len(cv_scores['acc']) == 10:
@@ -817,6 +833,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/kmer" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("kmer evaluation:", accuracy, precision, recall)
         
         if len(cv_scores['acc']) == 10:
@@ -923,6 +941,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
+
+        np.save(file="../data/IDkmer" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("IDkmer evaluation:", accuracy, precision, recall)
 
@@ -1037,6 +1057,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/dac" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("DAC evaluation:", accuracy, precision, recall)
 
         if len(cv_scores['acc']) == 10:
@@ -1150,6 +1172,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/dcc" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("DCC evaluation:", accuracy, precision, recall)
         
         if len(cv_scores['acc']) == 10:
@@ -1260,6 +1284,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
+
+        np.save(file="../data/PC_PseDNC" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("PC-PseDNC evaluation:", accuracy, precision, recall)
         
@@ -1372,6 +1398,8 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/PC_PseTNC" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
         print("PC-PseTNC evaluation:", accuracy, precision, recall)
 
         if len(cv_scores['acc']) == 10:
@@ -1482,6 +1510,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
+        
+        np.save(file="../data/SC_PseDNC" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("SC-PseDNC evaluation:", accuracy, precision, recall)
 
@@ -1593,6 +1623,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
+        
+        np.save(file="../data/SC_PseTNC" + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("SC-PseTNC evaluation:", accuracy, precision, recall)
 
