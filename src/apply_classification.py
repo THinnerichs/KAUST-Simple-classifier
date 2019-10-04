@@ -330,6 +330,7 @@ if __name__ == '__main__':
                          pre_length=300,
                          post_length=300)
     '''
+
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
                                          "gradient_boosting",

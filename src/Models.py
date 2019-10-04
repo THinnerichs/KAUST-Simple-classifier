@@ -78,7 +78,7 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        self.x_data = self.x_data_dict['simple'].reshape(self.x_data_dict.shape + (1,))
+        self.x_data = self.x_data_dict['simple'].reshape(self.x_data_dict.shape['simple'] + (1,))
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
@@ -1849,7 +1849,7 @@ class Model:
         simple_input_tensor = simple_classifier_model.layers[0]
         DiProDB_input_tensor = DiProDB_classifier_model.layers[0]
         trint_input_tensor = trint_classifier_model.layers[0]
-        IDkmer_input_tensor = IDkmer_classifier_model.layers[0]
+        # IDkmer_input_tensor = IDkmer_classifier_model.layers[0]
         DAC_input_tensor = dac_classifier_model.layers[0]
         DCC_input_tensor = dcc_classifier_model.layers[0]
         PC_PseDNC_input_tensor = PC_PseDNC_classifier_model.layers[0]
