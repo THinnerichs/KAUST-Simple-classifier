@@ -1651,9 +1651,6 @@ class Model:
         x_data_trint = x_data_trint.reshape(x_data_trint.shape + (1,))
 
         # Read repDNA data
-        self.pre_length = 0
-        self.post_length = 0
-
         print("Reading Kmer data...")
         x_data_kmer = self.x_data_dict['kmer']
         x_data_kmer = x_data_kmer.reshape(x_data_kmer.shape + (1,))
@@ -1686,8 +1683,6 @@ class Model:
         x_data_SC_PseTNC = self.x_data_dict['SC_PseTNC']
         x_data_SC_PseTNC = x_data_SC_PseTNC.reshape(x_data_SC_PseTNC.shape + (1,))
 
-        self.pre_length = 300
-        self.post_length = 300
         print("Finished reading data.")
 
         # Truncate and prepare models
@@ -1972,3 +1967,97 @@ class Model:
             plot_model(model,
                        show_shapes=True,
                        to_file='../models/plotted_models/overall_model_' + date_string + '.png')
+            
+    def lost_hope_overall_mode_test(self):
+
+        print("Preparing models...")
+        print("Loading Overall model...")
+        classifier_json_file = None
+        with open("../models/overall_" + self.load_file_name + "_model.json") as fh:
+            classifier_json_file = fh.read()
+        model = model_from_json(classifier_json_file)
+        model.load_weights("../models/overall_" + self.load_file_name + "_model.h5")
+
+        model.compile(loss='binary_crossentropy',
+                                         optimizer='adam',
+                                         metrics=['accuracy'])
+        print("OVERALL CLASSIFICATION APPROACH RESULTS ON REST DATA", file=self.filehandler)
+
+        # Read simple data
+        x_data_simple = self.x_data_dict['simple']
+        x_data_simple = x_data_simple.reshape(x_data_simple.shape + (1,))
+
+        # Read DiProDB data
+        print("Reading DiProDB data...")
+        x_data_DiProDB = self.x_data_dict['dint']
+        x_data_DiProDB = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
+
+        # Read trint data
+        print("Reading trint data...")
+        x_data_trint = self.x_data_dict['trint']
+        x_data_trint = x_data_trint.reshape(x_data_trint.shape + (1,))
+
+        # Read repDNA data
+        print("Reading Kmer data...")
+        x_data_kmer = self.x_data_dict['kmer']
+        x_data_kmer = x_data_kmer.reshape(x_data_kmer.shape + (1,))
+
+        print("Reading IDkmer data...")
+        x_data_IDkmer = self.x_data_dict['IDkmer']
+        x_data_IDkmer = x_data_IDkmer.reshape(x_data_IDkmer.shape + (1,))
+
+        print("Reading DAC data...")
+        x_data_dac = self.x_data_dict['dac']
+        x_data_dac = x_data_dac.reshape(x_data_dac.shape + (1,))
+
+        print("Reading DCC data...")
+        x_data_dcc = self.x_data_dict['dcc']
+        x_data_dcc = x_data_dcc.reshape(x_data_dcc.shape + (1,))
+
+        print("Reading PC-PseDNC data...")
+        x_data_PC_PseDNC = self.x_data_dict['PC_PseDNC']
+        x_data_PC_PseDNC = x_data_PC_PseDNC.reshape(x_data_PC_PseDNC.shape + (1,))
+
+        print("Reading PC-PseTNC data...")
+        x_data_PC_PseTNC = self.x_data_dict['PC_PseTNC']
+        x_data_PC_PseTNC = x_data_PC_PseTNC.reshape(x_data_PC_PseTNC.shape + (1,))
+
+        print("Reading SC-PseDNC data...")
+        x_data_SC_PseDNC = self.x_data_dict['SC_PseDNC']
+        x_data_SC_PseDNC = x_data_SC_PseDNC.reshape(x_data_SC_PseDNC.shape + (1,))
+
+        print("Reading SC-PseTNC data...")
+        x_data_SC_PseTNC = self.x_data_dict['SC_PseTNC']
+        x_data_SC_PseTNC = x_data_SC_PseTNC.reshape(x_data_SC_PseTNC.shape + (1,))
+
+        # Calculate other validation scores
+        y_pred = model.predict([x_data_simple,
+                                x_data_DiProDB,
+                                x_data_trint,
+                                x_data_IDkmer,
+                                x_data_dac,
+                                x_data_dcc,
+                                x_data_PC_PseDNC,
+                                x_data_PC_PseTNC,
+                                x_data_SC_PseDNC,
+                                x_data_SC_PseTNC
+                                ])
+
+        conf_matrix = confusion_matrix(y_true=self.y_data,
+                                       y_pred=(y_pred > 0.5).astype(int)[:, 0])
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        # print confusion matrix
+        print("Confusion matrix:",
+              conf_matrix,
+              file=self.filehandler)
+
+        print("Overall classification evaluation:", accuracy, precision, recall, file=self.filehandler)

@@ -2,6 +2,8 @@ import numpy as np
 
 from sklearn.preprocessing import LabelEncoder
 
+from joblib import delayed
+
 from repDNA import util, nac, nacutil
 from repDNA.nac import Kmer
 from repDNA.ac import DAC, DCC, TAC, TCC
@@ -79,6 +81,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
                 print("Processing", file_name)
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
+
 
                 x_dataset.extend(dac.make_dac_vec(seqs, all_property=True))
 
