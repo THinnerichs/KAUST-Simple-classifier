@@ -1970,7 +1970,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        print("Overall classification evaluation:", accuracy, precision, recall)
+        print("Overall classification evaluation:", accuracy, precision, recall, file=self.filehandler)
 
         if len(cv_scores['acc']) == 10:
             print("OVERALL CLASSIFICATION APPROACH", file=self.filehandler)
@@ -2094,3 +2094,5 @@ class Model:
               file=self.filehandler)
 
         print("Overall classification evaluation:", accuracy, precision, recall, file=self.filehandler)
+
+        raise Exception
