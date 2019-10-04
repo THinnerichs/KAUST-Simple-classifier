@@ -361,10 +361,6 @@ class Model:
                           test):
         self.x_data = np.copy(self.x_data_dict['simple'])
 
-        print(self.x_data.argmax(axis=2))
-
-
-
         model = XGBClassifier()
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train], verbose=True)
 
