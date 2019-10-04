@@ -78,7 +78,7 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        self.x_data = self.x_data_dict['simple'].reshape(self.x_data_dict.shape['simple'] + (1,))
+        self.x_data = self.x_data_dict['simple'].reshape(self.x_data_dict['simple'].shape + (1,))
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
