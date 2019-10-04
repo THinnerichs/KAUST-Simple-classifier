@@ -78,7 +78,9 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        self.x_data = self.x_data_dict['simple'].reshape(self.x_data_dict['simple'].shape + (1,))
+        self.x_data = np.copy(self.x_data_dict['simple'])
+
+        self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
 
         # defining model
         input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
@@ -194,7 +196,7 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        self.x_data = self.x_data_dict['simple']
+        self.x_data = np.copy(self.x_data_dict['simple'])
 
         onehot_encoder = OneHotEncoder(sparse=False)
 
@@ -281,7 +283,7 @@ class Model:
             cv_scores,
             train,
             test):
-        self.x_data = self.x_data_dict['simple']
+        self.x_data = np.copy(self.x_data_dict['simple'])
 
         clf = svm.SVC(gamma='scale', verbose=True)
         clf.fit(self.normalize_labels()[train], self.y_data[train])
@@ -317,7 +319,7 @@ class Model:
                     cv_scores,
                     train,
                     test):
-        self.x_data = self.x_data_dict['simple']
+        self.x_data = np.copy(self.x_data_dict['simple'])
 
         gnb = GaussianNB()
         gnb.fit(self.normalize_labels()[train], self.y_data[train])
@@ -357,7 +359,7 @@ class Model:
                           cv_scores,
                           train,
                           test):
-        self.x_data = self.x_data_dict['simple']
+        self.x_data = np.copy(self.x_data_dict['simple'])
 
         print(self.x_data.argmax(axis=2))
 
@@ -502,7 +504,7 @@ class Model:
                                      test,
                                      epochs=5,
                                      batch_size=200):
-        self.x_data = self.x_data_dict['dint']
+        self.x_data = np.copy(self.x_data_dict['dint'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -634,7 +636,7 @@ class Model:
                                    test,
                                    epochs=5,
                                    batch_size=200):
-        self.x_data = self.x_data_dict['trint']
+        self.x_data = np.copy(self.x_data_dict['trint'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -765,7 +767,7 @@ class Model:
                                          test,
                                          epochs=10,
                                          batch_size=500):
-        self.x_data = self.x_data_dict['Kmer']
+        self.x_data = np.copy(self.x_data_dict['Kmer'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -875,7 +877,7 @@ class Model:
                                            test,
                                            epochs=10,
                                            batch_size=500):
-        self.x_data = self.x_data_dict['IDkmer']
+        self.x_data = np.copy(self.x_data_dict['IDkmer'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -984,7 +986,7 @@ class Model:
                                         test,
                                         epochs=10,
                                         batch_size=500):
-        self.x_data = self.x_data_dict['dac']
+        self.x_data = np.copy(self.x_data_dict['dac'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1099,7 +1101,7 @@ class Model:
                                         test,
                                         epochs=10,
                                         batch_size=500):
-        self.x_data = self.x_data_dict['dcc']
+        self.x_data = np.copy(self.x_data_dict['dcc'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1214,7 +1216,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
-        self.x_data = self.x_data_dict['PC_PseDNC']
+        self.x_data = np.copy(self.x_data_dict['PC_PseDNC'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1327,7 +1329,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
-        self.x_data = self.x_data_dict['PC_PseTNC']
+        self.x_data = np.copy(self.x_data_dict['PC_PseTNC'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1440,7 +1442,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
-        self.x_data = self.x_data_dict['SC_PseDNC']
+        self.x_data = np.copy(self.x_data_dict['SC_PseDNC'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1553,7 +1555,7 @@ class Model:
                                               test,
                                               epochs=10,
                                               batch_size=500):
-        self.x_data = self.x_data_dict['SC_PseTNC']
+        self.x_data = np.copy(self.x_data_dict['SC_PseTNC'])
 
         self.epochs = epochs
         self.batch_size = batch_size
@@ -1672,52 +1674,52 @@ class Model:
         self.batch_size = batch_size
 
         # Read simple data
-        x_data_simple = self.x_data_dict['simple']
+        x_data_simple = np.copy(self.x_data_dict['simple'])
         x_data_simple = x_data_simple.reshape(x_data_simple.shape + (1,))
 
         # Read DiProDB data
         print("Reading DiProDB data...")
-        x_data_DiProDB = self.x_data_dict['dint']
+        x_data_DiProDB = np.copy(self.x_data_dict['dint'])
         x_data_DiProDB = x_data_DiProDB.reshape(x_data_DiProDB.shape + (1,))
 
         # Read trint data
         print("Reading trint data...")
-        x_data_trint = self.x_data_dict['trint']
+        x_data_trint = np.copy(self.x_data_dict['trint'])
         x_data_trint = x_data_trint.reshape(x_data_trint.shape + (1,))
 
         # Read repDNA data
         print("Reading Kmer data...")
-        x_data_kmer = self.x_data_dict['kmer']
+        x_data_kmer = np.copy(self.x_data_dict['kmer'])
         x_data_kmer = x_data_kmer.reshape(x_data_kmer.shape + (1,))
 
         '''
         print("Reading IDkmer data...")
-        x_data_IDkmer = self.x_data_dict['IDkmer']
+        x_data_IDkmer = np.copy(self.x_data_dict['IDkmer'])
         x_data_IDkmer = x_data_IDkmer.reshape(x_data_IDkmer.shape + (1,))
         '''
 
         print("Reading DAC data...")
-        x_data_dac = self.x_data_dict['dac']
+        x_data_dac = np.copy(self.x_data_dict['dac'])
         x_data_dac = x_data_dac.reshape(x_data_dac.shape + (1,))
 
         print("Reading DCC data...")
-        x_data_dcc = self.x_data_dict['dcc']
+        x_data_dcc = np.copy(self.x_data_dict['dcc'])
         x_data_dcc = x_data_dcc.reshape(x_data_dcc.shape + (1,))
 
         print("Reading PC-PseDNC data...")
-        x_data_PC_PseDNC = self.x_data_dict['PC_PseDNC']
+        x_data_PC_PseDNC = np.copy(self.x_data_dict['PC_PseDNC'])
         x_data_PC_PseDNC = x_data_PC_PseDNC.reshape(x_data_PC_PseDNC.shape + (1,))
 
         print("Reading PC-PseTNC data...")
-        x_data_PC_PseTNC = self.x_data_dict['PC_PseTNC']
+        x_data_PC_PseTNC = np.copy(self.x_data_dict['PC_PseTNC'])
         x_data_PC_PseTNC = x_data_PC_PseTNC.reshape(x_data_PC_PseTNC.shape + (1,))
 
         print("Reading SC-PseDNC data...")
-        x_data_SC_PseDNC = self.x_data_dict['SC_PseDNC']
+        x_data_SC_PseDNC = np.copy(self.x_data_dict['SC_PseDNC'])
         x_data_SC_PseDNC = x_data_SC_PseDNC.reshape(x_data_SC_PseDNC.shape + (1,))
 
         print("Reading SC-PseTNC data...")
-        x_data_SC_PseTNC = self.x_data_dict['SC_PseTNC']
+        x_data_SC_PseTNC = np.copy(self.x_data_dict['SC_PseTNC'])
         x_data_SC_PseTNC = x_data_SC_PseTNC.reshape(x_data_SC_PseTNC.shape + (1,))
 
         print("Finished reading data.")

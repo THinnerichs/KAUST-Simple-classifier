@@ -331,8 +331,8 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
-    apply_classification(applied_models=[# "simple_classifier",
-                                         # "multi_label_classifier",
+    apply_classification(applied_models=["simple_classifier",
+                                         "multi_label_classifier",
                                          "gradient_boosting",
                                          "DiProDB_classifier",
                                          "trint_classifier",
