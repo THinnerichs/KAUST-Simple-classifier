@@ -15,7 +15,7 @@ def apply_classification(applied_model="simple_classifier",
                          pre_length=300,
                          post_length=300):
 
-    start = time.time()
+    start_time = time.time()
     seed = 12
     np.random.seed(seed)
 
@@ -165,7 +165,7 @@ def apply_classification(applied_model="simple_classifier",
     print("File name:", load_file_name)
 
     print("Classified {}".format(load_file_name), file=filehandler)
-    print("This took {} seconds.\n".format(time.time() - start), file=filehandler)
+    print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
     '''
