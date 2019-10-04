@@ -1686,9 +1686,11 @@ class Model:
         x_data_kmer = self.x_data_dict['kmer']
         x_data_kmer = x_data_kmer.reshape(x_data_kmer.shape + (1,))
 
+        '''
         print("Reading IDkmer data...")
         x_data_IDkmer = self.x_data_dict['IDkmer']
         x_data_IDkmer = x_data_IDkmer.reshape(x_data_IDkmer.shape + (1,))
+        '''
 
         print("Reading DAC data...")
         x_data_dac = self.x_data_dict['dac']
@@ -1755,6 +1757,7 @@ class Model:
         # for i in range(5):
             # DiProDB_classifier_model.layers.pop()
 
+        '''
         print("Loading IDkmer model...")
         with open("../models/IDkmer_" + self.load_file_name + "_model.json") as fh:
             classifier_json_file = fh.read()
@@ -1766,6 +1769,7 @@ class Model:
             layer.trainable = False
         # for i in range(3):
             # IDkmer_classifier_model.layers.pop()
+        '''
 
         print("Loading DAC model...")
         with open("../models/dac_" + self.load_file_name + "_model.json") as fh:
@@ -1857,7 +1861,7 @@ class Model:
         concat = layers.concatenate([simple_classifier_model.layers[-1].output,
                                      DiProDB_classifier_model.layers[-1].output,
                                      trint_classifier_model.layers[-1].output,
-                                     IDkmer_classifier_model.layers[-1].output,
+                                     # IDkmer_classifier_model.layers[-1].output,
                                      dac_classifier_model.layers[-1].output,
                                      dcc_classifier_model.layers[-1].output,
                                      PC_PseDNC_classifier_model.layers[-1].output,
@@ -1872,7 +1876,7 @@ class Model:
         model = models.Model(inputs=[simple_input_tensor.input,
                                      DiProDB_input_tensor.input,
                                      trint_input_tensor.input,
-                                     IDkmer_input_tensor.input,
+                                     # IDkmer_input_tensor.input,
                                      DAC_input_tensor.input,
                                      DCC_input_tensor.input,
                                      PC_PseDNC_input_tensor.input,
@@ -1891,7 +1895,7 @@ class Model:
         history = model.fit(x=[x_data_simple[train],
                                x_data_DiProDB[train],
                                x_data_trint[train],
-                               x_data_IDkmer[train],
+                               # x_data_IDkmer[train],
                                x_data_dac[train],
                                x_data_dcc[train],
                                x_data_PC_PseDNC[train],
@@ -1905,7 +1909,7 @@ class Model:
                             validation_data=([x_data_simple[test],
                                               x_data_DiProDB[test],
                                               x_data_trint[test],
-                                              x_data_IDkmer[test],
+                                              # x_data_IDkmer[test],
                                               x_data_dac[test],
                                               x_data_dcc[test],
                                               x_data_PC_PseDNC[test],
@@ -1925,7 +1929,7 @@ class Model:
         scores = model.evaluate([x_data_simple[test],
                                  x_data_DiProDB[test],
                                  x_data_trint[test],
-                                 x_data_IDkmer[test],
+                                 # x_data_IDkmer[test],
                                  x_data_dac[test],
                                  x_data_dcc[test],
                                  x_data_PC_PseDNC[test],
@@ -1945,7 +1949,7 @@ class Model:
         y_pred = model.predict([x_data_simple[test],
                                 x_data_DiProDB[test],
                                 x_data_trint[test],
-                                x_data_IDkmer[test],
+                                # x_data_IDkmer[test],
                                 x_data_dac[test],
                                 x_data_dcc[test],
                                 x_data_PC_PseDNC[test],

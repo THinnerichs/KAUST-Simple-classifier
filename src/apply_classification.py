@@ -335,7 +335,6 @@ if __name__ == '__main__':
                                          "gradient_boosting",
                                          "DiProDB_classifier",
                                          "trint_classifier",
-                                         "repDNA_IDkmer_classifier",
                                          "repDNA_DAC_classifier",
                                          "repDNA_DCC_classifier",
                                          "repDNA_PC_PseDNC_classifier",
@@ -346,7 +345,7 @@ if __name__ == '__main__':
                                          ],
                          load_file_name="acceptor_data",
                          samples_per_file=100000,
-                         datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
 
@@ -355,7 +354,6 @@ if __name__ == '__main__':
                                          "gradient_boosting",
                                          "DiProDB_classifier",
                                          "trint_classifier",
-                                         "repDNA_IDkmer_classifier",
                                          "repDNA_DAC_classifier",
                                          "repDNA_DCC_classifier",
                                          "repDNA_PC_PseDNC_classifier",
@@ -366,7 +364,7 @@ if __name__ == '__main__':
                                          ],
                          load_file_name="donor_data",
                          samples_per_file=100000,
-                         datasets=['simple', 'dint', 'trint', 'kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
 
