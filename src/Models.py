@@ -664,10 +664,10 @@ class Model:
         max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
         '''
 
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_2, convolutional_1_3])
+        merge_1 = layers.Concatenate(axis=1)([max_pool_1_2, max_pool_1_3])
 
         flatten = layers.Flatten()(merge_1)
-        dense_1 = layers.Dense(512, activation='relu')(flatten)
+        dense_1 = layers.Dense(128, activation='relu')(flatten)
 
         output_tensor = layers.Dense(1, activation='sigmoid')(dense_1)
 
