@@ -644,11 +644,8 @@ class Model:
         max_pool_1_1 = layers.MaxPooling2D((2,1))(convolutional_1_1)
         '''
 
-        convolutional_1_2 = layers.Conv2D(16, kernel_size=(3, 3), activation='relu')(input_tensor)
+        convolutional_1_2 = layers.Conv2D(32, kernel_size=(3, 3), activation='relu')(input_tensor)
         max_pool_1_2 = layers.MaxPooling2D((2,2))(convolutional_1_2)
-
-        convolutional_1_3 = layers.Conv2D(32, kernel_size=(3, 3), activation='relu')(max_pool_1_2)
-        max_pool_1_3 = layers.MaxPooling2D((2, 2))(convolutional_1_3)
 
         # convolutional_1_4 = layers.Conv2D(32, kernel_size=(3, 3), activation='relu')(max_pool_1_3)
         # max_pool_1_4 = layers.MaxPooling2D((2, 2))(convolutional_1_4)
@@ -667,7 +664,7 @@ class Model:
 
         # merge_1 = layers.Concatenate(axis=1)([max_pool_1_2, max_pool_1_3, max_pool_1_4])
 
-        flatten = layers.Flatten()(max_pool_1_3)
+        flatten = layers.Flatten()(max_pool_1_2)
 
         dense_1 = layers.Dense(128, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
