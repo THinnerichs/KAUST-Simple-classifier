@@ -77,8 +77,6 @@ def prepare_data_with_DiProDB(include_acceptor=False,
 
             x_dataset.append(encoded)
             counter += 1
-            if counter % 2000 == 0:
-                print("Counter:", counter)
 
             if counter>= start and counter % 2000 == 0:
                 print("Processed records", counter, ", Time:", time.time() - my_time)

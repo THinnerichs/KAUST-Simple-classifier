@@ -73,8 +73,6 @@ def prepare_data_with_DiProDB_full(include_acceptor=False,
 
             x_dataset.append(encoded)
             counter += 1
-            if counter % 2000 == 0:
-                print("Counter:", counter)
 
             if counter>= start and counter % 2000 == 0:
                 print("Processed records", counter, ", Time:", time.time() - my_time)
@@ -85,12 +83,12 @@ def prepare_data_with_DiProDB_full(include_acceptor=False,
     # Transform data type of datasets
     label_encoder = LabelEncoder()
 
-    x_dataset = np.array(x_dataset, dtype=np.float)
+    x_dataset = np.array(x_dataset, dtype=np.float32)
     print("x_dataset shape:", x_dataset.shape)
 
     print("Finished reading data")
 
-    x_filename = "../data/x_dint_full" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(
+    x_filename = "../data/x_dint_full_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(
         pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
