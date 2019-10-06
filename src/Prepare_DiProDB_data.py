@@ -46,7 +46,8 @@ def prepare_data_with_DiProDB(include_acceptor=False,
     scaled = StandardScaler().fit_transform(pruned)
 
     # Decompose matrix
-    pca = PCA(n_components=15)
+    n_pca_components = 50
+    pca = PCA(n_components=n_pca_components)
 
     principal_components = pca.fit_transform(scaled)
 
@@ -99,7 +100,7 @@ def prepare_data_with_DiProDB(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_dint_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(
+    x_filename = "../data/x_dint_" + (str(n_pca_components) + "_comp_" if n_pca_components!=15 else "") + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(
         pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
     y_filename = "../data/y_" + save_file_name+ ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
