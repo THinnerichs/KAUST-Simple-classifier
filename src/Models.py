@@ -645,14 +645,15 @@ class Model:
         '''
 
         convolutional_1_2 = layers.Conv2D(32, kernel_size=(3, 3), activation='relu')(input_tensor)
-        max_pool_1_2 = layers.MaxPooling2D((2,1))(convolutional_1_2)
+        max_pool_1_2 = layers.MaxPooling2D((2,2))(convolutional_1_2)
 
         convolutional_1_3 = layers.Conv2D(32, kernel_size=(5, 5), activation='relu')(input_tensor)
-        max_pool_1_3 = layers.MaxPooling2D((2, 1))(convolutional_1_3)
+        max_pool_1_3 = layers.MaxPooling2D((2, 2))(convolutional_1_3)
+
+        convolutional_1_4 = layers.Conv2D(32, kernel_size=(7, 7), activation='relu')(input_tensor)
+        max_pool_1_4 = layers.MaxPooling2D((2, 2))(convolutional_1_4)
 
         '''
-        convolutional_1_4 = layers.Conv2D(32, kernel_size=(5, 15), activation='relu')(input_tensor)
-        max_pool_1_4 = layers.MaxPooling2D((2, 1))(convolutional_1_4)
 
         convolutional_1_5 = layers.Conv2D(32, kernel_size=(6, 15), activation='relu')(input_tensor)
         max_pool_1_5 = layers.MaxPooling2D((2, 1))(convolutional_1_5)
@@ -664,7 +665,7 @@ class Model:
         max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
         '''
 
-        merge_1 = layers.Concatenate(axis=1)([max_pool_1_2, max_pool_1_3])
+        merge_1 = layers.Concatenate(axis=1)([max_pool_1_2, max_pool_1_3, max_pool_1_4])
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
