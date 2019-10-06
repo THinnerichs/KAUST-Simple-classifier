@@ -337,6 +337,7 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
+    '''
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
                                          "DiProDB_classifier",
@@ -372,6 +373,7 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
+    '''
 
 
     '''
@@ -381,7 +383,6 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    '''
     apply_classification(applied_models=["DiProDB_full_classifier"],
                          load_file_name="acceptor_data",
                          datasets=['dint_full'],
@@ -391,7 +392,6 @@ if __name__ == '__main__':
                          load_file_name="donor_data",
                          datasets=['dint_full'],
                          samples_per_file=20000)
-    '''
 
     '''
     apply_classification(applied_models=["draw_models"],
