@@ -106,6 +106,10 @@ def apply_classification(applied_models=["simple_classifier"],
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                                train=train,
                                                test=test)
+        if "DiProDB_full_classifier" in applied_models:
+            model.simple_classifier_on_DiProDB_full(cv_scores=cv_scores,
+                                                    train=train,
+                                                    test=test)
         # cv_scores['acc']=list(range(9))
         if "trint_classifier" in applied_models:
             model.simple_classifier_on_trint(cv_scores=cv_scores,
@@ -379,15 +383,15 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    apply_classification(applied_models=["DiProDB_classifier"],
+    apply_classification(applied_models=["DiProDB_full_classifier"],
                          load_file_name="acceptor_data",
-                         datasets=['trint'],
-                         samples_per_file=100000)
+                         datasets=['dint_full'],
+                         samples_per_file=20000)
 
-    apply_classification(applied_models=["DiProDB_classifier"],
+    apply_classification(applied_models=["DiProDB_full_classifier"],
                          load_file_name="donor_data",
-                         datasets=['trint'],
-                         samples_per_file=100000)
+                         datasets=['dint_full'],
+                         samples_per_file=20000)
 
     '''
     apply_classification(applied_models=["draw_models"],

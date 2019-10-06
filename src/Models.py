@@ -624,6 +624,134 @@ class Model:
             plot_model(model,
                        show_shapes=True,
                        to_file='../models/plotted_models/DiProDB_model_' + date_string + '.png')
+    def simple_classifier_on_DiProDB_full(self,
+                                          cv_scores,
+                                          train,
+                                          test,
+                                          epochs=5,
+                                          batch_size=200):
+
+        self.x_data = np.copy(self.x_data_dict['dint_full'])
+
+        self.epochs = epochs
+        self.batch_size = batch_size
+
+        # defining model
+        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
+
+        '''
+        convolutional_1_1 = layers.Conv2D(16, kernel_size=(2, 15), activation="relu")(input_tensor)
+        max_pool_1_1 = layers.MaxPooling2D((2,1))(convolutional_1_1)
+        '''
+
+        convolutional_1_2 = layers.Conv2D(32, kernel_size=(3, 124), activation='relu')(input_tensor)
+        max_pool_1_2 = layers.MaxPooling2D((2,1))(convolutional_1_2)
+
+        convolutional_1_3 = layers.Conv2D(32, kernel_size=(4, 124), activation='relu')(input_tensor)
+        max_pool_1_3 = layers.MaxPooling2D((2, 1))(convolutional_1_3)
+
+        '''
+        convolutional_1_4 = layers.Conv2D(32, kernel_size=(5, 15), activation='relu')(input_tensor)
+        max_pool_1_4 = layers.MaxPooling2D((2, 1))(convolutional_1_4)
+
+        convolutional_1_5 = layers.Conv2D(32, kernel_size=(6, 15), activation='relu')(input_tensor)
+        max_pool_1_5 = layers.MaxPooling2D((2, 1))(convolutional_1_5)
+
+        convolutional_1_6 = layers.Conv2D(32, kernel_size=(7, 15), activation='relu')(input_tensor)
+        max_pool_1_6 = layers.MaxPooling2D((2,1))(convolutional_1_6)
+
+        convolutional_1_7 = layers.Conv2D(32, kernel_size=(8, 15), activation='relu')(input_tensor)
+        max_pool_1_7 = layers.MaxPooling2D((2,1))(convolutional_1_7)
+        '''
+
+        merge_1 = layers.Concatenate(axis=1)([convolutional_1_2, convolutional_1_3])
+
+        flatten = layers.Flatten()(merge_1)
+        dense_1 = layers.Dense(512, activation='relu')(flatten)
+
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
+
+        model = models.Model(input_tensor, output_tensor)
+
+        # compile model
+        model.compile(loss='binary_crossentropy',
+                      optimizer='adam',
+                      metrics=['accuracy'])
+
+        self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
+
+        # train model
+        history = model.fit(x=self.x_data[train],
+                            y=self.y_data[train],
+                            epochs=epochs,
+                            batch_size=batch_size,
+                            validation_data=(self.x_data[test], self.y_data[test]),
+                            callbacks=[TensorBoard(log_dir='/tmp/classifier')])
+
+        self.loss_val_index.append((np.array(history.history["val_loss"]).argmin(),
+                                    np.array(history.history["val_acc"]).argmax(),
+                                    np.array(history.history["acc"]).argmax()))
+        self.val_accuracy_values.append(history.history['val_acc'])
+        self.accuracy_values.append(history.history['acc'])
+
+        model.summary()
+
+        # evaluate the model
+        scores = model.evaluate(self.x_data[test], self.y_data[test], verbose=0)
+
+        print("\n--------------------------------------------------")
+        print("%s: %.2f%%" % (model.metrics_names[1], scores[1] * 100))
+        print("--------------------------------------------------\n")
+
+        # Calculate other validation scores
+        y_pred = model.predict(self.x_data[test])
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        # np.save(file="../data/DiProDB" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+
+        print("DiProDB full evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("DiProDB FULL: BINARY CLASSIFICATION APPROACH", file=self.filehandler)
+            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+            print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
+            model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
+
+            # print confusion matrix
+            print("Confusion matrix:",
+                  conf_matrix,
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  conf_matrix)
+
+            print("------------------------------------------------\n")
+
+            # serialize model to JSON
+            model_json = model.to_json()
+            with open("../models/DiProDB_full_" + self.load_file_name + "_model.json", "w") as json_file:
+                json_file.write(model_json)
+            # serialize weights to HDF5
+            model.save_weights("../models/DiProDB_full_" + self.load_file_name + "_model.h5")
+            print("Saved DiProDB full convolutional model to disk.")
+
+            date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            plot_model(model,
+                       show_shapes=True,
+                       to_file='../models/plotted_models/DiProDB_full_model_' + date_string + '.png')
 
 
     def simple_classifier_on_trint(self,
