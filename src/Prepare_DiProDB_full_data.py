@@ -102,13 +102,22 @@ def prepare_data_with_DiProDB_full(include_acceptor=False,
 
 if __name__ == '__main__':
     prepare_data_with_DiProDB_full(include_acceptor=True,
-                              include_donor=False,
-                              save_file_name="acceptor_data",
-                              start=100000,
-                              samples_per_file=10000)
+                                   include_donor=False,
+                                   save_file_name="acceptor_data",
+                                   samples_per_file=20000)
 
     prepare_data_with_DiProDB_full(include_acceptor=False,
-                              include_donor=True,
-                              save_file_name="donor_data",
-                              start=100000,
-                              samples_per_file=10000)
+                                   include_donor=True,
+                                   save_file_name="donor_data",
+                                   samples_per_file=20000)
+
+    prepare_data_with_DiProDB_full(include_acceptor=True,
+                                   include_donor=False,
+                                   save_file_name="acceptor_data",
+                                   samples_per_file=100000)
+
+    prepare_data_with_DiProDB_full(include_acceptor=False,
+                                   include_donor=True,
+                                   save_file_name="donor_data",
+                                   samples_per_file=100000)
+
