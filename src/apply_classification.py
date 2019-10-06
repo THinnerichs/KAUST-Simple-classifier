@@ -70,8 +70,8 @@ def apply_classification(applied_models=["simple_classifier"],
 
         model.round = round
 
-        np.save(file="../data/" + load_file_name + "_ round_" + str(round) + "_train_indizes.npy", arr=np.array(train))
-        np.save(file="../data/" + load_file_name + "_ round_" + str(round) + "_test_indizes.npy", arr=np.array(test))
+        # np.save(file="../data/" + load_file_name + "_ round_" + str(round) + "_train_indizes.npy", arr=np.array(train))
+        # np.save(file="../data/" + load_file_name + "_ round_" + str(round) + "_test_indizes.npy", arr=np.array(test))
 
         round += 1
 
@@ -80,92 +80,92 @@ def apply_classification(applied_models=["simple_classifier"],
             print("No valid model selected.")
             raise Exception
 
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "simple_classifier" in applied_models:
             model.simple_classifier(cv_scores=cv_scores,
                                     train=train,
                                     test=test)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "multi_label_classifier" in applied_models:
             model.multi_label_classifier(cv_scores=cv_scores,
                                          train=train,
                                          test=test)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "svm" in applied_models:
             model.svm(cv_scores=cv_scores, train=train, test=test)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "naive_bayes" in applied_models:
             model.naive_bayes(cv_scores=cv_scores, train=train, test=test)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "gradient_boosting" in applied_models:
             model.gradient_boosting(cv_scores=cv_scores,
                                     train=train,
                                     test=test)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "DiProDB_classifier" in applied_models:
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                                train=train,
                                                test=test)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "trint_classifier" in applied_models:
             model.simple_classifier_on_trint(cv_scores=cv_scores,
                                              train=train,
                                              test=test,
                                              epochs=2,
                                              batch_size=200)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "repDNA_IDkmer_classifier" in applied_models:
             model.simple_classifier_on_repDNA_IDKmer(cv_scores=cv_scores,
                                                      train=train,
                                                      test=test,
                                                      epochs=10)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "repDNA_DAC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_DAC(cv_scores=cv_scores,
                                                   train=train,
                                                   test=test,
                                                   epochs=10)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "repDNA_DCC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_DCC(cv_scores=cv_scores,
                                                   train=train,
                                                   test=test,
                                                   epochs=10)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "repDNA_PC_PseDNC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_PC_PseDNC(cv_scores=cv_scores,
                                                         train=train,
                                                         test=test,
                                                         epochs=10)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "repDNA_PC_PseTNC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_PC_PseTNC(cv_scores=cv_scores,
                                                         train=train,
                                                         test=test,
                                                         epochs=10)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "repDNA_SC_PseDNC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_SC_PseDNC(cv_scores=cv_scores,
                                                         train=train,
                                                         test=test,
                                                         epochs=10)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "repDNA_SC_PseTNC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_SC_PseTNC(cv_scores=cv_scores,
                                                         train=train,
                                                         test=test,
                                                         epochs=10)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "overall_classifier" in applied_models:
             model.overall_classifier(cv_scores=cv_scores,
                                      train=train,
                                      test=test,
                                      epochs=15,
                                      batch_size=200)
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "overall_classifier_test" in applied_models:
             model.lost_hope_overall_model_test()
-        cv_scores['acc']=list(range(9))
+        # cv_scores['acc']=list(range(9))
         if "Albaradei_classifier" in applied_models:
             model.albaradei_classifier(cv_scores=cv_scores,
                                        train=train,
@@ -176,19 +176,19 @@ def apply_classification(applied_models=["simple_classifier"],
             raise Exception
 
 
-    # print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
-    # print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
-    # print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
+    print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
+    print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
+    print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
 
-    # print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
-    # print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
-    # print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
+    print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
+    print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
+    print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
 
-    # print("File name:", load_file_name)
+    print("File name:", load_file_name)
 
-    # print("Classified {}".format(load_file_name), file=filehandler)
-    # print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
-    # print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+    print("Classified {}".format(load_file_name), file=filehandler)
+    print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+    print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
     '''
     # print accuracy progress
@@ -331,6 +331,7 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
+    '''
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
                                          "DiProDB_classifier",
@@ -368,6 +369,7 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
+    '''
 
 
     '''
@@ -377,17 +379,15 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    '''
-    apply_classification(applied_models=["trint_classifier"],
+    apply_classification(applied_models=["DiProDB_classifier"],
                          load_file_name="acceptor_data",
                          datasets=['trint'],
                          samples_per_file=100000)
 
-    apply_classification(applied_models=["trint_classifier"],
+    apply_classification(applied_models=["DiProDB_classifier"],
                          load_file_name="donor_data",
                          datasets=['trint'],
                          samples_per_file=100000)
-    '''
 
     '''
     apply_classification(applied_models=["draw_models"],
