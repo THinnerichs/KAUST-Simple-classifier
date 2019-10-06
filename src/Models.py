@@ -637,7 +637,7 @@ class Model:
         self.batch_size = batch_size
 
         # defining model
-        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 15, 1))
+        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length - 1, 124, 1))
 
         '''
         convolutional_1_1 = layers.Conv2D(16, kernel_size=(2, 15), activation="relu")(input_tensor)
