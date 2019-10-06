@@ -669,7 +669,7 @@ class Model:
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(512, activation='relu')(flatten)
 
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dense_1)
 
         model = models.Model(input_tensor, output_tensor)
 
