@@ -181,6 +181,7 @@ def apply_classification(applied_models=["simple_classifier"],
             raise Exception
 
 
+    '''
     print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
     print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
     print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
@@ -192,8 +193,13 @@ def apply_classification(applied_models=["simple_classifier"],
     print("File name:", load_file_name)
 
     print("Classified {}".format(load_file_name), file=filehandler)
+    '''
+
+
     print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+
 
     '''
     # print accuracy progress
