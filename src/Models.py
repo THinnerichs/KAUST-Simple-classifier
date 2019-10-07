@@ -1357,6 +1357,9 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
+
+        print("SHAPE:", self.x_data.shape)
+
         raise Exception
 
         if self.x_data.ndim == 2:
