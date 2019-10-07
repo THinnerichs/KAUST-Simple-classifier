@@ -1480,8 +1480,6 @@ class Model:
 
         print("SHAPE:", self.x_data.shape)
 
-        raise Exception
-
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[2])
 
         if self.x_data.ndim == 2:
