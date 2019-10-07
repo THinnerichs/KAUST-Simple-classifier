@@ -40,7 +40,7 @@ class Voting_classifer:
             self.data_dict[round] = {}
             for dataset in self.datasets:
                 print("Reading {}...".format(dataset))
-                self.data_dict[round][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy")
+                self.data_dict[round][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_prediction.npy")
 
             print("Reading y_data...")
             self.train_indizes = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
