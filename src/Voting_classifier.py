@@ -50,7 +50,7 @@ class Voting_classifer:
             self.data_dict[round]["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")[self.test_indizes]
 
     def hard_voting(self,
-                    input_weights=None):
+                    input_weights=np.array([])):
 
         cv_scores = {'acc':[],
                      'prec':[],
@@ -58,7 +58,7 @@ class Voting_classifer:
 
         start_time = time.time()
 
-        weights = np.array([1,1,1,1,1,1,1,1,1,1]) if not input_weights else input_weights
+        weights =  input_weights if input_weights.size else np.array([1,1,1,1,1,1,1,1,1,1])
         for round in range(1,11):
 
             matrix = np.array([])
@@ -105,14 +105,14 @@ class Voting_classifer:
             print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
     def soft_voting(self,
-                    input_weights=None):
+                    input_weights=np.array([])):
         cv_scores = {'acc':[],
                      'prec':[],
                      'rec':[]}
 
         start_time = time.time()
 
-        weights = np.array([1,1,1,1,1,1,1,1,1,1]) if not input_weights else input_weights
+        weights =  input_weights if input_weights.size else np.array([1,1,1,1,1,1,1,1,1,1])
         for round in range(1,11):
 
             matrix = np.array([])
