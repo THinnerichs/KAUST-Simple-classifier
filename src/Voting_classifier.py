@@ -58,7 +58,7 @@ class Voting_classifer:
             matrix = np.array([])
             for i in range(len(self.datasets)):
                 array = self.data_dict[round][self.datasets[i]]
-                array = array.reshape((array.shape()[0],))
+                array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array))
 
             matrix = (np.transpose(matrix) > 0.5).astype(int)
