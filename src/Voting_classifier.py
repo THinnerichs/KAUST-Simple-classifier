@@ -68,7 +68,7 @@ class Voting_classifer:
 
             print("y_pred", y_pred)
 
-            y_pred /= weights.sum()
+            y_pred = np.divide(y_pred, weights.sum())
 
             conf_matrix = confusion_matrix(y_true=self.data_dict[round]["y_data"],
                                            y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
