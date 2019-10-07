@@ -168,6 +168,7 @@ class Voting_classifer:
             print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
     def neural_net(self,
+                   hard=False,
                    epochs=5,
                    batch_size=200):
 
@@ -187,6 +188,9 @@ class Voting_classifer:
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
             matrix = np.transpose(matrix)
+
+            if hard:
+                matrix = (matrix > 0.5).astype(int)
 
             # defining model
             input_tensor = layers.Input(shape=(None, matrix.shape[1]))
@@ -239,7 +243,7 @@ class Voting_classifer:
 
             if len(cv_scores['acc']) == 10:
                 with open(file=self.results_log_file, mode='a') as filehandler:
-                    print("DiProDB: BINARY CLASSIFICATION APPROACH", file=filehandler)
+                    print("NEURAL NET " + ("HARD" if hard else "SOFT") + " CLASSIFICATION APPROACH", file=filehandler)
                     print("Data shape: {}".format(self.x_data.shape), file=filehandler)
                     print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=filehandler)
                     model.summary(print_fn=lambda x: filehandler.write(x + '\n'))

@@ -33,7 +33,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
     print("Reading data ...")
 
-    cpu_count = int(mp.cpu_count()/4)
+    cpu_count = int(mp.cpu_count()/2)
 
     # Prepare selected modes
     mode_list = []
@@ -602,20 +602,19 @@ if __name__ == '__main__':
 
     '''
 
-    '''
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
                              samples_per_file=100000,
-                             include_kmer=True,
+                             include_kmer=False,
                              include_DAC=False,
-                             include_DCC=False,
+                             include_DCC=True,
                              include_PC_PseDNC=False,
                              include_PC_PseTNC=False,
                              include_SC_PseDNC=False,
                              include_SC_PseTNC=False)
-    '''
 
+    '''
     jobs = [acceptor_kmer_DAC, acceptor_DCC, acceptor_PC_DNC, acceptor_PC_TNC, acceptor_SC_DNC, acceptor_SC_TNC]
     jobs.extend([donor_kmer_DAC, donor_DCC, donor_PC_DNC, donor_PC_TNC, donor_SC_DNC, donor_SC_TNC])
     jobs.extend([donor_KNC, donor_TAC_TCC, acceptor_KNC, acceptor_TAC_TCC])
@@ -623,3 +622,4 @@ if __name__ == '__main__':
     for job in jobs:
         p = mp.Process(target=job)
         p.start()
+    '''

@@ -154,6 +154,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("Simple classifier evaluation:", accuracy, precision, recall)
@@ -260,6 +261,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/multi_label" + "_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/multi_label" + "_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("Multi Label classifier evaluation:", accuracy, precision, recall)
@@ -388,6 +390,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("Gradient boosting evaluation:", accuracy, precision, recall)
@@ -593,6 +596,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/DiProDB" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/DiProDB" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("DiProDB evaluation:", accuracy, precision, recall)
@@ -854,6 +858,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/trint" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/trint" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("trint evaluation:", accuracy, precision, recall)
@@ -965,6 +970,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/kmer" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=self.x_data[train])
         np.save(file="../data/kmer" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("kmer evaluation:", accuracy, precision, recall)
@@ -1074,6 +1080,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/IDkmer" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/IDkmer" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("IDkmer evaluation:", accuracy, precision, recall)
@@ -1189,6 +1196,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/dac" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/dac" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("DAC evaluation:", accuracy, precision, recall)
@@ -1304,6 +1312,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/dcc" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/dcc" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("DCC evaluation:", accuracy, precision, recall)
@@ -1417,6 +1426,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/PC_PseDNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/PC_PseDNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("PC-PseDNC evaluation:", accuracy, precision, recall)
@@ -1530,6 +1540,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
+        np.save(file="../data/PC_PseTNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/PC_PseTNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("PC-PseTNC evaluation:", accuracy, precision, recall)
@@ -1642,7 +1653,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
-        
+
+        np.save(file="../data/SC_PseDNC" + "_" + self.load_file_name +"_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/SC_PseDNC" + "_" + self.load_file_name +"_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("SC-PseDNC evaluation:", accuracy, precision, recall)
@@ -1755,7 +1767,8 @@ class Model:
         cv_scores['acc'].append(accuracy * 100)
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
-        
+
+        np.save(file="../data/SC_PseTNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "train_prediction.npy" , arr=model.predict(self.x_data[train]))
         np.save(file="../data/SC_PseTNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("SC-PseTNC evaluation:", accuracy, precision, recall)

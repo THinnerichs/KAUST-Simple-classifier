@@ -339,7 +339,6 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
-    '''
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
                                          "DiProDB_classifier",
@@ -357,7 +356,6 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
-    '''
 
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
