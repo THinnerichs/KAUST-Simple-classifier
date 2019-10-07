@@ -624,6 +624,7 @@ class Model:
             plot_model(model,
                        show_shapes=True,
                        to_file='../models/plotted_models/DiProDB_model_' + date_string + '.png')
+
     def simple_classifier_on_DiProDB_full(self,
                                           cv_scores,
                                           train,
