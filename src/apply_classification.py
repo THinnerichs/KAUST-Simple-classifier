@@ -24,7 +24,7 @@ def apply_classification(applied_models=["simple_classifier"],
     for dataset in datasets:
         print("Reading {} data...".format(dataset))
         if dataset in ['kmer', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC',
-                       'albaradei', 'albaradei_up', 'albaradei_down']:
+                       'albaradei', 'albaradei_up', 'albaradei_down', 'tac', 'tcc', 'pseKNC']:
             x_data_dict[dataset] = np.load(file="../data/x_" +
                                                 dataset + "_" +
                                                 load_file_name +
@@ -357,7 +357,6 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
-    '''
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
                                          "DiProDB_classifier",
@@ -365,6 +364,8 @@ if __name__ == '__main__':
                                          "repDNA_IDkmer_classifier",
                                          "repDNA_DAC_classifier",
                                          "repDNA_DCC_classifier",
+                                         "repDNA_TAC_classifier",
+                                         "repDNA_TCC_classifier",
                                          "repDNA_pseKNC_classifier",
                                          "repDNA_PC_PseDNC_classifier",
                                          "repDNA_PC_PseTNC_classifier",
@@ -373,7 +374,7 @@ if __name__ == '__main__':
                                          ],
                          load_file_name="acceptor_data",
                          samples_per_file=100000,
-                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'pseKNC', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'tac', 'tcc', 'pseKNC', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
 
@@ -384,6 +385,8 @@ if __name__ == '__main__':
                                          "repDNA_IDkmer_classifier",
                                          "repDNA_DAC_classifier",
                                          "repDNA_DCC_classifier",
+                                         "repDNA_TAC_classifier",
+                                         "repDNA_TCC_classifier",
                                          "repDNA_pseKNC_classifier",
                                          "repDNA_PC_PseDNC_classifier",
                                          "repDNA_PC_PseTNC_classifier",
@@ -392,10 +395,9 @@ if __name__ == '__main__':
                                          ],
                          load_file_name="donor_data",
                          samples_per_file=100000,
-                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'pseKNC', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'tac', 'tcc', 'pseKNC', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
-    '''
 
     '''
     apply_classification(applied_models=["Albaradei_classifier"],
@@ -404,6 +406,7 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
+    '''
     apply_classification(applied_models=["repDNA_TCC_classifier"],
                          load_file_name="acceptor_data",
                          datasets=['tcc'],
@@ -417,6 +420,7 @@ if __name__ == '__main__':
                          samples_per_file=100000,
                          pre_length=0,
                          post_length=0)
+    '''
 
     '''
     apply_classification(applied_models=["draw_models"],
