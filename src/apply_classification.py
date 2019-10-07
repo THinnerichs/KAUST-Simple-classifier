@@ -143,7 +143,13 @@ def apply_classification(applied_models=["simple_classifier"],
                                                   test=test,
                                                   epochs=10)
         cv_scores['acc']=list(range(9))
-        if "repDNA_pseKNC_classifier":
+        if "repDNA_TCC_classifier" in applied_models:
+            model.simple_classifier_on_repDNA_TCC(cv_scores=cv_scores,
+                                                  train=train,
+                                                  test=test,
+                                                  epochs=10)
+        cv_scores['acc']=list(range(9))
+        if "repDNA_pseKNC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_PseKNC(cv_scores=cv_scores,
                                                      train=train,
                                                      test=test,
@@ -398,16 +404,16 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    apply_classification(applied_models=["repDNA_TAC_classifier"],
+    apply_classification(applied_models=["repDNA_TCC_classifier"],
                          load_file_name="acceptor_data",
-                         datasets=['tac'],
+                         datasets=['tcc'],
                          samples_per_file=100000,
                          pre_length=0,
                          post_length=0)
 
-    apply_classification(applied_models=["repDNA_TAC_classifier"],
+    apply_classification(applied_models=["repDNA_TCC_classifier"],
                          load_file_name="donor_data",
-                         datasets=['tac'],
+                         datasets=['tcc'],
                          samples_per_file=100000,
                          pre_length=0,
                          post_length=0)
