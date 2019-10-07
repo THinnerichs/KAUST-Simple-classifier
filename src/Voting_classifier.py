@@ -59,7 +59,10 @@ class Voting_classifer:
             for i in range(len(self.datasets)):
                 array = self.data_dict[round][self.datasets[i]]
                 array = array.reshape((array.shape[0],))
-                matrix = np.vstack((matrix, array))
+                # matrix = np.vstack((matrix, array))
+                print(self.datasets[i], array.shape)
+
+            raise Exception
 
             matrix = (np.transpose(matrix) > 0.5).astype(int)
             y_pred = matrix.dot(weights)
