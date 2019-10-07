@@ -136,6 +136,12 @@ def apply_classification(applied_models=["simple_classifier"],
                                                   train=train,
                                                   test=test,
                                                   epochs=10)
+        cv_scores['acc']=[]
+        if "repDNA_pseKNC_classifier":
+            model.simple_classifier_on_repDNA_PseKNC(cv_scores=cv_scores,
+                                                     train=train,
+                                                     test=test,
+                                                     epochs=10)
         cv_scores['acc']=list(range(9))
         if "repDNA_PC_PseDNC_classifier" in applied_models:
             model.simple_classifier_on_repDNA_PC_PseDNC(cv_scores=cv_scores,
@@ -339,6 +345,7 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
+    '''
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
                                          "DiProDB_classifier",
@@ -374,7 +381,7 @@ if __name__ == '__main__':
                          datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
-
+    '''
 
     '''
     apply_classification(applied_models=["Albaradei_classifier"],
@@ -383,17 +390,15 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    '''
-    apply_classification(applied_models=["DiProDB_full_classifier"],
+    apply_classification(applied_models=["repDNA_pseKNC_classifier"],
                          load_file_name="acceptor_data",
-                         datasets=['dint_full'],
-                         samples_per_file=20000)
+                         datasets=['pseKNC'],
+                         samples_per_file=100000)
 
-    apply_classification(applied_models=["DiProDB_full_classifier"],
+    apply_classification(applied_models=["repDNA_pseKNC_classifier"],
                          load_file_name="donor_data",
-                         datasets=['dint_full'],
-                         samples_per_file=20000)
-    '''
+                         datasets=['pseKNC'],
+                         samples_per_file=100000)
 
     '''
     apply_classification(applied_models=["draw_models"],

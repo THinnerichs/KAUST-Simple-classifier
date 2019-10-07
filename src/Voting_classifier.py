@@ -58,11 +58,12 @@ class Voting_classifer:
         self.train_indizes = {}
         self.test_indizes = {}
         for round in range(1,11):
-            self.data_dict[round] = {}
+            self.data_dict[round] = {'train': {},
+                                     'test': {}}
             for dataset in self.datasets:
                 print("Reading {}...".format(dataset))
-                self.data_dict[round][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_prediction.npy")
-
+                self.data_dict[round]['test'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_prediction.npy")
+                self.data_dict[round]['train'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_train_prediction.npy")
             print("Reading y_data...")
             self.train_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
             self.test_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
@@ -353,3 +354,35 @@ if __name__ == '__main__':
 
     democracy.neural_net(epochs=10,
                          batch_size=500)
+
+    '''
+    democracy = Voting_classifer(load_file_name="donor_data")
+    democracy.soft_voting(np.array([1,1,1,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([1,1,1,1,1,1,1,1,1,1]))
+
+    democracy.soft_voting(np.array([2,2,2,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([2,2,2,1,1,1,1,1,1,1]))
+
+    democracy.soft_voting(np.array([3,3,3,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([3,3,3,1,1,1,1,1,1,1]))
+
+    democracy.soft_voting(np.array([5,5,5,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([5,5,5,1,1,1,1,1,1,1]))
+
+    democracy.soft_voting(np.array([1,1,1,0,0,0,0,0,0,0]))
+    democracy.hard_voting(np.array([1,1,1,0,0,0,0,0,0,0]))
+
+    democracy.soft_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
+
+    democracy.soft_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
+
+    democracy.soft_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
+
+    democracy.soft_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
+    democracy.hard_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
+
+    '''
+
