@@ -1360,7 +1360,7 @@ class Model:
 
         print("SHAPE:", self.x_data.shape)
 
-        raise Exception
+        self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[2]))
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -1371,7 +1371,7 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
 
         # defining model
-        input_tensor = layers.Input(shape=(18, 1))
+        input_tensor = layers.Input(shape=(17, 1))
         convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
         convolutional_1_2 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
         convolutional_1_3 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
