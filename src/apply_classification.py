@@ -393,12 +393,16 @@ if __name__ == '__main__':
     apply_classification(applied_models=["repDNA_pseKNC_classifier"],
                          load_file_name="acceptor_data",
                          datasets=['pseKNC'],
-                         samples_per_file=100000)
+                         samples_per_file=100000,
+                         pre_length=0,
+                         post_length=0)
 
     apply_classification(applied_models=["repDNA_pseKNC_classifier"],
                          load_file_name="donor_data",
                          datasets=['pseKNC'],
-                         samples_per_file=100000)
+                         samples_per_file=100000,
+                         pre_length=0,
+                         post_length=0)
 
     '''
     apply_classification(applied_models=["draw_models"],
