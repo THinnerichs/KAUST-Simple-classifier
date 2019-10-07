@@ -136,7 +136,7 @@ def apply_classification(applied_models=["simple_classifier"],
                                                   train=train,
                                                   test=test,
                                                   epochs=10)
-        cv_scores['acc']=[]
+        cv_scores['acc']=list(range(9))
         if "repDNA_pseKNC_classifier":
             model.simple_classifier_on_repDNA_PseKNC(cv_scores=cv_scores,
                                                      train=train,
@@ -353,6 +353,7 @@ if __name__ == '__main__':
                                          "repDNA_IDkmer_classifier",
                                          "repDNA_DAC_classifier",
                                          "repDNA_DCC_classifier",
+                                         "repDNA_pseKNC_classifier",
                                          "repDNA_PC_PseDNC_classifier",
                                          "repDNA_PC_PseTNC_classifier",
                                          "repDNA_SC_PseDNC_classifier",
@@ -360,7 +361,7 @@ if __name__ == '__main__':
                                          ],
                          load_file_name="acceptor_data",
                          samples_per_file=100000,
-                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'pseKNC', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
 
@@ -371,6 +372,7 @@ if __name__ == '__main__':
                                          "repDNA_IDkmer_classifier",
                                          "repDNA_DAC_classifier",
                                          "repDNA_DCC_classifier",
+                                         "repDNA_pseKNC_classifier",
                                          "repDNA_PC_PseDNC_classifier",
                                          "repDNA_PC_PseTNC_classifier",
                                          "repDNA_SC_PseDNC_classifier",
@@ -378,7 +380,7 @@ if __name__ == '__main__':
                                          ],
                          load_file_name="donor_data",
                          samples_per_file=100000,
-                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
+                         datasets=['simple', 'dint', 'trint', 'IDkmer', 'kmer', 'dac', 'dcc', 'pseKNC', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC'],
                          pre_length=300,
                          post_length=300)
     '''

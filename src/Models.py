@@ -1372,17 +1372,22 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(17, 1))
-        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
-        convolutional_1_2 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
-        convolutional_1_3 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
+        # convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        # convolutional_1_2 = layers.Conv1D(32, kernel_size=4, activation="relu")(input_tensor)
+        # convolutional_1_3 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
 
-        merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
+        # merge_1 = layers.Concatenate(axis=1)([convolutional_1_1, convolutional_1_2, convolutional_1_3])
 
-        flatten = layers.Flatten()(merge_1)
+        flatten = layers.Flatten()(input_tensor)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
         dropout_1 = layers.Dropout(0.5)(dense_1)
+        dense_2 = layers.Dense(64, activation='relu')(dropout_1)
+        dropout_2 = layers.Dropout(0.5)(dense_1)
+        dense_3 = layers.Dense(64, activation='relu')(dropout_2)
+        dropout_3 = layers.Dropout(0.5)(dense_1)
 
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_1)
+
+        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_3)
 
         model = models.Model(input_tensor, output_tensor)
 
@@ -1432,13 +1437,13 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/PC_PseDNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
-        np.save(file="../data/PC_PseDNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+        np.save(file="../data/pseKNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
+        np.save(file="../data/pseKNC" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("PC-PseDNC evaluation:", accuracy, precision, recall)
 
         if len(cv_scores['acc']) == 10:
-            print("repDNA: PC-PseDNC CLASSIFICATION APPROACH", file=self.filehandler)
+            print("repDNA: PseKNC CLASSIFICATION APPROACH", file=self.filehandler)
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=self.filehandler)
             model.summary(print_fn=lambda x: self.filehandler.write(x + '\n'))
