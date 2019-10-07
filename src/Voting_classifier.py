@@ -27,7 +27,7 @@ class Voting_classifer:
                          'DiProDB',
                          'trint',
                          'IDkmer',
-                         'kmer',
+                         # 'kmer',
                          'dac',
                          'dcc',
                          'PC_PseDNC',
@@ -53,7 +53,7 @@ class Voting_classifer:
                      'rec':[]}
 
         for round in range(1,11):
-            weights = np.array([1,1,1,1,1,1,1,1,1,1,1])
+            weights = np.array([1,1,1,1,1,1,1,1,1,1])
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
