@@ -1,7 +1,5 @@
 import numpy as np
 
-from sklearn.metrics import confusion_matrix
-
 import time
 
 from keras import models
@@ -10,6 +8,16 @@ from keras.callbacks import TensorBoard
 from keras import backend
 from keras.models import model_from_json, load_model
 from keras.utils import plot_model
+
+from sklearn.metrics import confusion_matrix
+from sklearn.neural_network import MLPClassifier
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB
 
 import tensorflow as tf
 
@@ -47,6 +55,8 @@ class Voting_classifer:
                          'SC_PseTNC'
                          ]
         self.data_dict = {}
+        self.train_indizes = {}
+        self.test_indizes = {}
         for round in range(1,11):
             self.data_dict[round] = {}
             for dataset in self.datasets:
@@ -54,9 +64,9 @@ class Voting_classifer:
                 self.data_dict[round][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_prediction.npy")
 
             print("Reading y_data...")
-            self.train_indizes = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
-            self.test_indizes = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
-            self.data_dict[round]["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")
+            self.train_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
+            self.test_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
+            self.data_dict["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")
 
     def hard_voting(self,
                     input_weights=np.array([])):
@@ -72,7 +82,7 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                array = self.data_dict[round][self.datasets[i]]
+                array = self.data_dict[round][self.datasets[i]][self.test_indizes[round]]
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -81,7 +91,7 @@ class Voting_classifer:
 
             y_pred = np.divide(y_pred, weights.sum())
 
-            conf_matrix = confusion_matrix(y_true=self.data_dict[round]["y_data"][self.test_indizes],
+            conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
                                            y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
@@ -126,7 +136,7 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                array = self.data_dict[round][self.datasets[i]]
+                array = self.data_dict[round][self.datasets[i]][self.test_indizes[round]]
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -135,7 +145,7 @@ class Voting_classifer:
 
             y_pred = np.divide(y_pred, weights.sum())
 
-            conf_matrix = confusion_matrix(y_true=self.data_dict[round]["y_data"][self.test_indizes],
+            conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
                                            y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
@@ -183,7 +193,7 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                array = self.data_dict[round][self.datasets[i]]
+                array = self.data_dict[round][self.datasets[i]][self.train_indizes[round]]
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -216,7 +226,7 @@ class Voting_classifer:
 
             # train model
             model.fit(x=matrix[self.train_indizes],
-                      y=self.data_dict[round]["y_data"][self.train_indizes],
+                      y=self.data_dict["y_data"][self.train_indizes[round]],
                       epochs=epochs,
                       batch_size=batch_size,
                       callbacks=[TensorBoard(log_dir='/tmp/classifier')])
@@ -224,8 +234,8 @@ class Voting_classifer:
             model.summary()
 
             # Calculate other validation scores
-            y_pred = model.predict(matrix[self.test_indizes])
-            conf_matrix = confusion_matrix(y_true=self.data_dict[round]["y_data"][self.test_indizes],
+            y_pred = model.predict(matrix[self.test_indizes[round]])
+            conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
                                            y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
             tp = conf_matrix[0, 0]
@@ -259,6 +269,69 @@ class Voting_classifer:
             print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
             print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
+    def sklearn_classifiers(self,
+                            hard):
+
+        start_time = time.time()
+
+        classifiers = [
+            KNeighborsClassifier(3),
+            SVC(kernel="linear", C=0.025),
+            SVC(gamma=2, C=1),
+            GaussianProcessClassifier(1.0 * RBF(1.0)),
+            DecisionTreeClassifier(max_depth=5),
+            RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+            MLPClassifier(alpha=1, max_iter=1000),
+            AdaBoostClassifier(),
+            GaussianNB()]
+
+        names = ["Nearest Neighbors",
+                 "Linear SVM",
+                 "RBF SVM",
+                 "Gaussian Process",
+                 "Decision Tree",
+                 "Random Forest",
+                 "Neural Net",
+                 "AdaBoost",
+                 "Naive Bayes"]
+
+        for name, clf in zip(names, classifiers):
+            cv_scores = {'acc': [],
+                         'prec': [],
+                         'rec': []}
+
+            # Prepare data
+            for round in range(1, 11):
+
+                matrix = np.array([])
+                for i in range(len(self.datasets)):
+                    array = self.data_dict[round][self.datasets[i]]
+                    array = array.reshape((array.shape[0],))
+                    matrix = np.vstack((matrix, array)) if matrix.size else array
+
+                matrix = np.transpose(matrix)
+
+                if hard:
+                    matrix = (matrix > 0.5).astype(int)
+
+                clf.fit(matrix[self.train_indizes[round]], matrix[self.test_indizes[round]])
+
+                y_pred = clf.predict(matrix[self.test_indizes[round]])
+                conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
+                                               y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+                tp = conf_matrix[0, 0]
+                tn = conf_matrix[1, 1]
+                fp = conf_matrix[0, 1]
+                fn = conf_matrix[1, 0]
+
+                precision = tp / (tp + fp)
+                recall = tp / (tp + fn)
+                accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+                cv_scores['acc'].append(accuracy * 100)
+                cv_scores['prec'].append(precision * 100)
+                cv_scores['rec'].append(recall * 100)
 
 
 if __name__ == '__main__':

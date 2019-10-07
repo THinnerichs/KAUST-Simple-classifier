@@ -33,7 +33,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
     print("Reading data ...")
 
-    cpu_count = int(mp.cpu_count()/2)
+    cpu_count = int(mp.cpu_count()*2/3)
 
     # Prepare selected modes
     mode_list = []
