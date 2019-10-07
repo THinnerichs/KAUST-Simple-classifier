@@ -43,6 +43,7 @@ class Voting_classifer:
                 self.data_dict[round][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy")
 
             print("Reading y_data...")
+            self.train_indizes = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
             self.test_indizes = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
             self.data_dict[round]["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")[self.test_indizes]
 
@@ -78,6 +79,17 @@ class Voting_classifer:
             cv_scores['prec'].append(precision * 100)
             cv_scores['rec'].append(recall * 100)
 
+        print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
+        print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
+        print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
+
+
+        # print("File name:", load_file_name)
+
+        # print("Classified {}".format(load_file_name), file=filehandler)
+        # print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+        # print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+
     def soft_voting(self):
         cv_scores = {'acc':[],
                      'prec':[],
@@ -109,3 +121,20 @@ class Voting_classifer:
             cv_scores['acc'].append(accuracy * 100)
             cv_scores['prec'].append(precision * 100)
             cv_scores['rec'].append(recall * 100)
+
+        print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
+        print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
+        print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
+
+
+        # print("File name:", load_file_name)
+
+        # print("Classified {}".format(load_file_name), file=filehandler)
+        # print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+        # print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+
+if __name__ == '__main__':
+    democracy = Voting_classifer(load_file_name="acceptor_data")
+
+    democracy.soft_voting()
+    democracy.hard_voting()
