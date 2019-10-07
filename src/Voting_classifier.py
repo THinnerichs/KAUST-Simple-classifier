@@ -58,6 +58,7 @@ class Voting_classifer:
             matrix = np.array([])
             for i in range(len(self.datasets)):
                 array = self.data_dict[round][self.datasets[i]]
+                array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
             matrix = (np.transpose(matrix) > 0.5).astype(int)
@@ -81,6 +82,7 @@ class Voting_classifer:
             cv_scores['prec'].append(precision * 100)
             cv_scores['rec'].append(recall * 100)
 
+        print("HARD VOTING RESULTS:")
         print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
         print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
         print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
@@ -102,11 +104,14 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                matrix = np.vstack((matrix, self.data_dict[round][self.datasets[i]]))
+                array = self.data_dict[round][self.datasets[i]]
+                array = array.reshape((array.shape[0],))
+                matrix = np.vstack((matrix, array)) if matrix.size else array
 
             matrix = np.transpose(matrix)
             y_pred = matrix.dot(weights)
-            y_pred /= weights.sum()
+
+            y_pred = np.divide(y_pred, weights.sum())
 
             conf_matrix = confusion_matrix(y_true=self.data_dict[round]["y_data"],
                                            y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
@@ -124,6 +129,7 @@ class Voting_classifer:
             cv_scores['prec'].append(precision * 100)
             cv_scores['rec'].append(recall * 100)
 
+        print("SOFT VOTING RESULTS:")
         print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
         print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
         print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
@@ -138,5 +144,5 @@ class Voting_classifer:
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
 
-    # democracy.soft_voting()
+    democracy.soft_voting()
     democracy.hard_voting()
