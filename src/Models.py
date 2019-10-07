@@ -1494,23 +1494,18 @@ class Model:
 
         # defining model
         input_tensor = layers.Input(shape=(36, 1))
-        # convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
-        # max_pool_1_1 = layers.MaxPooling1D(pool_size=3)(convolutional_1_1)
+        convolutional_1_1 = layers.Conv1D(32, kernel_size=3, activation="relu")(input_tensor)
+        max_pool_1_1 = layers.MaxPooling1D(pool_size=3)(convolutional_1_1)
 
-        # convolutional_1_2 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
-        # max_pool_1_2 = layers.MaxPooling1D(pool_size=3)(convolutional_1_2)
+        convolutional_1_2 = layers.Conv1D(32, kernel_size=5, activation="relu")(input_tensor)
+        max_pool_1_2 = layers.MaxPooling1D(pool_size=3)(convolutional_1_2)
 
-        # merge_1 = layers.Concatenate(axis=1)([max_pool_1_1, max_pool_1_2])
+        merge_1 = layers.Concatenate(axis=1)([max_pool_1_1, max_pool_1_2])
 
-        flatten = layers.Flatten()(input_tensor)
+        flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(64, activation='relu')(flatten)
-        dropout_1 = layers.Dropout(0.5)(dense_1)
-        dense_2 = layers.Dense(64, activation='relu')(dropout_1)
-        dropout_2 = layers.Dropout(0.5)(dense_1)
-        dense_3 = layers.Dense(64, activation='relu')(dropout_2)
-        dropout_3 = layers.Dropout(0.5)(dense_1)
 
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_3)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dense_1)
 
         model = models.Model(input_tensor, output_tensor)
 
