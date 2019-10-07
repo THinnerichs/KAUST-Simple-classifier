@@ -1356,9 +1356,7 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        print("SHAPE:", self.x_data.shape)
-
-        raise Exception
+        self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[2])
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
