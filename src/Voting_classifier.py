@@ -61,8 +61,13 @@ class Voting_classifer:
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
+            print("Matrix Shape", matrix.shape)
+
             matrix = (np.transpose(matrix) > 0.5).astype(int)
             y_pred = matrix.dot(weights)
+
+            print("y_pred", y_pred)
+
             y_pred /= weights.sum()
 
             conf_matrix = confusion_matrix(y_true=self.data_dict[round]["y_data"],
