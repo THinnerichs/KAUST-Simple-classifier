@@ -58,15 +58,10 @@ class Voting_classifer:
             matrix = np.array([])
             for i in range(len(self.datasets)):
                 array = self.data_dict[round][self.datasets[i]]
-                array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
-
-            print("Matrix Shape", matrix.shape)
 
             matrix = (np.transpose(matrix) > 0.5).astype(int)
             y_pred = matrix.dot(weights)
-
-            print("y_pred", y_pred)
 
             y_pred = np.divide(y_pred, weights.sum())
 
