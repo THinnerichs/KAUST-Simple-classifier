@@ -139,5 +139,5 @@ class Voting_classifer:
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
 
-    democracy.soft_voting()
+    # democracy.soft_voting()
     democracy.hard_voting()
