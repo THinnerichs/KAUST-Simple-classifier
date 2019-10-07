@@ -162,20 +162,14 @@ if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
 
 
-    democracy.soft_voting(np.array([2,2,2,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([2,2,2,1,1,1,1,1,1,1]))
+    democracy.soft_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
 
-    democracy.soft_voting(np.array([3,3,3,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([3,3,3,1,1,1,1,1,1,1]))
+    democracy.soft_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
 
-    democracy.soft_voting(np.array([5,5,5,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([5,5,5,1,1,1,1,1,1,1]))
+    democracy.soft_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
+    democracy.hard_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
 
-    democracy.soft_voting(np.array([10,10,10,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([10,10,10,1,1,1,1,1,1,1]))
-
-    democracy.soft_voting(np.array([100,100,100,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([100,100,100,1,1,1,1,1,1,1]))
-
-    democracy.soft_voting(np.array([1,1,1,0,0,0,0,0,0,0]))
-    democracy.hard_voting(np.array([1,1,1,0,0,0,0,0,0,0]))
+    democracy.soft_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
+    democracy.hard_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
