@@ -2,6 +2,8 @@ import numpy as np
 
 from sklearn.metrics import confusion_matrix
 
+import time
+
 
 class Voting_classifer:
 
@@ -47,13 +49,17 @@ class Voting_classifer:
             self.test_indizes = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
             self.data_dict[round]["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")[self.test_indizes]
 
-    def hard_voting(self):
+    def hard_voting(self,
+                    input_weights=None):
+
         cv_scores = {'acc':[],
                      'prec':[],
                      'rec':[]}
 
+        start_time = time.time()
+
+        weights = np.array([1,1,1,1,1,1,1,1,1,1]) if not input_weights else input_weights
         for round in range(1,11):
-            weights = np.array([1,1,1,1,1,1,1,1,1,1])
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
@@ -87,20 +93,27 @@ class Voting_classifer:
         print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
         print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
 
+        with open(file=self.results_log_file, mode='a') as filehandler:
+            print("HARD VOTING RESULTS:", file=filehandler)
+            print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
+            print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
+            print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
+            print("Weights:", weights, file=filehandler)
 
-        # print("File name:", load_file_name)
+            print("Classified {}".format(self.load_file_name), file=filehandler)
+            print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+            print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
-        # print("Classified {}".format(load_file_name), file=filehandler)
-        # print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
-        # print("\n-------------------------------------------------------------------------------\n", file=filehandler)
-
-    def soft_voting(self):
+    def soft_voting(self,
+                    input_weights=None):
         cv_scores = {'acc':[],
                      'prec':[],
                      'rec':[]}
 
+        start_time = time.time()
+
+        weights = np.array([1,1,1,1,1,1,1,1,1,1]) if not input_weights else input_weights
         for round in range(1,11):
-            weights = np.array([1,1,1,1,1,1,1,1,1,1])
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
@@ -134,12 +147,16 @@ class Voting_classifer:
         print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
         print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
 
+        with open(file=self.results_log_file, mode='a') as filehandler:
+            print("SOFT VOTING RESULTS:", file=filehandler)
+            print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
+            print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
+            print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
+            print("Weights:", weights, file=filehandler)
 
-        # print("File name:", load_file_name)
-
-        # print("Classified {}".format(load_file_name), file=filehandler)
-        # print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
-        # print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+            print("Classified {}".format(self.load_file_name), file=filehandler)
+            print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+            print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
