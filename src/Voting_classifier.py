@@ -57,7 +57,7 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                print(self.datasets[i], self.data_dict[round][self.datasets[i]])
+                print(self.datasets[i], self.data_dict[round][self.datasets[i]].shape)
                 # matrix = np.vstack((matrix, self.data_dict[round][self.datasets[i]]))
 
             raise Exception
