@@ -58,7 +58,6 @@ def prepare_data_with_repDNA(include_acceptor=False,
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
                 x_dataset.extend(kmer.make_kmer_vec(seqs))
-" + load_file_name + "_ round_"
             x_dataset = np.array(x_dataset, dtype=np.float)
 
             x_filename = "../data/x_kmer_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
