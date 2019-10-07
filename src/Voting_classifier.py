@@ -189,7 +189,7 @@ class Voting_classifer:
             matrix = np.transpose(matrix)
 
             # defining model
-            input_tensor = layers.Input(shape=(10))
+            input_tensor = layers.Input(shape=(matrix.shape[1],))
             dense_1 = layers.Dense(4, activation='relu')(input_tensor)
             dense_2 = layers.Dense(2, activation='relu')(dense_1)
             output_tensor = layers.Dense(1, activation='sigmoid')(dense_2)
