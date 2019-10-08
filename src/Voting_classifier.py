@@ -19,6 +19,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 
+from scipy.optimize import minimize
+
 import tensorflow as tf
 
 

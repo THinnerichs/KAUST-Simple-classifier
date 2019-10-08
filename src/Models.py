@@ -363,10 +363,10 @@ class Model:
                           test):
         self.x_data = np.copy(self.x_data_dict['simple'])
 
+        print("SHAPE:", self.x_data.shape)
+
         model = XGBClassifier()
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train], verbose=True)
-
-        print("Model", model)
 
         y_pred = model.predict(self.x_data.argmax(axis=2)[test])
 
@@ -1713,7 +1713,6 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        print("SHAPE:", self.x_data.shape)
 
         self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[2])
 
