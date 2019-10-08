@@ -49,6 +49,9 @@ class Voting_classifer:
                          # 'kmer',
                          'dac',
                          'dcc',
+                         'tac',
+                         'tcc',
+                         'pseKNC',
                          'PC_PseDNC',
                          'PC_PseTNC',
                          'SC_PseDNC',
@@ -69,8 +72,9 @@ class Voting_classifer:
             self.test_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
             self.data_dict["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")
 
-    def hard_voting(self,
-                    input_weights=np.array([])):
+    def voting(self,
+               hard=False,
+               input_weights=np.array([])):
 
         cv_scores = {'acc':[],
                      'prec':[],
@@ -83,65 +87,14 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                array = self.data_dict[round][self.datasets[i]][self.test_indizes[round]]
-                array = array.reshape((array.shape[0],))
-                matrix = np.vstack((matrix, array)) if matrix.size else array
-
-            matrix = (np.transpose(matrix) > 0.5).astype(int)
-            y_pred = matrix.dot(weights)
-
-            y_pred = np.divide(y_pred, weights.sum())
-
-            conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
-                                           y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
-
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
-
-            precision = tp / (tp + fp)
-            recall = tp / (tp + fn)
-            accuracy = (tp + tn) / (tp + tn + fp + fn)
-
-            cv_scores['acc'].append(accuracy * 100)
-            cv_scores['prec'].append(precision * 100)
-            cv_scores['rec'].append(recall * 100)
-
-        print("HARD VOTING RESULTS:")
-        print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
-        print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
-        print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
-
-        with open(file=self.results_log_file, mode='a') as filehandler:
-            print("HARD VOTING RESULTS:", file=filehandler)
-            print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
-            print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
-            print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
-            print("Weights:", weights, file=filehandler)
-
-            print("Classified {}".format(self.load_file_name), file=filehandler)
-            print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
-            print("\n-------------------------------------------------------------------------------\n", file=filehandler)
-
-    def soft_voting(self,
-                    input_weights=np.array([])):
-        cv_scores = {'acc':[],
-                     'prec':[],
-                     'rec':[]}
-
-        start_time = time.time()
-
-        weights =  input_weights if input_weights.size else np.array([1,1,1,1,1,1,1,1,1,1])
-        for round in range(1,11):
-
-            matrix = np.array([])
-            for i in range(len(self.datasets)):
-                array = self.data_dict[round][self.datasets[i]][self.test_indizes[round]]
+                array = self.data_dict[round]['test'][self.datasets[i]]
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
             matrix = np.transpose(matrix)
+            if hard:
+                matrix = (matrix > 0.5).astype(int)
+
             y_pred = matrix.dot(weights)
 
             y_pred = np.divide(y_pred, weights.sum())
@@ -162,13 +115,13 @@ class Voting_classifer:
             cv_scores['prec'].append(precision * 100)
             cv_scores['rec'].append(recall * 100)
 
-        print("SOFT VOTING RESULTS:")
+        print(("HARD" if hard else "SOFT") + " VOTING RESULTS:")
         print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
         print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
         print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
 
         with open(file=self.results_log_file, mode='a') as filehandler:
-            print("SOFT VOTING RESULTS:", file=filehandler)
+            print(("HARD" if hard else "SOFT") + " VOTING RESULTS:", file=filehandler)
             print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
             print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
             print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
@@ -273,8 +226,6 @@ class Voting_classifer:
     def sklearn_classifiers(self,
                             hard):
 
-        start_time = time.time()
-
         classifiers = [
             KNeighborsClassifier(3),
             SVC(kernel="linear", C=0.025),
@@ -301,12 +252,14 @@ class Voting_classifer:
                          'prec': [],
                          'rec': []}
 
+            start_time = time.time()
+
             # Prepare data
             for round in range(1, 11):
 
                 matrix = np.array([])
                 for i in range(len(self.datasets)):
-                    array = self.data_dict[round][self.datasets[i]]
+                    array = self.data_dict[round]['train'][self.datasets[i]]
                     array = array.reshape((array.shape[0],))
                     matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -315,9 +268,17 @@ class Voting_classifer:
                 if hard:
                     matrix = (matrix > 0.5).astype(int)
 
-                clf.fit(matrix[self.train_indizes[round]], matrix[self.test_indizes[round]])
+                clf.fit(matrix, self.data_dict["y_data"][self.train_indizes[round]])
 
-                y_pred = clf.predict(matrix[self.test_indizes[round]])
+                # Prepare matrix for prediction
+                matrix = np.array([])
+                for i in range(len(self.datasets)):
+                    array = self.data_dict[round]['test'][self.datasets[i]]
+                    array = array.reshape((array.shape[0],))
+                    matrix = np.vstack((matrix, array)) if matrix.size else array
+
+                matrix = np.transpose(matrix)
+                y_pred = clf.predict(matrix)
                 conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
                                                y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
@@ -334,22 +295,35 @@ class Voting_classifer:
                 cv_scores['prec'].append(precision * 100)
                 cv_scores['rec'].append(recall * 100)
 
+            with open(file=self.results_log_file, mode='a') as filehandler:
+                print(name + " RESULTS:", file=filehandler)
+                print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])),
+                      file=filehandler)
+                print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])),
+                      file=filehandler)
+                print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])),
+                      file=filehandler)
+
+                print("Classified {}".format(self.load_file_name), file=filehandler)
+                print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+                print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+
 
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
 
     '''
-    democracy.soft_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,3,5,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,3,5,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([8,5,8,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([8,5,8,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
-    democracy.hard_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([2,1,2,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([2,1,2,0,0,0,0,0,0,0]), hard=True)
     '''
 
     democracy.neural_net(epochs=10,
@@ -357,32 +331,32 @@ if __name__ == '__main__':
 
     '''
     democracy = Voting_classifer(load_file_name="donor_data")
-    democracy.soft_voting(np.array([1,1,1,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([1,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([2,2,2,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([2,2,2,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([2,2,2,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([2,2,2,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([3,3,3,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([3,3,3,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([3,3,3,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([3,3,3,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([5,5,5,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([5,5,5,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,5,5,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,5,5,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([1,1,1,0,0,0,0,0,0,0]))
-    democracy.hard_voting(np.array([1,1,1,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,1,1,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,1,1,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.soft_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([3,2,3,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([5,3,5,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,3,5,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,3,5,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
-    democracy.hard_voting(np.array([8,5,8,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([8,5,8,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([8,5,8,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.soft_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
-    democracy.hard_voting(np.array([2,1,2,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([2,1,2,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([2,1,2,0,0,0,0,0,0,0]), hard=True)
 
     '''
 
