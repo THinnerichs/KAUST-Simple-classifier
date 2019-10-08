@@ -70,8 +70,8 @@ def apply_classification(applied_models=["simple_classifier"],
 
         model.round = round
 
-        np.save(file="../data/" + load_file_name + "_round_" + str(round) + "_train_indizes.npy", arr=np.array(train))
-        np.save(file="../data/" + load_file_name + "_round_" + str(round) + "_test_indizes.npy", arr=np.array(test))
+        # np.save(file="../data/" + load_file_name + "_round_" + str(round) + "_train_indizes.npy", arr=np.array(train))
+        # np.save(file="../data/" + load_file_name + "_round_" + str(round) + "_test_indizes.npy", arr=np.array(test))
 
         round += 1
 
