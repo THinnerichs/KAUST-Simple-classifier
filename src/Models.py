@@ -363,14 +363,15 @@ class Model:
                           test):
         self.x_data = np.copy(self.x_data_dict['simple'])
 
-        print("SHAPE:", self.x_data.argmax(axis=2)[train].shape)
-        print(self.y_data[train].shape)
+        # print("SHAPE:", self.x_data.argmax(axis=2)[train].shape)
+        # print(self.y_data[train].shape)
 
-        model = XGBClassifier()
+        model = XGBClassifier(max_depth=4,
+                              n_jobs=32,
+                              silent=False)
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train], verbose=True)
 
         y_pred = model.predict(self.x_data.argmax(axis=2)[test])
-
 
         # Calculate other validation scores
         conf_matrix = confusion_matrix(y_true=self.y_data[test],
