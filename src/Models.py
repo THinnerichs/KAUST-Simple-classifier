@@ -371,10 +371,8 @@ class Model:
 
         y_pred = model.predict(self.x_data.argmax(axis=2)[test])
 
-        conf_matrix = confusion_matrix(y_true=self.y_data[test], y_pred=y_pred)
 
         # Calculate other validation scores
-        y_pred = model.predict(self.x_data[test])
         conf_matrix = confusion_matrix(y_true=self.y_data[test],
                                        y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
