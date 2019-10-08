@@ -17,6 +17,10 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.metrics import confusion_matrix
 from sklearn import svm
 from sklearn.naive_bayes import GaussianNB
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.gaussian_process.kernels import RBF
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
 from xgboost import XGBClassifier
 
@@ -415,6 +419,55 @@ class Model:
             print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
             print("Confusion matrix:", conf_matrix, file=self.filehandler)
             print("-----------------------------------------------------\n")
+
+    def gaussian_process_classifier(self,
+                                    cv_scores,
+                                    train,
+                                    test):
+        self.x_data = np.copy(self.x_data_dict['simple'])
+
+        model =  GaussianProcessClassifier(1.0 * RBF(1.0))
+
+        model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train])
+
+        y_pred = model.predict(self.x_data.argmax(axis=2)[test])
+
+        # Calculate other validation scores
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        np.save(file="../data/gaussian_process" + "_" + self.load_file_name + "_round_" + str(
+            self.round) + "_train_prediction.npy", arr=model.predict(self.x_data.argmax(axis=2)[train]))
+        np.save(file="../data/gaussian_process" + "_" + self.load_file_name + "_round_" + str(
+            self.round) + "_prediction.npy", arr=y_pred)
+
+        print("Gaussian process evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("GAUSSIAN PROCESS APPROACH", file=self.filehandler)
+            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+
+            # print confusion matrix
+            print("Confusion matrix:",
+                  conf_matrix,
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  conf_matrix)
+
+            print("------------------------------------------------\n")
 
     def albaradei_classifier(self,
                              cv_scores,
