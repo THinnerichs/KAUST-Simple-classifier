@@ -1124,7 +1124,7 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
-        print("SHAPE:", self.x_data.shape)
+        self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[2]))
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
@@ -1132,7 +1132,7 @@ class Model:
 
             self.x_data[test] = scaler.transform(self.x_data[test])
 
-        self.x_data = self.x_data.reshape((self.x_data.shape[0], self.x_data.shape[2], 1))
+        self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
 
         # defining model
         input_tensor = layers.Input(shape=(76, 1))
@@ -1712,6 +1712,8 @@ class Model:
 
         self.epochs = epochs
         self.batch_size = batch_size
+
+        print("SHAPE:", self.x_data.shape)
 
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])

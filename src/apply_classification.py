@@ -361,7 +361,7 @@ if __name__ == '__main__':
                                          # "multi_label_classifier",
                                          # "DiProDB_classifier",
                                          # "trint_classifier",
-                                         "repDNA_IDkmer_classifier",
+                                         # "repDNA_IDkmer_classifier",
                                          "repDNA_DAC_classifier",
                                          # "repDNA_DCC_classifier",
                                          # "repDNA_TAC_classifier",
