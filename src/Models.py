@@ -366,7 +366,8 @@ class Model:
         # print("SHAPE:", self.x_data.argmax(axis=2)[train].shape)
         # print(self.y_data[train].shape)
 
-        model = XGBClassifier(max_depth=4,
+        model = XGBClassifier(max_depth=3,
+                              verbosity=2,
                               n_jobs=32,
                               silent=False)
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train], verbose=True)
@@ -390,7 +391,7 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
+        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr= model.predict(self.x_data.argmax(axis=2)[train]))
         np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
 
         print("Gradient boosting evaluation:", accuracy, precision, recall)
