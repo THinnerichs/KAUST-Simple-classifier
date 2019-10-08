@@ -1130,7 +1130,7 @@ class Model:
 
             self.x_data[test] = scaler.transform(self.x_data[test])
 
-        self.x_data = self.x_data.reshape(self.x_data.shape[0], self.x_data.shape[1], 1)
+        self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
 
         # defining model
         input_tensor = layers.Input(shape=(76, 1))
