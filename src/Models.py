@@ -1124,6 +1124,8 @@ class Model:
         self.epochs = epochs
         self.batch_size = batch_size
 
+        print("SHAPE:", self.x_data.shape)
+
         if self.x_data.ndim == 2:
             scaler = StandardScaler().fit(self.x_data[train])
             self.x_data[train] = scaler.transform(self.x_data[train])
