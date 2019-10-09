@@ -326,6 +326,9 @@ if __name__ == '__main__':
     democracy.voting(np.array([5,2,5,4,4,3,1,1,1,1,1,1,1,1,1]))
     democracy.voting(np.array([5,2,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
+    democracy.sklearn_classifiers()
+    democracy.sklearn_classifiers(hard=True)
+
     '''
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]), hard=True)
