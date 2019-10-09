@@ -470,10 +470,12 @@ class Voting_classifer:
 
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
-    weights = np.array([6.84537089, 4.799788, 7.10828817, - 6.81821823, 8.02828095, 9.27452162, - 3.27671907, 7.43981739, - 20.78048782, - 10.57354025, 1.51687746, 0.72851907, - 1.10868701, 4.87602188, - 1.67576307])
-    democracy.voting(weights)
-    democracy.voting(weights, hard=True)
+    # weights = np.array([6.84537089, 4.799788, 7.10828817, - 6.81821823, 8.02828095, 9.27452162, - 3.27671907, 7.43981739, - 20.78048782, - 10.57354025, 1.51687746, 0.72851907, - 1.10868701, 4.87602188, - 1.67576307])
+    # democracy.voting(weights)
+    # democracy.voting(weights, hard=True)
 
+    democracy.apply_vote_minimize()
+    democracy.apply_vote_minimize(hard=True)
 
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
@@ -482,14 +484,14 @@ if __name__ == '__main__':
     
 
 
-    democracy = Voting_classifer(load_file_name="donor_data")
-    democracy.voting(weights)
-    democracy.voting(weights, hard=True)
+    # democracy = Voting_classifer(load_file_name="donor_data")
+    # democracy.voting(weights)
+    # democracy.voting(weights, hard=True)
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
-    # democracy.apply_vote_minimize(weights)
-    # democracy.apply_vote_minimize(weights, hard=True)
+    democracy.apply_vote_minimize()
+    democracy.apply_vote_minimize(hard=True)
 
     #democracy.sklearn_classifiers()
     #democracy.sklearn_classifiers(hard=True)
