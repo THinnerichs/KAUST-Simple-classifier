@@ -495,7 +495,8 @@ class Model:
         model = RandomForestClassifier(max_depth=5,
                                        n_estimators=20,
                                        max_features=3,
-                                       n_jobs=32)
+                                       n_jobs=32,
+                                       verbose=1)
 
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train])
 

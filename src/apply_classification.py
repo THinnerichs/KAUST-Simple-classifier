@@ -109,6 +109,10 @@ def apply_classification(applied_models=["simple_classifier"],
             model.knn_classifier(cv_scores=cv_scores,
                                  train=train,
                                  test=test)
+        if "random_forest" in applied_models:
+            model.random_forest_classifier(cv_scores=cv_scores,
+                                           train=train,
+                                           test=test)
         # cv_scores['acc']=list(range(round-1))
         if "DiProDB_classifier" in applied_models:
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
@@ -416,14 +420,14 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    apply_classification(applied_models=["knn"],
+    apply_classification(applied_models=["random_forest"],
                          load_file_name="acceptor_data",
                          datasets=['simple'],
                          samples_per_file=100000,
                          pre_length=300,
                          post_length=300)
 
-    apply_classification(applied_models=["knn"],
+    apply_classification(applied_models=["random_forest"],
                          load_file_name="donor_data",
                          datasets=['simple'],
                          samples_per_file=100000,
