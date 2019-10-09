@@ -163,12 +163,13 @@ class Voting_classifer:
 
         y_pred = matrix.dot(weights)
 
-        y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
+        # y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
+        y_pred = (y_pred > 0.5).astype(int)
 
         y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
-        return ((y_pred - y_true)**2)
-    
+        return ((y_pred - y_true)**2).sum()
+
     def apply_vote_minimize(self,
                             hard=False):
 
