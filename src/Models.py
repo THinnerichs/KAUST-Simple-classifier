@@ -434,7 +434,7 @@ class Model:
 
         self.x_data = np.copy(self.x_data_dict['simple'])
 
-        model = KNeighborsClassifier(5,
+        model = KNeighborsClassifier(3,
                                      n_jobs=32)
 
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train])
@@ -476,9 +476,73 @@ class Model:
             print("Confusion matrix:",
                   conf_matrix)
 
+            # save the model to disk
+            pickle.dump(model, open("../models/knn_" + self.load_file_name + "_model.sav", 'wb'))
+
+            # load the model from disk
+            # loaded_model = pickle.load(open(filename, 'rb'))
+
             print("------------------------------------------------\n")
 
 
+    def random_forest_classifier(self,
+                                 cv_scores,
+                                 train,
+                                 test):
+
+        self.x_data = np.copy(self.x_data_dict['simple'])
+
+        model = RandomForestClassifier(max_depth=5,
+                                       n_estimators=20,
+                                       max_features=3,
+                                       n_jobs=32)
+
+        model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train])
+
+        y_pred = model.predict(self.x_data.argmax(axis=2)[test])
+
+        # Calculate other validation scores
+        conf_matrix = confusion_matrix(y_true=self.y_data[test],
+                                       y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        cv_scores['acc'].append(accuracy * 100)
+        cv_scores['prec'].append(precision * 100)
+        cv_scores['rec'].append(recall * 100)
+
+        np.save(file="../data/random_forest" + "_" + self.load_file_name + "_round_" + str(
+            self.round) + "_train_prediction.npy", arr=model.predict(self.x_data.argmax(axis=2)[train]))
+        np.save(file="../data/random_forest" + "_" + self.load_file_name + "_round_" + str(
+            self.round) + "_prediction.npy", arr=y_pred)
+
+        print("Random forest evaluation:", accuracy, precision, recall)
+
+        if len(cv_scores['acc']) == 10:
+            print("RANDOM FOREST APPROACH", file=self.filehandler)
+            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
+
+            # print confusion matrix
+            print("Confusion matrix:",
+                  conf_matrix,
+                  file=self.filehandler)
+            print("Confusion matrix:",
+                  conf_matrix)
+
+            # save the model to disk
+            pickle.dump(model, open("../models/random_forest_" + self.load_file_name + "_model.sav", 'wb'))
+
+            # load the model from disk
+            # loaded_model = pickle.load(open(filename, 'rb'))
+
+            print("------------------------------------------------\n")
 
     def gaussian_process_classifier(self,
                                     cv_scores,
@@ -486,7 +550,7 @@ class Model:
                                     test):
         self.x_data = np.copy(self.x_data_dict['simple'])
 
-        model =  GaussianProcessClassifier(1.0 * RBF(1.0))
+        model =  GaussianProcessClassifier(1.0 * RBF(1.0), n_jobs=32)
 
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train])
 
@@ -526,6 +590,12 @@ class Model:
                   file=self.filehandler)
             print("Confusion matrix:",
                   conf_matrix)
+
+            # save the model to disk
+            pickle.dump(model, open("../models/gaussian_process_" + self.load_file_name + "_model.sav", 'wb'))
+
+            # load the model from disk
+            # loaded_model = pickle.load(open(filename, 'rb'))
 
             print("------------------------------------------------\n")
 
