@@ -68,11 +68,9 @@ class Voting_classifer:
         self.train_indizes = {}
         self.test_indizes = {}
         for round in range(1,11):
-            print("Reading data of round", round)
             self.data_dict[round] = {'train': {},
                                      'test': {}}
             for dataset in self.datasets:
-                print("Reading {}...".format(dataset))
                 self.data_dict[round]['test'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_prediction.npy")
                 self.data_dict[round]['train'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_train_prediction.npy")
 
