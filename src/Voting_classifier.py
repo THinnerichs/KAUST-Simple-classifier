@@ -167,8 +167,8 @@ class Voting_classifer:
 
         y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
-        return ((y_pred - y_true)**2)#.sum()
-
+        return ((y_pred - y_true)**2)
+    
     def apply_vote_minimize(self,
                             hard=False):
 
@@ -193,12 +193,12 @@ class Voting_classifer:
 
             x0 = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
             objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=hard)
-            res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
-            weights = res.x
+            # res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
+            # weights = res.x
             
             print("Test objective function")
-            print(weights)
-            print("minimized weights", objective_fct(weights))
+            # print(weights)
+            # print("minimized weights", objective_fct(weights))
             print("My weights", objective_fct(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1])))
 
             raise Exception
