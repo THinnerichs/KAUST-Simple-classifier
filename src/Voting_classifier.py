@@ -72,6 +72,9 @@ class Voting_classifer:
                 print("Reading {}...".format(dataset))
                 self.data_dict[round]['test'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_prediction.npy")
                 self.data_dict[round]['train'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_train_prediction.npy")
+                print("Training shape:", self.data_dict[round]['train'][dataset])
+                print("Test shape:", self.data_dict[round]['test'][dataset])
+
             print("Reading y_data...")
             self.train_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
             self.test_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
@@ -81,6 +84,7 @@ class Voting_classifer:
                hard=False,
                input_weights=np.array([])):
 
+        print("Starting vote...")
         cv_scores = {'acc':[],
                      'prec':[],
                      'rec':[]}
