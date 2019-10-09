@@ -178,6 +178,8 @@ class Voting_classifer:
 
         start_time = time.time()
         for round in range(1,11):
+            print("Round", round)
+
             matrix = np.array([])
             for i in range(len(self.datasets)):
                 array = self.data_dict[round]['test'][self.datasets[i]]
@@ -213,6 +215,12 @@ class Voting_classifer:
             cv_scores['prec'].append(precision * 100)
             cv_scores['rec'].append(recall * 100)
             cv_scores['weights'].append(weights)
+
+            print("acc:", accuracy)
+            print("pre:", precision)
+            print("rec:", recall)
+            print("weights:", weights)
+
 
         print(("HARD" if hard else "SOFT") + " MINIMIZE VOTING RESULTS:")
         print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
@@ -427,16 +435,16 @@ class Voting_classifer:
 
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
+    # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
+    # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
 
 
     democracy = Voting_classifer(load_file_name="donor_data")
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
+    # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
+    # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
     democracy.apply_vote_minimize()
     democracy.apply_vote_minimize()
