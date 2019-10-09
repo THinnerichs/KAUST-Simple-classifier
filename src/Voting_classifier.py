@@ -183,7 +183,7 @@ class Voting_classifer:
             print("Round", round)
 
             x0 = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
-            objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=True)
+            objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=False)
             res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
 
@@ -191,7 +191,6 @@ class Voting_classifer:
             print(weights)
             print("minimized weights", objective_fct(weights))
             print("My weights", objective_fct(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1])))
-
 
             print("TRAINING PERFORMANCE:")
             train_matrix = np.array([])
@@ -229,6 +228,8 @@ class Voting_classifer:
             matrix = np.transpose(matrix)
             if hard:
                 matrix = (matrix > 0.5).astype(int)
+
+            print("MATRIX", matrix)
 
             y_pred = matrix.dot(weights)
 
