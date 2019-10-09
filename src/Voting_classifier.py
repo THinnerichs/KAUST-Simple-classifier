@@ -87,7 +87,7 @@ class Voting_classifer:
 
         start_time = time.time()
 
-        weights =  input_weights if input_weights.size else np.array([1,1,1,1,1,1,1,1,1,1])
+        weights =  input_weights if input_weights.size else np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
         for round in range(1,11):
 
             matrix = np.array([])
@@ -316,6 +316,7 @@ class Voting_classifer:
 
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
+    democracy.voting()
 
     '''
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
