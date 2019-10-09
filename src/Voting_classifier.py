@@ -266,6 +266,7 @@ class Voting_classifer:
                          'rec': []}
 
             start_time = time.time()
+            print("Starting {}...".format(name))
 
             # Prepare data
             for round in range(1, 11):

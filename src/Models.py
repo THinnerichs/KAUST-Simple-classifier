@@ -778,11 +778,8 @@ class Model:
 
         flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
-        dropout_1 = layers.Dropout(0.5)(dense_1)
-        dense_2 = layers.Dense(128, activation='relu')(dropout_1)
-        dropout_2 = layers.Dropout(0.5)(dense_2)
 
-        output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
+        output_tensor = layers.Dense(1, activation='sigmoid')(dense_1)
 
         model = models.Model(input_tensor, output_tensor)
 
