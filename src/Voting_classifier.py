@@ -166,7 +166,7 @@ class Voting_classifer:
         # y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
         y_pred = (y_pred > 0.5).astype(int)
 
-        y_true = self.data_dict["y_data"][self.test_indizes[round]]
+        y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
         return (np.absolute(y_pred - y_true)).sum()
 
