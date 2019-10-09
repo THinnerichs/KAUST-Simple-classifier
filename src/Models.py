@@ -492,7 +492,7 @@ class Model:
 
         self.x_data = np.copy(self.x_data_dict['simple'])
 
-        model = RandomForestClassifier(n_estimators=20,
+        model = RandomForestClassifier(n_estimators=40,
                                        n_jobs=32,
                                        verbose=1)
 
