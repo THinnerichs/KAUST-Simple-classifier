@@ -483,11 +483,13 @@ if __name__ == '__main__':
 
 
     democracy = Voting_classifer(load_file_name="donor_data")
+    democracy.voting(weights)
+    democracy.voting(weights, hard=True)
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.apply_vote_minimize(weights)
-    democracy.apply_vote_minimize(weights, hard=True)
+    # democracy.apply_vote_minimize(weights)
+    # democracy.apply_vote_minimize(weights, hard=True)
 
     #democracy.sklearn_classifiers()
     #democracy.sklearn_classifiers(hard=True)
