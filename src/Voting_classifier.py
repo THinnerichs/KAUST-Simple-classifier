@@ -238,12 +238,12 @@ class Voting_classifer:
                             hard):
 
         classifiers = [
-            KNeighborsClassifier(3),
+            KNeighborsClassifier(3, n_jobs=32),
             SVC(kernel="linear", C=0.025),
             SVC(gamma=2, C=1),
-            GaussianProcessClassifier(1.0 * RBF(1.0)),
+            GaussianProcessClassifier(1.0 * RBF(1.0),n_jobs=32),
             DecisionTreeClassifier(max_depth=5),
-            RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
+            RandomForestClassifier(max_depth=5, n_jobs=32, n_estimators=10, max_features=1),
             MLPClassifier(alpha=1, max_iter=1000),
             AdaBoostClassifier(),
             GaussianNB()]
@@ -268,6 +268,7 @@ class Voting_classifer:
 
             # Prepare data
             for round in range(1, 11):
+                print("Round", round)
 
                 matrix = np.array([])
                 for i in range(len(self.datasets)):
@@ -302,6 +303,10 @@ class Voting_classifer:
                 precision = tp / (tp + fp)
                 recall = tp / (tp + fn)
                 accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+                print("acc:", accuracy)
+                print("pre:", precision)
+                print("rec:", recall)
 
                 cv_scores['acc'].append(accuracy * 100)
                 cv_scores['prec'].append(precision * 100)
