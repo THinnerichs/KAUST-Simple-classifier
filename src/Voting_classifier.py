@@ -21,6 +21,8 @@ from sklearn.naive_bayes import GaussianNB
 
 from scipy.optimize import minimize
 
+from xgboost import XGBClassifier
+
 import tensorflow as tf
 
 
@@ -238,9 +240,13 @@ class Voting_classifer:
                             hard=False):
 
         classifiers = [
-            KNeighborsClassifier(3, n_jobs=32),
-            SVC(kernel="linear", C=0.025),
-            SVC(gamma=2, C=1),
+            # KNeighborsClassifier(3, n_jobs=32),
+            # SVC(kernel="linear", C=0.025),
+            # SVC(gamma=2, C=1),
+            XGBClassifier(max_depth=5,
+                          verbosity=1,
+                          n_jobs=32,
+                          silent=False),
             GaussianProcessClassifier(1.0 * RBF(1.0),n_jobs=32),
             DecisionTreeClassifier(max_depth=5),
             RandomForestClassifier(max_depth=5, n_jobs=32, n_estimators=10, max_features=1),
@@ -248,9 +254,10 @@ class Voting_classifer:
             AdaBoostClassifier(),
             GaussianNB()]
 
-        names = ["Nearest Neighbors",
-                 "Linear SVM",
-                 "RBF SVM",
+        names = [# "Nearest Neighbors",
+                 # "Linear SVM",
+                 # "RBF SVM",
+                 "XGBoost",
                  "Gaussian Process",
                  "Decision Tree",
                  "Random Forest",
@@ -333,6 +340,14 @@ if __name__ == '__main__':
 
     democracy.sklearn_classifiers()
     democracy.sklearn_classifiers(hard=True)
+
+    democracy = Voting_classifer(load_file_name="donor_data")
+    democracy.voting(np.array([5,2,5,4,4,3,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,2,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
+
+    democracy.sklearn_classifiers()
+    democracy.sklearn_classifiers(hard=True)
+
 
     '''
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
