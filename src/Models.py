@@ -434,7 +434,7 @@ class Model:
         self.x_data = np.copy(self.x_data_dict['simple'])
 
         model = KNeighborsClassifier(3,
-                                     n_jobs=32)
+                                     n_jobs=60)
 
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train])
 
