@@ -235,7 +235,7 @@ class Voting_classifer:
             print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
     def sklearn_classifiers(self,
-                            hard):
+                            hard=False):
 
         classifiers = [
             KNeighborsClassifier(3, n_jobs=32),
