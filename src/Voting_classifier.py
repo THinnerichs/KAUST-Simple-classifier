@@ -153,7 +153,7 @@ class Voting_classifer:
 
         matrix = np.array([])
         for i in range(len(self.datasets)):
-            array = self.data_dict[round]['test'][self.datasets[i]]
+            array = self.data_dict[round]['train'][self.datasets[i]]
             array = array.reshape((array.shape[0],))
             matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -193,7 +193,7 @@ class Voting_classifer:
                 matrix = (matrix > 0.5).astype(int)
 
             x0 = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
-            objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=hard)
+            objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=True)
             res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
             
