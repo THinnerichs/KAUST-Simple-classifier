@@ -121,7 +121,8 @@ def apply_classification(applied_models=["simple_classifier"],
         if "DiProDB_classifier" in applied_models:
             model.simple_classifier_on_DiProDB(cv_scores=cv_scores,
                                                train=train,
-                                               test=test)
+                                               test=test,
+                                               epochs=2)
         # cv_scores['acc']=list(range(round-1))
         if "DiProDB_full_classifier" in applied_models:
             model.simple_classifier_on_DiProDB_full(cv_scores=cv_scores,
