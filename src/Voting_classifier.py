@@ -191,12 +191,13 @@ class Voting_classifer:
             if hard:
                 matrix = (matrix > 0.5).astype(int)
 
-            x0 = np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1])
+            x0 = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
             objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=hard)
             res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
             
             print("Test objective function")
+            print(weights)
             print("minimized weights", objective_fct(weights))
             print("My weights", objective_fct(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1])))
 
