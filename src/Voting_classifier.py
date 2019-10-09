@@ -68,6 +68,7 @@ class Voting_classifer:
         self.train_indizes = {}
         self.test_indizes = {}
         for round in range(1,11):
+            print("Reading data of round", round)
             self.data_dict[round] = {'train': {},
                                      'test': {}}
             for dataset in self.datasets:
@@ -190,7 +191,7 @@ class Voting_classifer:
             if hard:
                 matrix = (matrix > 0.5).astype(int)
 
-            x0 = np.array([1]*15)
+            x0 = np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1])
             objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=hard)
             res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
@@ -468,6 +469,7 @@ if __name__ == '__main__':
 
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
+    
 
 
     democracy = Voting_classifer(load_file_name="donor_data")
@@ -475,7 +477,7 @@ if __name__ == '__main__':
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
     democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize()
+    democracy.apply_vote_minimize(hard=False)
 
     #democracy.sklearn_classifiers()
     #democracy.sklearn_classifiers(hard=True)
