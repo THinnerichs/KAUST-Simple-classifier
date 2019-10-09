@@ -86,7 +86,8 @@ class Voting_classifer:
 
     def voting(self,
                input_weights=np.array([]),
-               hard=False):
+               hard=False,
+               logging=True):
 
         print("Starting vote...")
         cv_scores = {'acc':[],
@@ -133,16 +134,39 @@ class Voting_classifer:
         print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
         print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
 
-        with open(file=self.results_log_file, mode='a') as filehandler:
-            print(("HARD" if hard else "SOFT") + " VOTING RESULTS:", file=filehandler)
-            print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
-            print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
-            print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
-            print("Weights:", weights, file=filehandler)
+        if logging:
+            with open(file=self.results_log_file, mode='a') as filehandler:
+                print(("HARD" if hard else "SOFT") + " VOTING RESULTS:", file=filehandler)
+                print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
+                print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
+                print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
+                print("Weights:", weights, file=filehandler)
 
-            print("Classified {}".format(self.load_file_name), file=filehandler)
-            print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
-            print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+                print("Classified {}".format(self.load_file_name), file=filehandler)
+                print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
+                print("\n-------------------------------------------------------------------------------\n", file=filehandler)
+
+    def objective_fct_vote(self,
+                           weights,
+                           hard=False):
+
+        for round in range(1,11):
+
+            matrix = np.array([])
+            for i in range(len(self.datasets)):
+                array = self.data_dict[round]['test'][self.datasets[i]]
+                array = array.reshape((array.shape[0],))
+                matrix = np.vstack((matrix, array)) if matrix.size else array
+
+            matrix = np.transpose(matrix)
+            if hard:
+                matrix = (matrix > 0.5).astype(int)
+
+            y_pred = matrix.dot(weights)
+
+            y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
+
+            y_true =
 
     def neural_net(self,
                    hard=False,
