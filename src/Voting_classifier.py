@@ -189,7 +189,8 @@ class Voting_classifer:
                 matrix = (matrix > 0.5).astype(int)
 
             x0 = np.array([1]*15)
-            res = minimize(self.objective_fct_vote(round=round, hard=hard), x0=x0, method='Nelder-Mead')
+            objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=hard)
+            res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
 
             y_pred = matrix.dot(weights)
@@ -437,6 +438,7 @@ if __name__ == '__main__':
     democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
     democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
+    democracy.apply_vote_minimize()
     democracy.apply_vote_minimize()
 
     #democracy.sklearn_classifiers()
