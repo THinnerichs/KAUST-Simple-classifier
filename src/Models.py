@@ -371,7 +371,7 @@ class Model:
         # print("SHAPE:", self.x_data.argmax(axis=2)[train].shape)
         # print(self.y_data[train].shape)
 
-        model = XGBClassifier(max_depth=4,
+        model = XGBClassifier(max_depth=5,
                               verbosity=1,
                               n_jobs=32,
                               silent=False)

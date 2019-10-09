@@ -418,14 +418,14 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    apply_classification(applied_models=["random_forest"],
+    apply_classification(applied_models=["gradient_boosting"],
                          load_file_name="acceptor_data",
                          datasets=['simple'],
                          samples_per_file=100000,
                          pre_length=300,
                          post_length=300)
 
-    apply_classification(applied_models=["random_forest"],
+    apply_classification(applied_models=["gradient_boosting"],
                          load_file_name="donor_data",
                          datasets=['simple'],
                          samples_per_file=100000,
