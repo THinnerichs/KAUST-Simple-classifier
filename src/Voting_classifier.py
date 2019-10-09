@@ -47,10 +47,13 @@ class Voting_classifer:
         self.datasets = ['simple',
                          'DiProDB',
                          'trint',
+                         'multi_label',
+                         'gradient_boosting',
+                         'random_forest',
                          'IDkmer',
-                         # 'kmer',
+                         'kmer',
                          'dac',
-                         'dcc',
+                         # 'dcc',
                          'tac',
                          'tcc',
                          'pseKNC',
@@ -328,8 +331,10 @@ if __name__ == '__main__':
     democracy.voting(np.array([2,1,2,0,0,0,0,0,0,0]), hard=True)
     '''
 
+    '''
     democracy.neural_net(epochs=10,
                          batch_size=500)
+    '''
 
     '''
     democracy = Voting_classifer(load_file_name="donor_data")
