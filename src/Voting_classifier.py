@@ -75,12 +75,7 @@ class Voting_classifer:
 
                 if dataset == "multi_label":
                     data = self.data_dict[round]['test'][dataset]
-                    self.data_dict[round]['test'][dataset] = data.max(axis=1)
-                    print(self.data_dict[round]['test'][dataset])
-
-                    raise Exception
-                print("Training shape:", self.data_dict[round]['train'][dataset].shape)
-                print("Test shape:", self.data_dict[round]['test'][dataset].shape)
+                    self.data_dict[round]['test'][dataset] = data.argmax(axis=1)
 
             print("Reading y_data...")
             self.train_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
