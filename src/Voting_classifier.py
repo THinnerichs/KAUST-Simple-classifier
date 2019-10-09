@@ -167,7 +167,7 @@ class Voting_classifer:
 
         y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
-        return ((y_pred - y_true)**2).mean()
+        return ((y_pred - y_true)**2).sum()
 
     def apply_vote_minimize(self,
                             hard=False):
@@ -483,8 +483,8 @@ if __name__ == '__main__':
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
     # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.apply_vote_minimize(hard=True)
     democracy.apply_vote_minimize(hard=False)
+    democracy.apply_vote_minimize(hard=True)
 
     #democracy.sklearn_classifiers()
     #democracy.sklearn_classifiers(hard=True)
