@@ -96,6 +96,7 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
+                print(i)
                 array = self.data_dict[round]['test'][self.datasets[i]]
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
