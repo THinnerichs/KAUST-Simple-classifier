@@ -195,6 +195,34 @@ class Voting_classifer:
             res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
 
+            print("TRAINING PERFORMANCE:")
+            train_matrix = np.array([])
+            for i in range(len(self.datasets)):
+                array = self.data_dict[round]['train'][self.datasets[i]]
+                array = array.reshape((array.shape[0],))
+                train_matrix = np.vstack((train_matrix, array)) if train_matrix.size else array
+
+            train_matrix = np.transpose(train_matrix)
+            y_pred_train = train_matrix.dot(res.x)
+
+            conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.train_indizes[round]],
+                                           y_pred=(y_pred_train.reshape((len(y_pred_train))) > 0.5).astype(int))
+
+            tp = conf_matrix[0, 0]
+            tn = conf_matrix[1, 1]
+            fp = conf_matrix[0, 1]
+            fn = conf_matrix[1, 0]
+
+            precision = tp / (tp + fp)
+            recall = tp / (tp + fn)
+            accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+            print("acc:", accuracy)
+            print("pre:", precision)
+            print("rec:", recall)
+
+
+            print("TESTING PERFORMANCE:")
             y_pred = matrix.dot(weights)
 
             y_pred = np.divide(y_pred, weights.sum())
