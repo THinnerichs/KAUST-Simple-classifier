@@ -422,16 +422,16 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    apply_classification(applied_models=["knn"],
+    apply_classification(applied_models=["DiProDB_classifier"],
                          load_file_name="acceptor_data",
-                         datasets=['simple'],
+                         datasets=['dint'],
                          samples_per_file=100000,
                          pre_length=300,
                          post_length=300)
 
-    apply_classification(applied_models=["knn"],
+    apply_classification(applied_models=["DiProDB_classifier"],
                          load_file_name="donor_data",
-                         datasets=['simple'],
+                         datasets=['dint'],
                          samples_per_file=100000,
                          pre_length=300,
                          post_length=300)

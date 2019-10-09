@@ -83,8 +83,8 @@ class Voting_classifer:
             self.data_dict["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")
 
     def voting(self,
-               hard=False,
-               input_weights=np.array([])):
+               input_weights=np.array([]),
+               hard=False):
 
         print("Starting vote...")
         cv_scores = {'acc':[],
@@ -324,7 +324,8 @@ class Voting_classifer:
 
 if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="acceptor_data")
-    democracy.voting()
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]), hard=True)
 
     '''
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
