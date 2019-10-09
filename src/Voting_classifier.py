@@ -152,7 +152,7 @@ class Voting_classifer:
 
         matrix = np.array([])
         for i in range(len(self.datasets)):
-            array = self.data_dict[round]['test'][self.datasets[i]]
+            array = self.data_dict[round]['train'][self.datasets[i]]
             array = array.reshape((array.shape[0],))
             matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -164,7 +164,7 @@ class Voting_classifer:
 
         y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
 
-        y_true = self.data_dict["y_data"][self.test_indizes[round]]
+        y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
         return ((y_pred - y_true)**2).sum()
 
@@ -198,7 +198,7 @@ class Voting_classifer:
                 train_matrix = np.vstack((train_matrix, array)) if train_matrix.size else array
 
             train_matrix = np.transpose(train_matrix)
-            y_pred_train = train_matrix.dot(res.x)
+            y_pred_train = train_matrix.dot(weights)
 
             conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.train_indizes[round]],
                                            y_pred=(y_pred_train.reshape((len(y_pred_train))) > 0.5).astype(int))
