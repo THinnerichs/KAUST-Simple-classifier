@@ -72,8 +72,8 @@ class Voting_classifer:
                 print("Reading {}...".format(dataset))
                 self.data_dict[round]['test'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_prediction.npy")
                 self.data_dict[round]['train'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_train_prediction.npy")
-                print("Training shape:", self.data_dict[round]['train'][dataset])
-                print("Test shape:", self.data_dict[round]['test'][dataset])
+                print("Training shape:", self.data_dict[round]['train'][dataset].shape)
+                print("Test shape:", self.data_dict[round]['test'][dataset].shape)
 
             print("Reading y_data...")
             self.train_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
