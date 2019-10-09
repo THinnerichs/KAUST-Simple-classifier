@@ -74,8 +74,8 @@ class Voting_classifer:
                 self.data_dict[round]['train'][dataset] = np.load(file="../data/" + dataset + "_" + self.load_file_name + "_round_" + str(round) + "_train_prediction.npy")
 
                 if dataset == "multi_label":
-                    data = self.data_dict[round]['test'][dataset]
-                    self.data_dict[round]['test'][dataset] = data.argmax(axis=1)
+                    self.data_dict[round]['test'][dataset] = self.data_dict[round]['test'][dataset].argmax(axis=1)
+                    self.data_dict[round]['train'][dataset] = self.data_dict[round]['train'][dataset].argmax(axis=1)
 
             print("Reading y_data...")
             self.train_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
