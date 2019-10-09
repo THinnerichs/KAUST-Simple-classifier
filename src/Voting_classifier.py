@@ -153,7 +153,7 @@ class Voting_classifer:
 
         matrix = np.array([])
         for i in range(len(self.datasets)):
-            array = self.data_dict[round]['train'][self.datasets[i]]
+            array = self.data_dict[round]['test'][self.datasets[i]]
             array = array.reshape((array.shape[0],))
             matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -166,9 +166,9 @@ class Voting_classifer:
         # y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
         y_pred = (y_pred > 0.5).astype(int)
 
-        y_true = self.data_dict["y_data"][self.train_indizes[round]]
+        y_true = self.data_dict["y_data"][self.test_indizes[round]]
 
-        return (np.absolute(y_pred - y_true)).sum()
+        return ((y_pred - y_true)**2).sum()
 
     def apply_vote_minimize(self,
                             hard=False):
@@ -182,21 +182,11 @@ class Voting_classifer:
         for round in range(1,11):
             print("Round", round)
 
-            matrix = np.array([])
-            for i in range(len(self.datasets)):
-                array = self.data_dict[round]['test'][self.datasets[i]]
-                array = array.reshape((array.shape[0],))
-                matrix = np.vstack((matrix, array)) if matrix.size else array
-
-            matrix = np.transpose(matrix)
-            if hard:
-                matrix = (matrix > 0.5).astype(int)
-
             x0 = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
             objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=True)
             res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
-            
+
             print("Test objective function")
             print(weights)
             print("minimized weights", objective_fct(weights))
@@ -230,6 +220,16 @@ class Voting_classifer:
             print("rec:", recall)
 
             print("TESTING PERFORMANCE:")
+            matrix = np.array([])
+            for i in range(len(self.datasets)):
+                array = self.data_dict[round]['test'][self.datasets[i]]
+                array = array.reshape((array.shape[0],))
+                matrix = np.vstack((matrix, array)) if matrix.size else array
+
+            matrix = np.transpose(matrix)
+            if hard:
+                matrix = (matrix > 0.5).astype(int)
+
             y_pred = matrix.dot(weights)
 
             y_pred = np.divide(y_pred, weights.sum())
@@ -263,6 +263,8 @@ class Voting_classifer:
         print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
         for i in range(10):
             print("Weights: Round {}: {}".format(i+1, cv_scores['weights'][i]))
+
+        raise Exception
 
         with open(file=self.results_log_file, mode='a') as filehandler:
             print(("HARD" if hard else "SOFT") + " MINIMIZE VOTING RESULTS:", file=filehandler)
