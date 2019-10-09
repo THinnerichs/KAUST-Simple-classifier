@@ -182,7 +182,7 @@ class Voting_classifer:
 
             x0 = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
             objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=True)
-            res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
+            res = minimize(objective_fct, x0=x0, method='Powell')
             weights = res.x
 
             print("Test objective function")
