@@ -264,8 +264,6 @@ class Voting_classifer:
         for i in range(10):
             print("Weights: Round {}: {}".format(i+1, cv_scores['weights'][i]))
 
-        raise Exception
-
         with open(file=self.results_log_file, mode='a') as filehandler:
             print(("HARD" if hard else "SOFT") + " MINIMIZE VOTING RESULTS:", file=filehandler)
             print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])),
@@ -476,24 +474,25 @@ if __name__ == '__main__':
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
 
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
-    # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
+    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
     
 
 
-    # democracy = Voting_classifer(load_file_name="donor_data")
+    democracy = Voting_classifer(load_file_name="donor_data")
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
-    # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
-    # democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
+    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
     #democracy.sklearn_classifiers()
     #democracy.sklearn_classifiers(hard=True)
