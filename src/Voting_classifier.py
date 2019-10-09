@@ -51,7 +51,7 @@ class Voting_classifer:
                          'gradient_boosting',
                          'random_forest',
                          'IDkmer',
-                         'kmer',
+                         # 'kmer',
                          'dac',
                          # 'dcc',
                          'tac',
