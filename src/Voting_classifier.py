@@ -67,6 +67,7 @@ class Voting_classifer:
         self.data_dict = {}
         self.train_indizes = {}
         self.test_indizes = {}
+        print("Reading data...")
         for round in range(1,11):
             self.data_dict[round] = {'train': {},
                                      'test': {}}
@@ -78,7 +79,7 @@ class Voting_classifer:
                     self.data_dict[round]['test'][dataset] = self.data_dict[round]['test'][dataset].argmax(axis=1)
                     self.data_dict[round]['train'][dataset] = self.data_dict[round]['train'][dataset].argmax(axis=1)
 
-            print("Reading y_data...")
+            # print("Reading y_data...")
             self.train_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_train_indizes.npy")
             self.test_indizes[round] = np.load(file="../data/" + self.load_file_name + "_round_" + str(round) + "_test_indizes.npy")
             self.data_dict["y_data"] = np.load(file="../data/y_" + self.load_file_name + "_100000_samples.npy")
@@ -180,7 +181,7 @@ class Voting_classifer:
             print("Round", round)
 
             x0 = np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1])
-            objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=False)
+            objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=True)
             res = minimize(objective_fct, x0=x0, method='Nelder-Mead')
             weights = res.x
 
@@ -472,9 +473,11 @@ if __name__ == '__main__':
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
 
-    # democracy.apply_vote_minimize()
-    # democracy.apply_vote_minimize(hard=True)
+    democracy.apply_vote_minimize()
+    democracy.apply_vote_minimize(hard=True)
 
+
+    '''
     democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
     democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
@@ -486,6 +489,7 @@ if __name__ == '__main__':
 
     democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]))
     democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]), hard=True)
+    '''
 
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
@@ -495,6 +499,8 @@ if __name__ == '__main__':
     democracy = Voting_classifer(load_file_name="donor_data")
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
+
+    '''
     democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
     democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
@@ -506,8 +512,10 @@ if __name__ == '__main__':
 
     democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]))
     democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]), hard=True)
-    # democracy.apply_vote_minimize()
-    # democracy.apply_vote_minimize(hard=True)
+    '''
+
+    democracy.apply_vote_minimize()
+    democracy.apply_vote_minimize(hard=True)
 
     #democracy.sklearn_classifiers()
     #democracy.sklearn_classifiers(hard=True)
