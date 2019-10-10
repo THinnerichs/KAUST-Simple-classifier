@@ -305,11 +305,11 @@ class Voting_classifer:
 
             # defining model
             input_tensor = layers.Input(shape=(matrix.shape[1],))
-            dense_1 = layers.Dense(4, activation='relu')(input_tensor)
-            dropout_1 = layers.Dropout(0.5)(dense_1)
-            dense_2 = layers.Dense(2, activation='relu')(dropout_1)
-            dropout_2 = layers.Dropout(0.5)(dense_2)
-            output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
+            # dense_1 = layers.Dense(4, activation='relu')(input_tensor)
+            # dropout_1 = layers.Dropout(0.5)(dense_1)
+            # dense_2 = layers.Dense(2, activation='relu')(dropout_1)
+            # dropout_2 = layers.Dropout(0.5)(dense_2)
+            output_tensor = layers.Dense(1, activation='sigmoid')(input_tensor)
 
             model = models.Model(input_tensor, output_tensor)
             '''
