@@ -294,7 +294,7 @@ class Voting_classifer:
 
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                array = self.data_dict[round][self.datasets[i]][self.train_indizes[round]]
+                array = self.data_dict[round]['train'][self.datasets[i]]
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -333,15 +333,13 @@ class Voting_classifer:
                       callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
             model.summary()
-
             matrix = np.array([])
             for i in range(len(self.datasets)):
-                array = self.data_dict[round][self.datasets[i]][self.test_indizes[round]]
+                array = self.data_dict[round]['test'][self.datasets[i]]
                 array = array.reshape((array.shape[0],))
                 matrix = np.vstack((matrix, array)) if matrix.size else array
 
             matrix = np.transpose(matrix)
-
             if hard:
                 matrix = (matrix > 0.5).astype(int)
 
