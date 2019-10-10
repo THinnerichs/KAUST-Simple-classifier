@@ -377,7 +377,7 @@ class Voting_classifer:
             # KNeighborsClassifier(3, n_jobs=32),
             # SVC(kernel="linear", C=0.025),
             # SVC(gamma=2, C=1),
-            XGBClassifier(max_depth=6,
+            XGBClassifier(max_depth=10,
                           verbosity=1,
                           n_jobs=32,
                           silent=False),
