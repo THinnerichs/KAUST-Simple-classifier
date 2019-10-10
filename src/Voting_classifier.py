@@ -280,7 +280,7 @@ class Voting_classifer:
 
     def neural_net(self,
                    hard=False,
-                   epochs=7,
+                   epochs=3,
                    batch_size=200):
 
         cv_scores = {'acc': [],
