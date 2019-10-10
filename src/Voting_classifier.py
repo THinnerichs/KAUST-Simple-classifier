@@ -309,7 +309,8 @@ class Voting_classifer:
             # dropout_1 = layers.Dropout(0.5)(dense_1)
             # dense_2 = layers.Dense(2, activation='relu')(dropout_1)
             # dropout_2 = layers.Dropout(0.5)(dense_2)
-            output_tensor = layers.Dense(1, activation='sigmoid')(input_tensor)
+            dropout_i = layers.Dropout(0.2)(input_tensor)
+            output_tensor = layers.Dense(1, activation='sigmoid')(dropout_i)
 
             model = models.Model(input_tensor, output_tensor)
             '''
