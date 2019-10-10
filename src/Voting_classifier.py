@@ -305,7 +305,11 @@ class Voting_classifer:
 
             # defining model
             input_tensor = layers.Input(shape=(matrix.shape[1],))
-            output_tensor = layers.Dense(1, activation='sigmoid')(input_tensor)
+            dense_1 = layers.Dense(16, activation='relu')(input_tensor)
+            dropout_1 = layers.Dropout(0.5)(dense_1)
+            dense_2 = layers.Dense(16, activation='relu')(dropout_1)
+            dropout_2 = layers.Dropout(0.5)(dense_2)
+            output_tensor = layers.Dense(1, activation='sigmoid')(dropout_2)
 
             model = models.Model(input_tensor, output_tensor)
             '''
@@ -366,7 +370,6 @@ class Voting_classifer:
             if len(cv_scores['acc']) == 10:
                 with open(file=self.results_log_file, mode='a') as filehandler:
                     print("NEURAL NET " + ("HARD" if hard else "SOFT") + " CLASSIFICATION APPROACH", file=filehandler)
-                    print("Data shape: {}".format(self.x_data.shape), file=filehandler)
                     print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=filehandler)
                     model.summary(print_fn=lambda x: filehandler.write(x + '\n'))
                     print("Confusion matrix:", conf_matrix)
