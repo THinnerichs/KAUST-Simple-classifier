@@ -473,23 +473,18 @@ if __name__ == '__main__':
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
 
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
 
-    '''
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
+    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.voting(np.array([7,7,7,5,5,3,1,1,1,1,1,1,1,1,1]))
-    democracy.voting(np.array([7,7,7,5,5,3,1,1,1,1,1,1,1,1,1]), hard=True)
+    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.voting(np.array([7,7,7,5,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([7,7,7,5,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
-
-    democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]))
-    democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]), hard=True)
-    '''
+    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
@@ -497,25 +492,22 @@ if __name__ == '__main__':
 
 
     democracy = Voting_classifer(load_file_name="donor_data")
+
+    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
 
-    '''
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]))
-    democracy.voting(np.array([5,5,5,4,4,3,1,1,1,1,1,1,1,1,1]), hard=True)
 
-    democracy.voting(np.array([7,7,7,5,5,3,1,1,1,1,1,1,1,1,1]))
-    democracy.voting(np.array([7,7,7,5,5,3,1,1,1,1,1,1,1,1,1]), hard=True)
-
-    democracy.voting(np.array([7,7,7,5,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([7,7,7,5,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
-
-    democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]))
-    democracy.voting(np.array([95,95,95,90,85,80,80,80,80,80,80,80,80,80,80]), hard=True)
-    '''
-
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
     #democracy.sklearn_classifiers()
     #democracy.sklearn_classifiers(hard=True)
