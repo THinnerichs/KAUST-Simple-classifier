@@ -305,8 +305,8 @@ class Voting_classifer:
 
             # defining model
             input_tensor = layers.Input(shape=(None, matrix.shape[1]))
-            dense_1 = layers.Dense(4, activation='relu')(input_tensor)
-            dense_2 = layers.Dense(2, activation='relu')(dense_1)
+            dense_1 = layers.Dense(16, activation='relu')(input_tensor)
+            dense_2 = layers.Dense(16, activation='relu')(dense_1)
             output_tensor = layers.Dense(1, activation='sigmoid')(dense_2)
 
             model = models.Model(input_tensor, output_tensor)
@@ -326,13 +326,24 @@ class Voting_classifer:
                           metrics=['accuracy'])
 
             # train model
-            model.fit(x=matrix[self.train_indizes],
+            model.fit(x=matrix,
                       y=self.data_dict["y_data"][self.train_indizes[round]],
                       epochs=epochs,
                       batch_size=batch_size,
                       callbacks=[TensorBoard(log_dir='/tmp/classifier')])
 
             model.summary()
+
+            matrix = np.array([])
+            for i in range(len(self.datasets)):
+                array = self.data_dict[round][self.datasets[i]][self.test_indizes[round]]
+                array = array.reshape((array.shape[0],))
+                matrix = np.vstack((matrix, array)) if matrix.size else array
+
+            matrix = np.transpose(matrix)
+
+            if hard:
+                matrix = (matrix > 0.5).astype(int)
 
             # Calculate other validation scores
             y_pred = model.predict(matrix[self.test_indizes[round]])
@@ -352,6 +363,10 @@ class Voting_classifer:
             cv_scores['prec'].append(precision * 100)
             cv_scores['rec'].append(recall * 100)
 
+            print("acc:", accuracy)
+            print("pre:", precision)
+            print("rec:", recall)
+
             if len(cv_scores['acc']) == 10:
                 with open(file=self.results_log_file, mode='a') as filehandler:
                     print("NEURAL NET " + ("HARD" if hard else "SOFT") + " CLASSIFICATION APPROACH", file=filehandler)
@@ -359,16 +374,6 @@ class Voting_classifer:
                     print("Epochs: {}, Batch size: {}".format(epochs, batch_size), file=filehandler)
                     model.summary(print_fn=lambda x: filehandler.write(x + '\n'))
                     print("Confusion matrix:", conf_matrix)
-
-        with open(file=self.results_log_file, mode='a') as filehandler:
-            print("SOFT VOTING RESULTS:", file=filehandler)
-            print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
-            print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
-            print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])), file=filehandler)
-
-            print("Classified {}".format(self.load_file_name), file=filehandler)
-            print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
-            print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
     def sklearn_classifiers(self,
                             hard=False):
@@ -486,9 +491,11 @@ if __name__ == '__main__':
     # democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
     # democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.sklearn_classifiers()
-    democracy.sklearn_classifiers(hard=True)
-    
+    # democracy.sklearn_classifiers()
+    # democracy.sklearn_classifiers(hard=True)
+
+    democracy.neural_net()
+    democracy.neural_net(hard=True)
 
 
     democracy = Voting_classifer(load_file_name="donor_data")
@@ -509,10 +516,11 @@ if __name__ == '__main__':
     # democracy.apply_vote_minimize()
     # democracy.apply_vote_minimize(hard=True)
 
-    democracy.sklearn_classifiers()
-    democracy.sklearn_classifiers(hard=True)
+    # democracy.sklearn_classifiers()
+    # democracy.sklearn_classifiers(hard=True)
 
-
+    democracy.neural_net()
+    democracy.neural_net(hard=True)
     '''
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]), hard=True)
