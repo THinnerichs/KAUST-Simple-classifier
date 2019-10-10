@@ -304,7 +304,7 @@ class Voting_classifer:
                 matrix = (matrix > 0.5).astype(int)
 
             # defining model
-            input_tensor = layers.Input(shape=(None, matrix.shape[1]))
+            input_tensor = layers.Input(shape=matrix.shape[1].shape)
             dense_1 = layers.Dense(16, activation='relu')(input_tensor)
             dense_2 = layers.Dense(16, activation='relu')(dense_1)
             output_tensor = layers.Dense(1, activation='sigmoid')(dense_2)
