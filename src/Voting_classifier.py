@@ -180,7 +180,7 @@ class Voting_classifer:
         for round in range(1,11):
             print("Round", round)
 
-            x0 = np.array([0] * 15)
+            x0 = np.array([0.1] * 15)
             objective_fct = lambda array: self.objective_fct_vote(array, round=round, hard=True)
             res = minimize(objective_fct, x0=x0, method='Powell')
             weights = res.x
