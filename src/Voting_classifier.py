@@ -454,7 +454,7 @@ class Voting_classifer:
                 cv_scores['rec'].append(recall * 100)
 
             with open(file=self.results_log_file, mode='a') as filehandler:
-                print(name + " RESULTS:", file=filehandler)
+                print(name + ("HARD" if hard else "SOFT") + " RESULTS:", file=filehandler)
                 print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])),
                       file=filehandler)
                 print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])),
