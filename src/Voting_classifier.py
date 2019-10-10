@@ -377,26 +377,26 @@ class Voting_classifer:
             # KNeighborsClassifier(3, n_jobs=32),
             # SVC(kernel="linear", C=0.025),
             # SVC(gamma=2, C=1),
-            XGBClassifier(max_depth=5,
+            XGBClassifier(max_depth=6,
                           verbosity=1,
                           n_jobs=32,
                           silent=False),
-            GaussianProcessClassifier(1.0 * RBF(1.0),n_jobs=32),
-            DecisionTreeClassifier(max_depth=5),
+            # GaussianProcessClassifier(1.0 * RBF(1.0),n_jobs=32),
+            # DecisionTreeClassifier(max_depth=5),
             RandomForestClassifier(max_depth=5, n_jobs=32, n_estimators=10, max_features=1),
-            MLPClassifier(alpha=1, max_iter=1000),
-            AdaBoostClassifier(),
+            MLPClassifier(alpha=0.1, max_iter=1000, verbose=True),
+            # AdaBoostClassifier(),
             GaussianNB()]
 
         names = [# "Nearest Neighbors",
                  # "Linear SVM",
                  # "RBF SVM",
                  "XGBoost",
-                 "Gaussian Process",
-                 "Decision Tree",
+                 # "Gaussian Process",
+                 # "Decision Tree",
                  "Random Forest",
                  "Neural Net",
-                 "AdaBoost",
+                 # "AdaBoost",
                  "Naive Bayes"]
 
         for name, clf in zip(names, classifiers):
@@ -477,30 +477,30 @@ if __name__ == '__main__':
     # democracy.apply_vote_minimize(hard=True)
 
 
-    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
+    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    # democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    # democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    # democracy.sklearn_classifiers()
-    # democracy.sklearn_classifiers(hard=True)
+    democracy.sklearn_classifiers()
+    democracy.sklearn_classifiers(hard=True)
     
 
 
     democracy = Voting_classifer(load_file_name="donor_data")
 
-    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
+    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
-    democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    # democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]))
+    # democracy.voting(np.array([5,0,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
@@ -509,8 +509,8 @@ if __name__ == '__main__':
     # democracy.apply_vote_minimize()
     # democracy.apply_vote_minimize(hard=True)
 
-    #democracy.sklearn_classifiers()
-    #democracy.sklearn_classifiers(hard=True)
+    democracy.sklearn_classifiers()
+    democracy.sklearn_classifiers(hard=True)
 
 
     '''
