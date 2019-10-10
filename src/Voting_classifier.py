@@ -344,7 +344,7 @@ class Voting_classifer:
                 matrix = (matrix > 0.5).astype(int)
 
             # Calculate other validation scores
-            y_pred = model.predict(matrix[self.test_indizes[round]])
+            y_pred = model.predict(matrix)
             conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
                                            y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
