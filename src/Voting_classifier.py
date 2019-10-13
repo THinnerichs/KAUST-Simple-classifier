@@ -169,12 +169,24 @@ class Voting_classifer:
 
         y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
-        # return ((y_pred - y_true)**2).sum()
-        y_true = K.variable(y_true)
-        y_pred = K.variable(y_pred)
-        error = K.eval(binary_crossentropy(y_true, y_pred))
+        conf_matrix = confusion_matrix(y_true=y_true, y_pred=y_pred)
 
-        return error.mean()
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        return 100-accuracy*100
+
+        # return ((y_pred - y_true)**2).sum()
+
+        # y_true = K.variable(y_true)
+        # y_pred = K.variable(y_pred)
+        # error = K.eval(binary_crossentropy(y_true, y_pred))
+
+        # return error.mean()
 
     def apply_vote_minimize(self,
                             hard=False):
@@ -275,11 +287,11 @@ class Voting_classifer:
             print(("HARD" if hard else "SOFT") + " MINIMIZE VOTING RESULTS:", file=filehandler)
             print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])),
                   file=filehandler)
-            print("Loss func: Binary Crossentropy", file=filehandler)
             print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])),
                   file=filehandler)
             print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])),
                   file=filehandler)
+            print("Loss func: 1-Acc", file=filehandler)
             for i in range(10):
                 print("Weights: Round {}: {}".format(i+1, cv_scores['weights'][i]), file=filehandler)
             print("Classified {}".format(self.load_file_name), file=filehandler)
@@ -487,8 +499,8 @@ if __name__ == '__main__':
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
 
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
 
     # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
@@ -522,8 +534,8 @@ if __name__ == '__main__':
     # democracy.voting(weights, hard=True)
 
 
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
