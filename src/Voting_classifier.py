@@ -19,9 +19,12 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.naive_bayes import GaussianNB
 
-from scipy.optimize import minimize
+from scipy.optimize import minimize, differential_evolution
 
 from xgboost import XGBClassifier
+
+from keras.losses import binary_crossentropy
+from keras import backend as K
 
 import tensorflow as tf
 
@@ -152,7 +155,7 @@ class Voting_classifer:
 
         matrix = np.array([])
         for i in range(len(self.datasets)):
-            array = self.data_dict[round]['test'][self.datasets[i]]
+            array = self.data_dict[round]['train'][self.datasets[i]]
             array = array.reshape((array.shape[0],))
             matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -164,9 +167,26 @@ class Voting_classifer:
 
         y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
 
-        y_true = self.data_dict["y_data"][self.test_indizes[round]]
+        y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
-        return ((y_pred - y_true)**2).sum()
+        conf_matrix = confusion_matrix(y_true=y_true, y_pred=y_pred)
+
+        tp = conf_matrix[0, 0]
+        tn = conf_matrix[1, 1]
+        fp = conf_matrix[0, 1]
+        fn = conf_matrix[1, 0]
+
+        accuracy = (tp + tn) / (tp + tn + fp + fn)
+
+        return 100-accuracy*100
+
+        # return ((y_pred - y_true)**2).sum()
+
+        # y_true = K.variable(y_true)
+        # y_pred = K.variable(y_pred)
+        # error = K.eval(binary_crossentropy(y_true, y_pred))
+
+        # return error.mean()
 
     def apply_vote_minimize(self,
                             hard=False):
@@ -271,6 +291,7 @@ class Voting_classifer:
                   file=filehandler)
             print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])),
                   file=filehandler)
+            print("Loss func: 1-Acc", file=filehandler)
             for i in range(10):
                 print("Weights: Round {}: {}".format(i+1, cv_scores['weights'][i]), file=filehandler)
             print("Classified {}".format(self.load_file_name), file=filehandler)
@@ -278,9 +299,50 @@ class Voting_classifer:
             print("\n-------------------------------------------------------------------------------\n",
                   file=filehandler)
 
+    def genetic_objective_func(self,
+                               weights,
+                               hard=False):
+
+        return_sum = 0
+        for round in range(1,11):
+            matrix = np.array([])
+            for i in range(len(self.datasets)):
+                array = self.data_dict[round]['test'][self.datasets[i]]
+                array = array.reshape((array.shape[0],))
+                matrix = np.vstack((matrix, array)) if matrix.size else array
+
+            matrix = np.transpose(matrix)
+            if hard:
+                matrix = (matrix > 0.5).astype(int)
+
+            y_pred = matrix.dot(weights)
+
+            y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
+
+            y_true = self.data_dict["y_data"][self.test_indizes[round]]
+
+            return_sum += np.absolute(y_true - y_pred).mean()
+
+        return return_sum
+
+
+    def genetic_vote_minimize(self,
+                              hard=False):
+
+        bounds = [(0,1)] * 15
+
+        objective_func = lambda array: self.genetic_objective_func(weights=array, hard=False)
+        result = differential_evolution(func=objective_func, bounds=bounds)
+
+        print("Result", result.x, result.fun)
+
+        self.voting(input_weights=result.x, hard=hard)
+
+
+
     def neural_net(self,
                    hard=False,
-                   epochs=2,
+                   epochs=3,
                    batch_size=200):
 
         cv_scores = {'acc': [],
@@ -481,9 +543,19 @@ if __name__ == '__main__':
     # democracy.apply_vote_minimize()
     # democracy.apply_vote_minimize(hard=True)
 
+    '''
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
 
-    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
-    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]), hard=True)
+    '''
 
     # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
     # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
@@ -494,11 +566,42 @@ if __name__ == '__main__':
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
 
-    democracy.neural_net()
-    democracy.neural_net(hard=True)
+    # democracy.neural_net()
+    # democracy.neural_net(hard=True)
+
+    democracy.genetic_vote_minimize()
+    democracy.genetic_vote_minimize(hard=True)
 
 
     democracy = Voting_classifer(load_file_name="donor_data")
+
+    democracy.genetic_vote_minimize()
+    democracy.genetic_vote_minimize(hard=True)
+
+    '''
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]), hard=True)
+
+    democracy.voting(np.array([5,2,5,4,4,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,2,5,4,4,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    '''
+
 
     # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
     # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
@@ -519,8 +622,8 @@ if __name__ == '__main__':
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
 
-    democracy.neural_net()
-    democracy.neural_net(hard=True)
+    # democracy.neural_net()
+    # democracy.neural_net(hard=True)
     '''
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]))
     democracy.voting(np.array([3,2,3,1,1,1,1,1,1,1]), hard=True)
