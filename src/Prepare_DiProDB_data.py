@@ -15,8 +15,12 @@ def prepare_data_with_DiProDB(include_acceptor=False,
                               save_file_name="dataset",
                               samples_per_file=10000,
                               start=0,
-                              pre_length=300,
-                              post_length=300):
+                              pre_start=0,
+                              pre_end=299,
+                              post_start=302,
+                              post_end=601,
+                              pre_length=0,
+                              post_length=0):
 
     print("Reading DiProDB data ...")
 
@@ -72,7 +76,8 @@ def prepare_data_with_DiProDB(include_acceptor=False,
             if counter<start:
                 counter+=1
                 continue
-            loop_record = str(record.seq)[300 - pre_length: 301 + post_length + 1]
+            loop_record = str(record.seq)[pre_start:pre_end+1]+str(record.seq)[300:301+1]+str(record.seq)[post_start:post_end+1]
+
             encoded = [dinucleotide_dict[loop_record[i:i+N]] for i in range(len(loop_record) -N+1)]
 
             x_dataset.append(encoded)
@@ -99,8 +104,17 @@ def prepare_data_with_DiProDB(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_dint_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(
-        pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    x_filename = None
+    if pre_length == 300 and post_length == 300:
+        x_filename = "../data/x_dint_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(
+            samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    else:
+        x_filename = "../data/x_dint_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + str(
+            samples_per_file) + "_samples_" + \
+                     str(pre_start) + "_pre_start_" + \
+                     str(pre_end) + "_pre_end_" + \
+                     str(post_start) + "_post_start_" + \
+                     str(post_end) + "_post_end" + ".npy"
     y_filename = "../data/y_" + save_file_name+ ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples.npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
@@ -112,6 +126,7 @@ def prepare_data_with_DiProDB(include_acceptor=False,
     print("This took {} seconds.".format(end - start_time))
 
 if __name__ == '__main__':
+    '''
     prepare_data_with_DiProDB(include_acceptor=True,
                               include_donor=False,
                               save_file_name="acceptor_data",
@@ -123,3 +138,25 @@ if __name__ == '__main__':
                               save_file_name="donor_data",
                               start=100000,
                               samples_per_file=10000)
+    '''
+
+
+    for start in [i*50 for i in range(0,5)]:
+        for end in [i*50 for i in range(0,5)]:
+            prepare_data_with_DiProDB(include_acceptor=True,
+                                      include_donor=False,
+                                      save_file_name="acceptor_data",
+                                      samples_per_file=100000,
+                                      pre_start=start,
+                                      pre_end=start+49,
+                                      post_start=302+end,
+                                      post_end=302+end+49)
+
+            prepare_data_with_DiProDB(include_acceptor=False,
+                                      include_donor=True,
+                                      save_file_name="donor_data",
+                                      samples_per_file=100000,
+                                      pre_start=start,
+                                      pre_end=start+49,
+                                      post_start=302+end,
+                                      post_end=302+end+49)

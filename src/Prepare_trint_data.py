@@ -14,6 +14,10 @@ def prepare_trint_data(include_acceptor=False,
                        save_file_name="dataset",
                        samples_per_file=10000,
                        start=0,
+                       pre_start=0,
+                       pre_end=299,
+                       post_start=302,
+                       post_end=601,
                        pre_length=300,
                        post_length=300):
 
@@ -54,7 +58,7 @@ def prepare_trint_data(include_acceptor=False,
             if counter < start:
                 counter+=1
                 continue
-            loop_record = str(record.seq)[300 - pre_length : 301 + post_length + 1]
+            loop_record = str(record.seq)[pre_start:pre_end+1]+str(record.seq)[300:301+1]+str(record.seq)[post_start:post_end+1]
             onehot_encoded = [trint_nucleotide_dict[loop_record[i:i+N]] for i in range(len(loop_record) -N+1)]
 
             x_dataset.append(onehot_encoded)
@@ -103,8 +107,28 @@ if __name__ == '__main__':
                        save_file_name="donor_data",
                        samples_per_file=100000)
     '''
-    
-    
+
+    for start in [i*50 for i in range(0,5)]:
+        for end in [i*50 for i in range(0,5)]:
+            prepare_trint_data(include_acceptor=True,
+                               include_donor=False,
+                               save_file_name="acceptor_data",
+                               samples_per_file=100000,
+                               pre_start=start,
+                               pre_end=start+49,
+                               post_start=302+end,
+                               post_end=302+end+49)
+
+            prepare_trint_data(include_acceptor=False,
+                               include_donor=True,
+                               save_file_name="donor_data",
+                               samples_per_file=100000,
+                               pre_start=start,
+                               pre_end=start+49,
+                               post_start=302+end,
+                               post_end=302+end+49)
+
+    '''
     prepare_trint_data(include_acceptor=True,
                        include_donor=False,
                        save_file_name="acceptor_data",
@@ -116,3 +140,4 @@ if __name__ == '__main__':
                        save_file_name="donor_data",
                        start=100000,
                        samples_per_file=10000)
+    '''
