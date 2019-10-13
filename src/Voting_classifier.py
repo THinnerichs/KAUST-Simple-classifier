@@ -166,7 +166,14 @@ class Voting_classifer:
 
         y_true = self.data_dict["y_data"][self.test_indizes[round]]
 
-        return ((y_pred - y_true)**2).sum()
+        # return ((y_pred - y_true)**2).sum()
+        from keras.losses import binary_crossentropy
+        from keras import backend as K
+        y_true = K.variable(y_true)
+        y_pred = K.variable(y_pred)
+        error = K.eval(binary_crossentropy(y_true, y_pred))
+
+        return error.mean()
 
     def apply_vote_minimize(self,
                             hard=False):
@@ -267,6 +274,7 @@ class Voting_classifer:
             print(("HARD" if hard else "SOFT") + " MINIMIZE VOTING RESULTS:", file=filehandler)
             print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])),
                   file=filehandler)
+            print("Loss func: Binary Crossentropy", file=filehandler)
             print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])),
                   file=filehandler)
             print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])),
