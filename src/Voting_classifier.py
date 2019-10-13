@@ -329,7 +329,7 @@ class Voting_classifer:
     def genetic_vote_minimize(self,
                               hard=False):
 
-        bounds = [(0,20)] * 15
+        bounds = [(0,1)] * 15
 
         objective_func = lambda array: self.genetic_objective_func(weights=array, hard=False)
         result = differential_evolution(func=objective_func, bounds=bounds)
