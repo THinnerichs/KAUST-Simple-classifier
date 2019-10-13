@@ -155,7 +155,7 @@ class Voting_classifer:
 
         matrix = np.array([])
         for i in range(len(self.datasets)):
-            array = self.data_dict[round]['test'][self.datasets[i]]
+            array = self.data_dict[round]['train'][self.datasets[i]]
             array = array.reshape((array.shape[0],))
             matrix = np.vstack((matrix, array)) if matrix.size else array
 
@@ -167,7 +167,7 @@ class Voting_classifer:
 
         y_pred = (np.divide(y_pred, weights.sum()) > 0.5).astype(int)
 
-        y_true = self.data_dict["y_data"][self.test_indizes[round]]
+        y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
         conf_matrix = confusion_matrix(y_true=y_true, y_pred=y_pred)
 
@@ -503,8 +503,17 @@ if __name__ == '__main__':
     democracy.apply_vote_minimize(hard=True)
 
 
-    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
-    # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]), hard=True)
 
     # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]))
     # democracy.voting(np.array([5,5,0,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
@@ -521,6 +530,29 @@ if __name__ == '__main__':
 
     democracy = Voting_classifer(load_file_name="donor_data")
 
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([8,5,8,2,2,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,1,3,1,1,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]))
+    democracy.voting(np.array([1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]), hard=True)
+
+    democracy.voting(np.array([5,2,5,4,4,1,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([5,2,5,4,4,1,0,0,0,0,0,0,0,0,0]), hard=True)
+
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]))
+    democracy.voting(np.array([1,0,1,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
+
+
     # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]))
     # democracy.voting(np.array([5,5,5,0,0,0,0,0,0,0,0,0,0,0,0]), hard=True)
 
@@ -534,8 +566,8 @@ if __name__ == '__main__':
     # democracy.voting(weights, hard=True)
 
 
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
     # democracy.sklearn_classifiers()
     # democracy.sklearn_classifiers(hard=True)
