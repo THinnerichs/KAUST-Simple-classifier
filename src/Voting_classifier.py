@@ -499,8 +499,8 @@ if __name__ == '__main__':
     # democracy.voting(weights)
     # democracy.voting(weights, hard=True)
 
-    democracy.apply_vote_minimize()
-    democracy.apply_vote_minimize(hard=True)
+    # democracy.apply_vote_minimize()
+    # democracy.apply_vote_minimize(hard=True)
 
 
     democracy.voting(np.array([3,2,3,2,2,1,0,0,0,0,0,0,0,0,0]))
