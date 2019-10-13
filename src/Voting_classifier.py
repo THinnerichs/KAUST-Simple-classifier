@@ -23,6 +23,9 @@ from scipy.optimize import minimize
 
 from xgboost import XGBClassifier
 
+from keras.losses import binary_crossentropy
+from keras import backend as K
+
 import tensorflow as tf
 
 
@@ -167,8 +170,6 @@ class Voting_classifer:
         y_true = self.data_dict["y_data"][self.train_indizes[round]]
 
         # return ((y_pred - y_true)**2).sum()
-        from keras.losses import binary_crossentropy
-        from keras import backend as K
         y_true = K.variable(y_true)
         y_pred = K.variable(y_pred)
         error = K.eval(binary_crossentropy(y_true, y_pred))
