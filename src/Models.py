@@ -31,12 +31,23 @@ class Model:
                  x_data_dict,
                  y_data,
                  filehandler,
+                 pre_start=0,
+                 pre_end=299,
+                 post_start=302,
+                 post_end=601,
                  pre_length=300,
                  post_length=300,
+                 plot=False,
                  load_file_name="acceptor_data"):
         self.x_data_dict = x_data_dict
         self.y_data = y_data
         self.filehandler = filehandler
+
+        self.pre_start=pre_start
+        self.pre_end=pre_end
+        self.post_start=post_start
+        self.post_end=post_end
+
         self.pre_length = pre_length
         self.post_length = post_length
         self.load_file_name = load_file_name
@@ -64,13 +75,13 @@ class Model:
 
     def draw_models(self):
         date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-        for infix in ['simple', 'DiProDB', 'trint', 'IDkmer', 'dac', 'dcc', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC', 'overall']:
-            with open("../models/" + infix + "_" + self.load_file_name + "_model.json") as fh:
+        for prefix in ['simple', 'DiProDB', 'trint', 'IDkmer', 'dac', 'dcc', 'tac', 'tcc', 'PseKNC', 'PC_PseDNC', 'PC_PseTNC', 'SC_PseDNC', 'SC_PseTNC', 'overall']:
+            with open("../models/" + prefix + "_" + self.load_file_name + "_model.json") as fh:
                 classifier_json_file = fh.read()
             model = model_from_json(classifier_json_file)
             plot_model(model,
                        show_shapes=True,
-                       to_file='../models/plotted_models/' + infix + '_model_' + date_string + '.png')
+                       to_file='../models/plotted_models/' + prefix + '_model_' + date_string + '.png')
 
     def simple_classifier(self,
                           cv_scores,
@@ -87,7 +98,7 @@ class Model:
         self.x_data = self.x_data.reshape(self.x_data.shape + (1,))
 
         # defining model
-        input_tensor = layers.Input(shape=(self.pre_length + 2 + self.post_length, 4, 1))
+        input_tensor = layers.Input(shape=(self.pre_end - self.pre_start + 1 + 2 + self.post_end - self.post_start + 1, 4, 1))
         convolutional_1 = layers.Conv2D(32, kernel_size=(2, 4), input_shape=(602, 4, 1))(input_tensor)
         max_pool_1 = layers.MaxPooling2D((2, 1))(convolutional_1)
         convolutional_2 = layers.Conv2D(32, kernel_size=(3, 4), input_shape=(602, 4, 1))(input_tensor)
@@ -158,8 +169,18 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
-        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) +\
+                     (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
+        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) +\
+                     (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     "_prediction.npy" , arr=y_pred)
 
         print("Simple classifier evaluation:", accuracy, precision, recall)
 
@@ -372,6 +393,7 @@ class Model:
 
         model = XGBClassifier(max_depth=5,
                               verbosity=1,
+                              n_estimators=5,
                               n_jobs=32,
                               silent=False)
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train], verbose=True)
@@ -395,8 +417,18 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr= model.predict(self.x_data.argmax(axis=2)[train]))
-        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) +\
+                     (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     "_train_prediction.npy" , arr= model.predict(self.x_data.argmax(axis=2)[train]))
+        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) +\
+                     (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     "_prediction.npy" , arr=y_pred)
 
         print("Gradient boosting evaluation:", accuracy, precision, recall)
 
@@ -411,13 +443,6 @@ class Model:
             print("Confusion matrix:",
                   conf_matrix)
 
-            print("------------------------------------------------\n")
-
-
-        if len(cv_scores) == 10:
-            print("GRADIENT BOOSTING APPROACH", file=self.filehandler)
-            print("Data shape: {}".format(self.x_data.shape), file=self.filehandler)
-            print("Confusion matrix:", conf_matrix, file=self.filehandler)
             print("-----------------------------------------------------\n")
 
             # save model to file
