@@ -42,7 +42,7 @@ def apply_classification(applied_models=["simple_classifier"],
                                                 load_file_name + 
                                                 ("_"+str(start) + "_start" if start != 0 else "") + 
                                                 "_" + str(samples_per_file) + "_samples" +
-                                                ("_" + str(pre_length) + "_pre" if pre_length!=0 else "") +
+                                                ("_" + str(pre_length) + "_pre" if pre_length!=0 else "_") +
                                                 ("_" + str(post_length) + "_post" if post_length!=0 else "") + \
                                                 (str(pre_start) + "_pre_start_" if pre_start!=None else "")+ \
                                                 (str(pre_end) + "_pre_end_" if pre_end!=None else "")+ \
