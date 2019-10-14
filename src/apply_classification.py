@@ -443,31 +443,118 @@ if __name__ == '__main__':
                          samples_per_file=20000,
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
+    for batch_size in range(50,151,50):
+        for start in [i*batch_size for i in range(0,int(300/batch_size))]:
+            for end in [i*batch_size for i in range(0,int(300/batch_size))]:
+                apply_classification(applied_models=["simple_classifier"],
+                                     load_file_name="acceptor_data",
+                                     datasets=['simple'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
 
-    for start in [i*50 for i in range(0,6)]:
-        for end in [i*50 for i in range(0,6)]:
-            apply_classification(applied_models=["simple_classifier"],
-                                 load_file_name="acceptor_data",
-                                 datasets=['simple'],
-                                 samples_per_file=100000,
-                                 pre_length=0,
-                                 post_length=0,
-                                 pre_start=start,
-                                 pre_end=start+49,
-                                 post_start=302+end,
-                                 post_end=302+end+49)
+                apply_classification(applied_models=["simple_classifier"],
+                                     load_file_name="donor_data",
+                                     datasets=['simple'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
 
-            apply_classification(applied_models=["simple_classifier"],
-                                 load_file_name="donor_data",
-                                 datasets=['simple'],
-                                 samples_per_file=100000,
-                                 pre_length=0,
-                                 post_length=0,
-                                 pre_start=start,
-                                 pre_end=start+49,
-                                 post_start=302+end,
-                                 post_end=302+end+49)
+                apply_classification(applied_models=["DiProDB_classifier"],
+                                     load_file_name="acceptor_data",
+                                     datasets=['dint'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
 
+                apply_classification(applied_models=["DiProDB_classifier"],
+                                     load_file_name="donor_data",
+                                     datasets=['dint'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
+
+                apply_classification(applied_models=["trint_classifier"],
+                                     load_file_name="acceptor_data",
+                                     datasets=['trint'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
+
+                apply_classification(applied_models=["trint_classifier"],
+                                     load_file_name="donor_data",
+                                     datasets=['trint'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
+
+                apply_classification(applied_models=["gradient_boosting"],
+                                     load_file_name="acceptor_data",
+                                     datasets=['simple'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
+
+                apply_classification(applied_models=["gradient_boosting"],
+                                     load_file_name="donor_data",
+                                     datasets=['simple'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
+
+                apply_classification(applied_models=["random_forest"],
+                                     load_file_name="acceptor_data",
+                                     datasets=['simple'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
+
+                apply_classification(applied_models=["random_forest"],
+                                     load_file_name="donor_data",
+                                     datasets=['simple'],
+                                     samples_per_file=100000,
+                                     pre_length=0,
+                                     post_length=0,
+                                     pre_start=start,
+                                     pre_end=start+batch_size-1,
+                                     post_start=302+end,
+                                     post_end=302+end+batch_size-1)
 
 
     '''
