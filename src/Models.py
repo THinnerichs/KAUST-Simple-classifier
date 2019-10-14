@@ -48,6 +48,8 @@ class Model:
         self.post_start=post_start
         self.post_end=post_end
 
+        self.plot = plot
+
         self.pre_length = pre_length
         self.post_length = post_length
         self.load_file_name = load_file_name
@@ -169,17 +171,17 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) +\
+        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) +"_" +\
                      (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
-                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
-                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
-                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
                      "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
-        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) +\
+        np.save(file="../data/simple" + "_" + self.load_file_name + "_round_" + str(self.round) +"_" +\
                      (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
-                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
-                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
-                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
                      "_prediction.npy" , arr=y_pred)
 
         print("Simple classifier evaluation:", accuracy, precision, recall)
@@ -208,9 +210,10 @@ class Model:
             print("Saved simple convolutional model to disk.")
 
             date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            plot_model(model,
-                       show_shapes=True,
-                       to_file='../models/plotted_models/simple_model_' + date_string + '.png')
+            if self.plot:
+                plot_model(model,
+                           show_shapes=True,
+                           to_file='../models/plotted_models/simple_model_' + date_string + '.png')
 
     def multi_label_classifier(self,
                                cv_scores,
@@ -391,7 +394,7 @@ class Model:
         # print("SHAPE:", self.x_data.argmax(axis=2)[train].shape)
         # print(self.y_data[train].shape)
 
-        model = XGBClassifier(booster='gbtree',
+        model = XGBClassifier(booster='dart',
                               max_depth=5,
                               verbosity=1,
                               n_estimators=10,
@@ -419,17 +422,17 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) +\
+        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) +"_" +\
                      (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
-                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
-                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
-                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
                      "_train_prediction.npy" , arr= model.predict(self.x_data.argmax(axis=2)[train]))
-        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) +\
+        np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) +"_" +\
                      (str(self.pre_start) + "_pre_start_" if self.pre_start!=0 else "")+ \
-                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=0 else "")+ \
-                     (str(self.post_start) + "_post_start_" if self.post_start!=0 else "")+ \
-                     (str(self.post_end) + "_post_end"if self.post_start!=0 else "") + \
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
                      "_prediction.npy" , arr=y_pred)
 
         print("Gradient boosting evaluation:", accuracy, precision, recall)
@@ -448,7 +451,7 @@ class Model:
             print("-----------------------------------------------------\n")
 
             # save model to file
-            pickle.dump(model, open("../models/gradient_boosting_" + self.load_file_name + ".pickle.dat", "wb"))
+            # pickle.dump(model, open("../models/gradient_boosting_" + self.load_file_name + ".pickle.dat", "wb"))
 
             # Load with:
             # loaded_model = pickle.load(open("pima.pickle.dat", "rb"))
@@ -543,10 +546,16 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/random_forest" + "_" + self.load_file_name + "_round_" + str(
-            self.round) + "_train_prediction.npy", arr=model.predict(self.x_data.argmax(axis=2)[train]))
-        np.save(file="../data/random_forest" + "_" + self.load_file_name + "_round_" + str(
-            self.round) + "_prediction.npy", arr=y_pred)
+        np.save(file="../data/random_forest" + "_" + self.load_file_name + "_round_" + str(self.round) + "_" +\
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
+                     "_train_prediction.npy", arr=model.predict(self.x_data.argmax(axis=2)[train]))
+        np.save(file="../data/random_forest" + "_" + self.load_file_name + "_round_" + str(self.round) + "_" +\
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
+                     "_prediction.npy", arr=y_pred)
 
         print("Random forest evaluation:", accuracy, precision, recall)
 
@@ -562,7 +571,7 @@ class Model:
                   conf_matrix)
 
             # save the model to disk
-            pickle.dump(model, open("../models/random_forest_" + self.load_file_name + "_model.sav", 'wb'))
+            # pickle.dump(model, open("../models/random_forest_" + self.load_file_name + "_model.sav", 'wb'))
 
             # load the model from disk
             # loaded_model = pickle.load(open(filename, 'rb'))
@@ -803,7 +812,7 @@ class Model:
 
         merge_1 = layers.Concatenate(axis=1)([max_pool_1_2, max_pool_1_3])
 
-        flatten = layers.Flatten()(max_pool_1_3)
+        flatten = layers.Flatten()(merge_1)
         dense_1 = layers.Dense(128, activation='relu')(flatten)
         dense_2 = layers.Dense(128, activation='relu')(dense_1)
         output_tensor = layers.Dense(1, activation='sigmoid')(dense_2)
@@ -858,8 +867,16 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/DiProDB" +"_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
-        np.save(file="../data/DiProDB" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+        np.save(file="../data/DiProDB" +"_" + self.load_file_name + "_round_" + str(self.round) + "_" +\
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
+                     "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
+        np.save(file="../data/DiProDB" +"_" + self.load_file_name + "_round_" + str(self.round) + "_" +\
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
+                     "_prediction.npy" , arr=y_pred)
 
         print("DiProDB evaluation:", accuracy, precision, recall)
         
@@ -887,9 +904,10 @@ class Model:
             print("Saved DiProDB convolutional model to disk.")
 
             date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            plot_model(model,
-                       show_shapes=True,
-                       to_file='../models/plotted_models/DiProDB_model_' + date_string + '.png')
+            if self.plot:
+                plot_model(model,
+                           show_shapes=True,
+                           to_file='../models/plotted_models/DiProDB_model_' + date_string + '.png')
 
     def simple_classifier_on_DiProDB_full(self,
                                           cv_scores,
@@ -1120,8 +1138,16 @@ class Model:
         cv_scores['prec'].append(precision * 100)
         cv_scores['rec'].append(recall * 100)
 
-        np.save(file="../data/trint" +"_" + self.load_file_name + "_round_" + str(self.round) + "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
-        np.save(file="../data/trint" +"_" + self.load_file_name + "_round_" + str(self.round) + "_prediction.npy" , arr=y_pred)
+        np.save(file="../data/trint" +"_" + self.load_file_name + "_round_" + str(self.round) + "_" +\
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
+                     "_train_prediction.npy" , arr=model.predict(self.x_data[train]))
+        np.save(file="../data/trint" +"_" + self.load_file_name + "_round_" + str(self.round) + "_" +\
+                     (str(self.pre_end) + "_pre_end_" if self.pre_end!=299 else "")+ \
+                     (str(self.post_start) + "_post_start_" if self.post_start!=302 else "")+ \
+                     (str(self.post_end) + "_post_end"if self.post_start!=601 else "") + \
+                      "_prediction.npy" , arr=y_pred)
 
         print("trint evaluation:", accuracy, precision, recall)
         
@@ -1149,9 +1175,10 @@ class Model:
             print("Saved trint convolutional model to disk.")
 
             date_string = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            plot_model(model,
-                       show_shapes=True,
-                       to_file='../models/plotted_models/trint_model_' + date_string + '.png')
+            if self.plot:
+                plot_model(model,
+                           show_shapes=True,
+                           to_file='../models/plotted_models/trint_model_' + date_string + '.png')
 
 
     def simple_classifier_on_repDNA_Kmer(self,
