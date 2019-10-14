@@ -391,11 +391,13 @@ class Model:
         # print("SHAPE:", self.x_data.argmax(axis=2)[train].shape)
         # print(self.y_data[train].shape)
 
-        model = XGBClassifier(max_depth=5,
+        model = XGBClassifier(booster='gbtree',
+                              max_depth=5,
                               verbosity=1,
-                              n_estimators=5,
+                              n_estimators=10,
                               n_jobs=32,
-                              silent=False)
+                              silent=False,
+                              random_state=42)
         model.fit(self.x_data.argmax(axis=2)[train], self.y_data[train], verbose=True)
 
         y_pred = model.predict(self.x_data.argmax(axis=2)[test])
