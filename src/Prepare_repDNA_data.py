@@ -19,6 +19,10 @@ def prepare_data_with_repDNA(include_acceptor=False,
                              save_file_name="dataset",
                              samples_per_file=20000,
                              start=0,
+                             pre_start=0,
+                             pre_end=299,
+                             post_start=302,
+                             post_end=601,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -83,7 +87,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(dac.make_dac_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(dac.make_dac_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -109,7 +113,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(dcc.make_dcc_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(dcc.make_dcc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -135,7 +139,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(tac.make_tac_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(tac.make_tac_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -161,7 +165,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(tcc.make_tcc_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(tcc.make_tcc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -187,7 +191,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pseDNC.make_psednc_vec)([seq]) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pseDNC.make_psednc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]]) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -212,7 +216,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pseKNC.make_pseknc_vec)([seq]) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pseKNC.make_pseknc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]]) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -238,7 +242,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pc_psednc.make_pcpsednc_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pc_psednc.make_pcpsednc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -265,7 +269,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pc_psetnc.make_pcpsetnc_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(pc_psetnc.make_pcpsetnc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -292,7 +296,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(sc_psednc.make_scpsednc_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(sc_psednc.make_scpsednc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -319,7 +323,7 @@ def prepare_data_with_repDNA(include_acceptor=False,
 
                 seqs = util.get_data(open(file_name))[start:start+samples_per_file]
 
-                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(sc_psetnc.make_scpsetnc_vec)([seq], all_property=True) for seq in seqs))
+                x_dataset.extend(Parallel(n_jobs=cpu_count)(delayed(sc_psetnc.make_scpsetnc_vec)([seq[pre_start:pre_end+1] + seq[300:301+1] + seq[post_start:post_end+1]], all_property=True) for seq in seqs))
 
             x_dataset = np.array(x_dataset, dtype=np.float)
 
@@ -335,8 +339,7 @@ def acceptor_kmer_DAC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=True,
                              include_DAC=True,
                              include_DCC=False,
@@ -348,8 +351,7 @@ def acceptor_DCC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=True,
@@ -362,8 +364,7 @@ def acceptor_PC_DNC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -375,8 +376,7 @@ def acceptor_PC_TNC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -389,8 +389,7 @@ def acceptor_SC_DNC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -402,8 +401,7 @@ def acceptor_SC_TNC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -416,8 +414,7 @@ def acceptor_KNC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -435,8 +432,7 @@ def acceptor_TAC_TCC():
     prepare_data_with_repDNA(include_acceptor=True,
                              include_donor=False,
                              save_file_name="acceptor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -454,8 +450,7 @@ def donor_kmer_DAC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=True,
                              include_DCC=False,
@@ -467,8 +462,7 @@ def donor_DCC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=True,
@@ -481,8 +475,7 @@ def donor_PC_DNC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -494,8 +487,7 @@ def donor_PC_TNC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -508,8 +500,7 @@ def donor_SC_DNC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -521,8 +512,7 @@ def donor_SC_TNC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -535,8 +525,7 @@ def donor_TAC_TCC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
@@ -554,8 +543,7 @@ def donor_KNC():
     prepare_data_with_repDNA(include_acceptor=False,
                              include_donor=True,
                              save_file_name="donor_data",
-                             samples_per_file=10000,
-                             start=100000,
+                             samples_per_file=100000,
                              include_kmer=False,
                              include_DAC=False,
                              include_DCC=False,
