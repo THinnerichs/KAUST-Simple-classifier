@@ -12,6 +12,10 @@ def apply_classification(applied_models=["simple_classifier"],
                          results_log_file="../results/results_log",
                          samples_per_file=10000,
                          start=0,
+                         pre_start=None,
+                         pre_end=None,
+                         post_start=None,
+                         post_end=None,
                          pre_length=300,
                          post_length=300):
 
@@ -39,7 +43,11 @@ def apply_classification(applied_models=["simple_classifier"],
                                                 ("_"+str(start) + "_start" if start != 0 else "") + 
                                                 "_" + str(samples_per_file) + "_samples" +
                                                 ("_" + str(pre_length) + "_pre" if pre_length!=0 else "") +
-                                                ("_" + str(post_length) + "_post" if post_length!=0 else "") +
+                                                ("_" + str(post_length) + "_post" if post_length!=0 else "") + \
+                                                (str(pre_start) + "_pre_start_" if pre_start!=None else "")+ \
+                                                (str(pre_end) + "_pre_end_" if pre_end!=None else "")+ \
+                                                (str(post_start) + "_post_start_" if post_start!=None else "")+ \
+                                                (str(post_end) + "_post_end"if post_end!=None else "") + \
                                                 ".npy")
 
     y_data = np.load(file="../data/y_" + load_file_name + "_" + str(samples_per_file) + "_samples.npy")
@@ -59,6 +67,10 @@ def apply_classification(applied_models=["simple_classifier"],
     model = Model(x_data_dict=x_data_dict,
                   y_data=y_data,
                   filehandler=filehandler,
+                  pre_start=pre_start,
+                  pre_end=pre_end,
+                  post_start=post_start,
+                  post_end=post_end,
                   pre_length=pre_length,
                   post_length=post_length,
                   load_file_name=load_file_name)
@@ -214,11 +226,16 @@ def apply_classification(applied_models=["simple_classifier"],
             model.draw_models()
             print("Plotted all models.")
             raise Exception
-
+    
 
     print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])))
     print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])))
     print("Recall:\tMean: {}, Std: {}".format(np.mean(cv_scores['rec']), np.std(cv_scores['rec'])))
+
+    print((str(pre_start) + "_pre_start_" if pre_start != None else "") + \
+          (str(pre_end) + "_pre_end_" if pre_end != None else "") + \
+          (str(post_start) + "_post_start_" if post_start != None else "") + \
+          (str(post_end) + "_post_end" if post_end != None else ""))
 
     print("Accuracy:\tMean: {}, Std: {}".format(np.mean(cv_scores['acc']), np.std(cv_scores['acc'])), file=filehandler)
     print("Precision:\tMean: {}, Std: {}".format(np.mean(cv_scores['prec']), np.std(cv_scores['prec'])), file=filehandler)
@@ -227,6 +244,10 @@ def apply_classification(applied_models=["simple_classifier"],
     print("File name:", load_file_name)
 
     print("Classified {}".format(load_file_name), file=filehandler)
+    print((str(pre_start) + "_pre_start_" if pre_start!=None else "")+ \
+          (str(pre_end) + "_pre_end_" if pre_end!=None else "")+ \
+          (str(post_start) + "_post_start_" if post_start!=None else "")+ \
+          (str(post_end) + "_post_end"if post_end!=None else ""), file=filehandler)
     print("This took {} seconds.\n".format(time.time() - start_time), file=filehandler)
     print("\n-------------------------------------------------------------------------------\n", file=filehandler)
 
@@ -423,19 +444,31 @@ if __name__ == '__main__':
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
     '''
 
-    apply_classification(applied_models=["gradient_boosting"],
-                         load_file_name="acceptor_data",
-                         datasets=['simple'],
-                         samples_per_file=100000,
-                         pre_length=300,
-                         post_length=300)
+    for start in [i*50 for i in range(0,5)]:
+        for end in [i*50 for i in range(0,5)]:
+            apply_classification(applied_models=["simple_classifier"],
+                                 load_file_name="acceptor_data",
+                                 datasets=['simple'],
+                                 samples_per_file=100000,
+                                 pre_length=0,
+                                 post_length=0,
+                                 pre_start=start,
+                                 pre_end=start+49,
+                                 post_start=302+end,
+                                 post_end=302+end+49)
 
-    apply_classification(applied_models=["gradient_boosting"],
-                         load_file_name="donor_data",
-                         datasets=['simple'],
-                         samples_per_file=100000,
-                         pre_length=300,
-                         post_length=300)
+            apply_classification(applied_models=["simple_classifier"],
+                                 load_file_name="donor_data",
+                                 datasets=['simple'],
+                                 samples_per_file=100000,
+                                 pre_length=0,
+                                 post_length=0,
+                                 pre_start=start,
+                                 pre_end=start+49,
+                                 post_start=302+end,
+                                 post_end=302+end+49)
+
+
 
     '''
     apply_classification(applied_models=["draw_models"],
