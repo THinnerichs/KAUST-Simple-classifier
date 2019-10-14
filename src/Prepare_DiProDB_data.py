@@ -141,8 +141,8 @@ if __name__ == '__main__':
     '''
 
 
-    for start in [i*50 for i in range(0,5)]:
-        for end in [i*50 for i in range(0,5)]:
+    for start in [i*50 for i in range(0,6)]:
+        for end in [i*50 for i in range(0,6)]:
             prepare_data_with_DiProDB(include_acceptor=True,
                                       include_donor=False,
                                       save_file_name="acceptor_data",
