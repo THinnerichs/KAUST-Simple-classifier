@@ -75,7 +75,16 @@ def prepare_trint_data(include_acceptor=False,
 
     print("Finished reading data")
 
-    x_filename = "../data/x_trint_" + save_file_name + ("_"+str(start) + "_start" if start != 0 else "") + "_" + str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    if pre_length == 300 and post_length == 300:
+        x_filename = "../data/x_trint_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + \
+                     str(samples_per_file) + "_samples_" + str(pre_length) + "_pre_" + str(post_length) + "_post" + ".npy"
+    else:
+        x_filename = "../data/x_trint_" + save_file_name + ("_" + str(start) + "_start" if start != 0 else "") + "_" + \
+                     str(samples_per_file) + "_samples_" + \
+                     str(pre_start) + "_pre_start_" + \
+                     str(pre_end) + "_pre_end_" + \
+                     str(post_start) + "_post_start_" + \
+                     str(post_end) + "_post_end" + ".npy"
     # save dataset in numpy readable files
     np.save(file=x_filename, arr=x_dataset)
 
@@ -96,6 +105,7 @@ if __name__ == '__main__':
                        include_donor=True,
                        save_file_name="donor_data",
                        samples_per_file=20000)
+    '''
 
     prepare_trint_data(include_acceptor=True,
                        include_donor=False,
@@ -106,9 +116,7 @@ if __name__ == '__main__':
                        include_donor=True,
                        save_file_name="donor_data",
                        samples_per_file=100000)
-    '''
 
-    '''
     for start in [i*50 for i in range(0,6)]:
         for end in [i*50 for i in range(0,6)]:
             prepare_trint_data(include_acceptor=True,
@@ -128,7 +136,6 @@ if __name__ == '__main__':
                                pre_end=start+49,
                                post_start=302+end,
                                post_end=302+end+49)
-    '''
 
     for start in [i*100 for i in range(0,3)]:
         for end in [i*100 for i in range(0,3)]:
