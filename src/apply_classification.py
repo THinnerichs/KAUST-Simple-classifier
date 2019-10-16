@@ -446,6 +446,8 @@ if __name__ == '__main__':
     for batch_size in range(50,151,50):
         for start in [i*batch_size for i in range(0,int(300/batch_size))]:
             for end in [i*batch_size for i in range(0,int(300/batch_size))]:
+                if start == 0 and batch_size==50:
+                    continue
                 apply_classification(applied_models=["simple_classifier"],
                                      load_file_name="acceptor_data",
                                      datasets=['simple'],

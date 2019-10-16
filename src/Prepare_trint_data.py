@@ -144,50 +144,50 @@ if __name__ == '__main__':
     for start in [i*100 for i in range(0,3)]:
         for end in [i*100 for i in range(0,3)]:
             prepare_trint_data(include_acceptor=True,
-                         include_donor=False,
-                         save_file_name="acceptor_data",
-                         samples_per_file=100000,
+                               include_donor=False,
+                               save_file_name="acceptor_data",
+                               samples_per_file=100000,
                                pre_length=0,
                                post_length=0,
-                         pre_start=start,
-                         pre_end=start+99,
-                         post_start=302+end,
-                         post_end=302+end+99)
+                               pre_start=start,
+                               pre_end=start+99,
+                               post_start=302+end,
+                               post_end=302+end+99)
 
             prepare_trint_data(include_acceptor=False,
-                         include_donor=True,
-                         save_file_name="donor_data",
-                         samples_per_file=100000,
+                               include_donor=True,
+                               save_file_name="donor_data",
+                               samples_per_file=100000,
                                pre_length=0,
                                post_length=0,
-                         pre_start=start,
-                         pre_end=start+99,
-                         post_start=302+end,
-                         post_end=302+end+99)
+                               pre_start=start,
+                               pre_end=start+99,
+                               post_start=302+end,
+                               post_end=302+end+99)
 
     for start in [i*150 for i in range(0,2)]:
         for end in [i*150 for i in range(0,2)]:
             prepare_trint_data(include_acceptor=True,
-                         include_donor=False,
-                         save_file_name="acceptor_data",
-                         samples_per_file=100000,
+                               include_donor=False,
+                               save_file_name="acceptor_data",
+                               samples_per_file=100000,
                                pre_length=0,
                                post_length=0,
-                         pre_start=start,
-                         pre_end=start+149,
-                         post_start=302+end,
-                         post_end=302+end+149)
+                               pre_start=start,
+                               pre_end=start+149,
+                               post_start=302+end,
+                               post_end=302+end+149)
 
             prepare_trint_data(include_acceptor=False,
-                         include_donor=True,
-                         save_file_name="donor_data",
-                         samples_per_file=100000,
+                               include_donor=True,
+                               save_file_name="donor_data",
+                               samples_per_file=100000,
                                pre_length=0,
                                post_length=0,
-                         pre_start=start,
-                         pre_end=start+149,
-                         post_start=302+end,
-                         post_end=302+end+149)
+                               pre_start=start,
+                               pre_end=start+149,
+                               post_start=302+end,
+                               post_end=302+end+149)
 
 
     '''
