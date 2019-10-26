@@ -393,6 +393,21 @@ if __name__ == '__main__':
                          post_length=300)
     '''
 
+    apply_classification(applied_models=['gradient_boosting'],
+                         load_file_name="acceptor_data",
+                         samples_per_file=100000,
+                         start=0,
+                         datasets=['simple'],
+                         pre_length=300,
+                         post_length=300)
+    apply_classification(applied_models=['gradient_boosting'],
+                         load_file_name="donor_data",
+                         samples_per_file=100000,
+                         start=0,
+                         datasets=['simple'],
+                         pre_length=300,
+                         post_length=300)
+
     '''
     apply_classification(applied_models=["simple_classifier",
                                          "multi_label_classifier",
@@ -442,6 +457,8 @@ if __name__ == '__main__':
                          load_file_name="acceptor_data",
                          samples_per_file=20000,
                          datasets=['albaradei', 'albaradei_up', 'albaradei_down'])
+    '''
+
     '''
     for batch_size in range(50,151,50):
         for start in [i*batch_size for i in range(0,int(300/batch_size))]:
@@ -557,6 +574,7 @@ if __name__ == '__main__':
                                      pre_end=start+batch_size-1,
                                      post_start=302+end,
                                      post_end=302+end+batch_size-1)
+    '''
 
 
     '''
