@@ -427,8 +427,8 @@ class Model:
                      (str(self.pre_start) + "_pre_start_" if self.pre_start!=None else "")+ \
                      (str(self.pre_end) + "_pre_end_" if self.pre_end!=None else "")+ \
                      (str(self.post_start) + "_post_start_" if self.post_start!=None else "")+ \
-                     (str(self.post_end) + "_post_end"if self.post_end!=None else "") + \
-                     "_train_prediction.npy" , arr= model.predict(self.x_data.argmax(axis=2)[train]))
+                     (str(self.post_end) + "_post_end_"if self.post_end!=None else "") + \
+                     "train_prediction.npy" , arr= model.predict(self.x_data.argmax(axis=2)[train]))
         np.save(file="../data/gradient_boosting" +"_" + self.load_file_name + "_round_" + str(self.round) +"_" +\
                      (str(self.pre_start) + "_pre_start_" if self.pre_start!=None else "")+ \
                      (str(self.pre_end) + "_pre_end_" if self.pre_end!=None else "")+ \
