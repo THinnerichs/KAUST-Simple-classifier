@@ -414,10 +414,10 @@ class Voting_classifer:
             conf_matrix = confusion_matrix(y_true=self.data_dict["y_data"][self.test_indizes[round]],
                                            y_pred=(y_pred.reshape((len(y_pred))) > 0.5).astype(int))
 
-            tp = conf_matrix[0, 0]
-            tn = conf_matrix[1, 1]
-            fp = conf_matrix[0, 1]
-            fn = conf_matrix[1, 0]
+            tn = conf_matrix[0, 0]
+            tp = conf_matrix[1, 1]
+            fn = conf_matrix[0, 1]
+            fp = conf_matrix[1, 0]
 
             precision = tp / (tp + fp)
             recall = tp / (tp + fn)
