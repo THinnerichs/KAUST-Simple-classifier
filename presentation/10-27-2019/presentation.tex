@@ -551,26 +551,147 @@
 	\end{enumerate}
 \end{frame}
 
+\begin{frame}{Dividing sequences into chunks}
+	
+	\large Example file, e.g., acceptor site
+	\begin{align*}
+	\begin{bmatrix}
+	CT \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots AG \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots GC\\
+	AG \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots AG \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots TT \\
+	GA \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots AG \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots AA \\[0.2ex]
+	\vdots\\
+	\rotatebox{90}{\footnotesize$ ~100,000 $ records} \\[-1.3ex]
+	\vdots \\[1.4ex]
+	TT \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots AG \dots \rotatebox{0}{\footnotesize $ 300 $ nt} \dots CC
+	\end{bmatrix}
+	\end{align*}
+\end{frame}
+
 \begin{frame}{Influence of nucleotide position: Results}
 	Accuracy for chunk pair:\\
-	\vspace{0.3cm}
+	Simple classifier:
+	\begin{figure}
+	\scriptsize
 	\begingroup
 	\centering
 	\def\arraystretch{1.1}
-	\begin{tabular}{|r|r|r|r|r|r|r|}
+	\begin{tabular}{|r|r|r|r|r|r|r|r|r|r|r|r|r|}
 		\hline
-		Chunk&1&2&3&4&5&6\\
+		&\multicolumn{6}{c}{Acceptor}&\multicolumn{6}{|c|}{Donor}\\
 		\hline
-		1&&&&&&\\
-		2&&&&&&\\
-		3&&&&&&\\
-		4&&&&&&\\
-		5&&&&&&\\
-		6&&&&&&\\
+		&1&2&3&4&5&6&1&2&3&4&5&6\\
+		\hline
+		1&77.1&68.9&67.5&65.5&65.3&64.8&85.1&74.0&66.4&64.9&64.4&64.7\\
+		2&77.4&69.4&66.1&66.2&65.4&64.9&85.2&74.2&66.6&65.3&64.6&64.8\\
+		3&&&&&&&&&&&&\\
+		4&&&&&&&&&&&&\\
+		5&&&&&&&&&&&&\\
+		6&&&&&&&&&&&&\\
 		
 		\hline 
 	\end{tabular}
-	\endgroup
+	\endgroup	
+	\end{figure}
+
+	DiProDB classifier:
+	\begin{figure}
+		\scriptsize
+		\begingroup
+		\centering
+		\def\arraystretch{1.1}
+		\begin{tabular}{|r|r|r|r|r|r|r|r|r|r|r|r|r|}
+			\hline
+			&\multicolumn{6}{c}{Acceptor}&\multicolumn{6}{|c|}{Donor}\\
+			\hline
+			&1&2&3&4&5&6&1&2&3&4&5&6\\
+			\hline
+			1&77.1&70.0&66.2&66.4&65.84&65.5&85.2&75.2&66.9&65.5&65.1&65.2\\
+			2&77.7&70.3&66.7&66.3&65.9&65.6&85.2&75.4&67.3&65.5&64.9&65.2\\
+			3&&&&&&&&&&&&\\
+			4&&&&&&&&&&&&\\
+			5&&&&&&&&&&&&\\
+			6&&&&&&&&&&&&\\
+			
+			\hline 
+		\end{tabular}
+		\endgroup	
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	Trinucleotide classifier:
+	\begin{figure}
+		\scriptsize
+		\begingroup
+		\centering
+		\def\arraystretch{1.1}
+		\begin{tabular}{|r|r|r|r|r|r|r|r|r|r|r|r|r|}
+			\hline
+			&\multicolumn{6}{c}{Acceptor}&\multicolumn{6}{|c|}{Donor}\\
+			\hline
+			&1&2&3&4&5&6&1&2&3&4&5&6\\
+			\hline
+			1&78.2&71.3&67.4&67.0&66.9&66.3&85.4&76.1&67.7&66.34&65.8&68.9\\
+			2&78.6&71.6&67.7&67.1&66.8&66.2&85.6&76.3&67.8&66.2&65.8&65.8\\
+			3&&&&&&&&&&&&\\
+			4&&&&&&&&&&&&\\
+			5&&&&&&&&&&&&\\
+			6&&&&&&&&&&&&\\
+			
+			\hline 
+		\end{tabular}
+		\endgroup	
+	\end{figure}
+
+	Gradient Boosting classifier:
+	\begin{figure}
+		\scriptsize
+		\begingroup
+		\centering
+		\def\arraystretch{1.1}
+		\begin{tabular}{|r|r|r|r|r|r|r|r|r|r|r|r|r|}
+			\hline
+			&\multicolumn{6}{c}{Acceptor}&\multicolumn{6}{|c|}{Donor}\\
+			\hline
+			&1&2&3&4&5&6&1&2&3&4&5&6\\
+			\hline
+			1&68.6&60.5&58.5&58.5&57.9&57.7&77.4&64.9&59.0&57.0&57.3&57.2\\
+			2&68.6&60.4&58.6&59.0&57.9&57.7&77.4&64.9&58.0&57.6&57.3&57.2\\
+			3&&&&&&&&&&&&\\
+			4&&&&&&&&&&&&\\
+			5&&&&&&&&&&&&\\
+			6&&&&&&&&&&&&\\
+			
+			\hline 
+		\end{tabular}
+		\endgroup	
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	Random Forest classifier:
+	\begin{figure}
+		\scriptsize
+		\begingroup
+		\centering
+		\def\arraystretch{1.1}
+		\begin{tabular}{|r|r|r|r|r|r|r|r|r|r|r|r|r|}
+			\hline
+			&\multicolumn{6}{c}{Acceptor}&\multicolumn{6}{|c|}{Donor}\\
+			\hline
+			Chunk&1&2&3&4&5&6&1&2&3&4&5&6\\
+			\hline
+			1&69.2&58.6&56.8&57.1&56.6&56.2&78.9&64.3&55.3&54.8&55.5&55.4\\
+			2&69.4&58.9&57.3&57.1&56.6&56.2&78.9&64.3&55.6&54.8&55.5&55.4\\
+			3&&&&&&&&&&&&\\
+			4&&&&&&&&&&&&\\
+			5&&&&&&&&&&&&\\
+			6&&&&&&&&&&&&\\
+			
+			\hline 
+		\end{tabular}
+		\endgroup	
+	\end{figure}
 \end{frame}
 
 \begin{frame}{Influence of nucleotide position: Results}
